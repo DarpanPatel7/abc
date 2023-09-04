@@ -1,0 +1,42 @@
+{
+    "menu": [
+      {
+        "url": "dashboard",
+        "name": "Dashboard",
+        "icon": "menu-icon tf-icons bx bx-grid-alt",
+        "slug": "dashboard.index"
+      },
+      {
+        "menuHeader": "Apps & Pages"
+      },
+      {
+        "name": "Users",
+        "icon": "menu-icon tf-icons bx bx-user",
+        "slug": "employee",
+        "submenu": [
+          {
+            "url": "employees",
+            "name": "List",
+            "slug": "employees.index"
+          }
+        ]
+      },
+      {
+        "name": "Roles & Permissions",
+        "icon": "menu-icon tf-icons bx bx-check-shield",
+        "slug": "app-access",
+        "submenu": [
+          {
+            "url": "app/access-roles",
+            "name": "Roles",
+            "slug": "app-access-roles"
+          },
+          {
+            "url": "app/access-permission",
+            "name": "Permission",
+            "slug": "app-access-permission"
+          }
+        ]
+      }
+    ]
+  }
