@@ -8,15 +8,24 @@
             disableButton: false,
             buttonSelector: "[type='submit']",
             dataType: "json",
+            csrfToken: $('meta[name="csrf-token"]').attr('content'),
             messagePosition: "toastr",
             errorPosition: "field",
             hideElements: false,
-            redirect: true,
+            redirect: false,
+            reload: false,
             data: {},
             file: false,
             formReset: false,
             async: true,
             historyPush: false,
+            appendHtmlModal: false,
+            showModal: false,
+            hideModal: true,
+            sweetAlert: false,
+            restrictPopupClose: false,
+            loader: false,
+            loaderMessage: "",
         };
 
         var opt = defaults;
@@ -29,14 +38,6 @@
         // Methods if not given in option
         if (typeof opt.beforeSend != "function") {
             opt.beforeSend = function () {
-                // Hide previous errors
-                $(opt.container)
-                    .find(".is-invalid")
-                    .each(function () {
-                        $(this).find(".invalid-feedback").text("");
-                        $(this).removeClass("is-invalid");
-                    });
-                $(opt.container).find("#alert").html("");
 
                 if (opt.historyPush) {
                     historyPush(opt.url);
@@ -44,11 +45,29 @@
 
                 if (opt.blockUI) {
                     $.easyBlockUI(opt.container);
-                    // $.buttonSpinner(opt.container);
                 }
 
                 if (opt.disableButton) {
                     loadingButton(opt.buttonSelector);
+                }
+
+                if (opt.loader) {
+                    var loader_html = `<div wire:loading class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center message-loader">
+                        <div class="sk-chase">
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                            <div class="sk-chase-dot"></div>
+                        </div>
+                        <p class="w-1/3 text-center text-white mt-3">${opt.loaderMessage ?? ''}</p>
+                    </div>`;
+                    $(opt.container).append(loader_html);
+                }
+
+                if (opt.restrictPopupClose) {
+                    blockPopupClose('#'+$(opt.container).parents("div.modal").attr('id'));
                 }
             };
         }
@@ -62,16 +81,32 @@
                 if (opt.disableButton) {
                     unloadingButton(opt.buttonSelector);
                 }
+
+                if (opt.loader) {
+                    $('.message-loader').remove();
+                }
+
+                if (opt.restrictPopupClose) {
+                    unblockPopupClose('#'+$(opt.container).parents("div.modal").attr('id'));
+                }
+
+                if(opt.showModal){
+                    if ( typeof initAjaxDropdown == 'function' ) {
+                        initAjaxDropdown(opt.showModal);
+                    }
+                }
             };
         }
 
         // Default error handler
         if (typeof opt.error != "function") {
-            console.log('error');
             opt.error = function (jqXHR, textStatus, errorThrown) {
                 try {
                     var response = JSON.parse(jqXHR.responseText);
                     if (typeof response == "object") {
+                        if (opt.type == 'DELETE' || opt.sweetAlert){
+                            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+                        }
                         handleFail(response);
                     } else {
                         var msg =
@@ -81,121 +116,113 @@
                             msg =
                                 "Connection timed out! Please check your internet connection";
                         }
-                        showResponseMessage(msg, "error");
+                        // showResponseMessage(msg, "error");
+                        $.showToastr(msg, 'error')
                     }
                 } catch (e) {
+                    if (opt.type == 'DELETE' || opt.sweetAlert){
+                        $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+                    }
                     // when session expire then it reload user to login page
                     // window.location.reload();
                 }
             };
         }
 
+        function showSweetAlert(button) {
+            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+            !(function st(n) {
+                var e = {
+                    title: void 0 !== n.data("swal-title") ? n.data("swal-title") : "Are you sure?",
+                    text: n.data("swal-text") ? n.data("swal-text") : 'You will not be able to recover this record!',
+                    type: void 0 !== n.data("swal-type") ? n.data("swal-type") : 'warning',
+                    html: n.data("swal-html"),
+                    showCancelButton: n.data("swal-show-cancel-button") ? n.data("swal-show-cancel-button") : true,
+                    cancelButtonText: n.data("swal-cancel-button-text"),
+                    closeOnCancel: void 0 === n.data("swal-close-on-cancel") || n.data("swal-close-on-cancel"),
+                    confirmButtonText: n.data("swal-confirm-button-text") ? n.data("swal-confirm-button-text") : 'Yes, delete it!',
+                    confirmButtonColor: void 0 !== n.data("swal-confirm-button-color") ? n.data("swal-confirm-button-color") : '#FB821F',
+                    closeOnConfirm: n.data("swal-close-on-confirm") ? n.data("swal-close-on-confirm") : false,
+                };
+                swal(e, function(isConfirm){
+                    if (isConfirm){
+                        loadAjax();
+                    }
+                });
+            })($(button));
+        }
+
         function showResponseMessage(msg, type, toastrOptions) {
-
-            var msgbuttonSelector = $(opt.buttonSelector);
-            var shortCutFunction = 'error',
-                isRtl = $('html').attr('dir') === 'rtl',
-                msg = msg,
-                title = msgbuttonSelector.data('title') || '',
-                $showDuration = msgbuttonSelector.data('showDuration') || '',
-                $hideDuration = msgbuttonSelector.data('hideDuration') || '',
-                $timeOut = msgbuttonSelector.data('timeOut') || '',
-                $extendedTimeOut = msgbuttonSelector.data('extendedTimeOut') || '',
-                $showEasing = msgbuttonSelector.data('showEasing') || '',
-                $hideEasing = msgbuttonSelector.data('hideEasing') || '',
-                $showMethod = msgbuttonSelector.data('showMethod') || '',
-                $hideMethod = msgbuttonSelector.data('hideMethod') || '',
-                toastIndex = toastCount++,
-                addClear = msgbuttonSelector.data('addClear') || false,
-                prePositionClass = 'toast-bottom-right',
-                toastCount = 0,
-                $toastlast = '';
-
-            prePositionClass =
-                typeof toastr.options.positionClass === 'undefined' ? 'toast-bottom-right' : toastr.options.positionClass;
-
-            toastr.options = {
-                maxOpened: 1,
-                autoDismiss: true,
-                closeButton: $('#closeButton').prop('checked'),
-                debug: $('#debugInfo').prop('checked'),
-                newestOnTop: $('#newestOnTop').prop('checked'),
-                progressBar: $('#progressBar').prop('checked'),
-                positionClass: $('#positionGroup input:radio:checked').val() || 'toast-bottom-right',
-                preventDuplicates: $('#preventDuplicates').prop('checked'),
-                onclick: null,
-                rtl: isRtl
+            var typeClasses = {
+                error: "danger",
+                success: "success",
+                primary: "primary",
+                warning: "warning",
+                info: "info",
             };
 
-            //Add fix for multiple toast open while changing the position
-            if (prePositionClass != toastr.options.positionClass) {
-                toastr.options.hideDuration = 0;
-                toastr.clear();
-            }
+            var iconClasses = {
+                error: "error",
+                success: "success",
+                warning: "warning",
+                info: "info",
+            };
 
-            if ($('#addBehaviorOnToastClick').prop('checked')) {
-                toastr.options.onclick = function () {
-                    alert('You can perform some custom action after a toast goes away');
-                };
-            }
-            if ($('#addBehaviorOnToastCloseClick').prop('checked')) {
-                toastr.options.onCloseClick = function () {
-                    alert('You can perform some custom action when the close button is clicked');
-                };
-            }
-            if ($showDuration.length) {
-                toastr.options.showDuration = parseInt($showDuration);
-            }
-            if ($hideDuration.length) {
-                toastr.options.hideDuration = parseInt($hideDuration);
-            }
-            if ($timeOut.length) {
-                toastr.options.timeOut = addClear ? 0 : parseInt($timeOut);
-            }
-            if ($extendedTimeOut.length) {
-                toastr.options.extendedTimeOut = addClear ? 0 : parseInt($extendedTimeOut);
-            }
-            if ($showEasing.length) {
-                toastr.options.showEasing = $showEasing;
-            }
-            if ($hideEasing.length) {
-                toastr.options.hideEasing = $hideEasing;
-            }
-            if ($showMethod.length) {
-                toastr.options.showMethod = $showMethod;
-            }
-            if ($hideMethod.length) {
-                toastr.options.hideMethod = $hideMethod;
-            }
-            if (addClear) {
-                msg = getMessageWithClearButton(msg);
-                toastr.options.tapToDismiss = false;
-            }
-            if (!msg) {
-                msg = getMessage();
-            }
-            var $toast = toastr[shortCutFunction](msg, title); // Wire up an event handler to a button in the toast, if it exists
-            $toastlast = $toast;
-            if (typeof $toast === 'undefined') {
-                return;
-            }
-            if ($toast.find('#okBtn').length) {
-                $toast.delegate('#okBtn', 'click', function () {
-                    alert('you clicked me. i was toast #' + toastIndex + '. goodbye!');
-                    $toast.remove();
+            var headingClasses = {
+                error: "",
+                success: "",
+                warning: "",
+                info: "",
+            };
+
+            if (opt.messagePosition == "toastr") {
+                Swal.fire({
+                    icon: type,
+                    text: msg,
+
+                    toast: true,
+                    position: "top-end",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                    },
+                    showClass: {
+                        popup: "swal2-noanimation",
+                        backdrop: "swal2-noanimation",
+                    },
                 });
-            }
-            if ($toast.find('#surpriseBtn').length) {
-                $toast.delegate('#surpriseBtn', 'click', function () {
-                    alert('Surprise! you clicked me. i was toast #' + toastIndex + '. You could perform an action here.');
+            } else if (opt.messagePosition == "pop") {
+                Swal.fire({
+                    icon: type,
+                    text: msg,
+
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                    },
+                    showClass: {
+                        popup: "swal2-noanimation",
+                        backdrop: "swal2-noanimation",
+                    },
+                    buttonsStyling: false,
                 });
-            }
-            if ($toast.find('.clear').length) {
-                $toast.delegate('.clear', 'click', function () {
-                    toastr.clear($toast, {
-                        force: true
-                    });
-                });
+            } else {
+                var ele = $(opt.container).find("#alert");
+                var html =
+                    '<div class="alert alert-' +
+                    typeClasses[type] +
+                    '">' +
+                    msg +
+                    "</div>";
+                if (ele.length == 0) {
+                    $(opt.container)
+                        .find(".form-group:first")
+                        .before('<div id="alert">' + html + "</div>");
+                } else {
+                    ele.html(html);
+                }
             }
         }
 
@@ -212,183 +239,94 @@
             opt.data = data;
         }
 
-        $.ajax({
-            type: opt.type,
-            async: opt.async,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            url: opt.url,
-            dataType: opt.dataType,
-            data: opt.data,
-            beforeSend: opt.beforeSend,
-            contentType: opt.file
-                ? false
-                : "application/x-www-form-urlencoded; charset=UTF-8",
-            processData: !opt.file,
-            error: opt.error,
-            complete: opt.complete,
-            cache: false,
-            success: function (response) {
-                if (typeof response !== "undefined") {
-                    // Show success message
-                    if (response.status == "success") {
-                        //check redirect option
-                        if (typeof response.redirect_url != "undefined") {
-                            if (opt.redirect) {
-                                window.location.href = response.redirect_url;
-                            }else{
-                                if (typeof response.message != "undefined") {
-                                    showResponseMessage(
-                                        response.message,
-                                        "success"
-                                    );
+        if (opt.type == 'DELETE' || opt.sweetAlert){
+            showSweetAlert(opt.buttonSelector);
+        } else{
+            loadAjax();
+        }
+
+        function loadAjax(){
+            var post_data = {};
+            if (typeof opt.data !== 'undefined' && opt.data.length > 0) {
+                post_data = opt.data;
+            }else{
+                post_data = $(opt.container).serializeArray();
+            }
+            $.ajax({
+                type: opt.type,
+                async: opt.async,
+                url: opt.url ? opt.url : $(opt.container).prop('action'),
+                dataType: opt.dataType,
+                headers: {
+                    'X-CSRF-TOKEN': opt.csrfToken
+                },
+                data: post_data,
+                beforeSend: opt.beforeSend,
+                contentType: opt.file
+                    ? false
+                    : "application/x-www-form-urlencoded; charset=UTF-8",
+                processData: !opt.file,
+                error: opt.error,
+                complete: opt.complete,
+                cache: false,
+                success: function (response) {
+                    if (typeof response !== "undefined") {
+                        // Show success message
+                        if (typeof opt.success == "function") {
+                            opt.success(response);
+                        }else{
+
+                            if (response.success) {
+                                if (typeof response.redirect_url != "undefined") {
+                                    window.location.href = response.redirect_url;
+                                }
+                                if (opt.redirect) {
+                                    if(response.url){
+                                        window.location.href = response.url;
+                                    }
+                                }
+                                if (response.data) {
+                                    if(opt.appendHtmlModal){
+                                        $(opt.appendHtmlModal).html(response.data);
+                                    }
+                                }
+                                if (opt.showModal) {
+                                    $(opt.showModal).modal('show');
+                                }
+                                if (opt.formReset == true) {
+                                    $(opt.container)[0].reset();
+                                }
+                                if (opt.reload) {
+                                    window.location.reload()
                                 }
                             }
-                        } else {
-                            if (typeof response.message != "undefined") {
-                                showResponseMessage(
-                                    response.message,
-                                    "success"
-                                );
+                            if (response.error) {
+                                if (typeof response.error != "undefined") {
+                                    $.showToastr(response.error, 'error')
+                                }
+                            }
+                            if (response.info) {
+                                if (typeof response.info != "undefined") {
+                                    $.showToastr(response.info, 'info')
+                                }
                             }
                         }
-
-                        if (opt.removeElements == true) {
-                            $(opt.container)
-                                .find(".form-group, button, input")
-                                .remove();
-                        }
-
-                        if (opt.formReset == true) {
-                            $(opt.container)[0].reset();
+                        if (opt.type == 'DELETE' || opt.sweetAlert){
+                            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
                         }
                     }
-
-                    if (response.status == "fail") {
-                        console.log('status fail');
-                        handleFail(response);
-                    }
-
-                    if (typeof opt.success == "function") {
-                        opt.success(response);
-                    }
-                }
-            },
-            error: function (data) {
-                if (typeof data !== "undefined") {
-                    console.log('ajax error');
-                    handleFail(data);
-                }
-            }
-        });
-
-        function handleFail(response) {
-            if (typeof response.responseJSON.message != "undefined") {
-                showResponseMessage(response.responseJSON.message, "error");
-            }
-
-            if (typeof response.responseJSON.errors != "undefined") {
-                var keys = Object.keys(response.responseJSON.errors);
-
-                $(opt.container).find(".invalid-feedback").remove();
-                $(opt.container).find(".is-invalid").removeClass("is-invalid");
-
-                if (opt.errorPosition == "field") {
-                    for (var i = 0; i < keys.length; i++) {
-                        // Escape dot that comes with error in array fields
-                        var key = keys[i].replace(".", "\\.");
-                        var formarray = keys[i];
-                        // If the response has form array
-                        if (formarray.indexOf(".") >= 0) {
-                            var array = formarray.split(".");
-                            response.responseJSON.errors[keys[i]] = response.responseJSON.errors[keys[i]];
-                            key = array[0] + "[]";
-                        }
-
-                        var ele = $(opt.container).find("[name='" + key + "']");
-
-                        // If cannot find by name, then find by id
-                        if (ele.length == 0) {
-                            ele = $(opt.container).find("#" + key);
-                        }
-
-                        if (ele.closest(".input-group").length == 0) {
-                            var grp = ele.closest(".form-group");
-                        } else {
-                            var grp = ele.closest(".input-group");
-                        }
-                        $(grp).find(".invalid-feedback").remove();
-
-                        // var helpBlockContainer = $(grp).find("div:first");
-                        if ($(ele).is(":radio")) {
-                            helpBlockContainer = $(grp).find("div:eq(2)");
-                        }
-
-                        // if (helpBlockContainer.length == 0) {
-                        //     helpBlockContainer = $(grp);
-                        // }
-
-                        var helpBlockContainer = $(grp);
-
-                        helpBlockContainer.append(
-                            '<div class="invalid-feedback">' +
-                            response.responseJSON.errors[keys[i]] +
-                            "</div>"
-                        );
-                        ele.addClass("is-invalid");
-
-                        $(grp).find(".select-picker").addClass("is-invalid");
-                        $(grp).find(".bootstrap-select").addClass("is-invalid");
-                    }
-
-                    if (keys.length > 0) {
-                        var element = $("[name='" + keys[0] + "']");
-                        if (element.length > 0) {
-                            $("html, body").animate(
-                                { scrollTop: element.offset().top - 150 },
-                                200
-                            );
-                        }
-                    }
-                } else {
-                    var errorMsg = "<ul>";
-                    for (var i = 0; i < keys.length; i++) {
-                        errorMsg += "<li>" + response.errors[keys[i]] + "</li>";
-                    }
-                    errorMsg += "</ul>";
-
-                    var errorElement = $(opt.container).find("#alert");
-                    var html =
-                        '<div class="alert alert-danger">' +
-                        errorMsg +
-                        "</div>";
-                    if (errorElement.length == 0) {
-                        $(opt.container)
-                            .find(".form-group:first")
-                            .before('<div id="alert">' + html + "</div>");
-                    } else {
-                        errorElement.html(html);
-                    }
-                }
-            }
+                },
+            });
         }
 
         function loadingButton(selector) {
             var button = $(opt.container).find(selector);
 
-            var text =
-                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
-
-            if (button.width() < 20) {
-                text = "...";
-            }
-
             if (!button.is("input")) {
-                button.attr("data-prev-text", button.html());
+                button.addClass("is-loading is-loading-sm");
                 button.prop("disabled", true);
-                button.html(text);
             } else {
-                button.attr("data-prev-text", button.val());
-                button.val(text);
+                button.addClass("is-loading is-loading-sm");
                 button.prop("disabled", true);
             }
         }
@@ -397,14 +335,146 @@
             var button = $(opt.container).find(selector);
 
             if (!button.is("input")) {
-                button.html(button.attr("data-prev-text"));
+                button.removeClass("is-loading is-loading-sm");
                 button.prop("disabled", false);
             } else {
-                button.val(button.attr("data-prev-text"));
+                button.removeClass("is-loading is-loading-sm");
                 button.prop("disabled", false);
             }
         }
+
+        function blockPopupClose(selector) {
+            var $modal = $(selector);
+            var keyboard = false; // Prevent to close by ESC
+            var backdrop = 'static'; // Prevent to close on click outside the modal
+
+            if(typeof $modal.data('bs.modal') === 'undefined') { // Modal did not open yet
+                $modal.modal({
+                    keyboard: keyboard,
+                    backdrop: backdrop
+                });
+            } else { // Modal has already been opened
+                $modal.data('bs.modal')._config.keyboard = keyboard;
+                $modal.data('bs.modal')._config.backdrop = backdrop;
+
+                if(keyboard === false) {
+                    $modal.off('keydown.dismiss.bs.modal'); // Disable ESC
+                } else { //
+                    $modal.data('bs.modal').escape(); // Resets ESC
+                }
+            }
+        }
+
+        function unblockPopupClose(selector) {
+            var $modal = $(selector);
+            var keyboard = true; // Prevent to close by ESC
+            var backdrop = false; // Prevent to close on click outside the modal
+
+            if(typeof $modal.data('bs.modal') === 'undefined') { // Modal did not open yet
+                $modal.modal({
+                    keyboard: keyboard,
+                    backdrop: backdrop
+                });
+            } else { // Modal has already been opened
+                $modal.data('bs.modal')._config.keyboard = keyboard;
+                $modal.data('bs.modal')._config.backdrop = backdrop;
+            }
+        }
     };
+
+    function handleFail(response) {
+
+        if (typeof response.message != "undefined" && response.message != '') {
+            $.showToastr(response.message, 'error')
+        }else{
+            $.showToastr('A server side error occurred. Please try again after sometime.', 'error');
+        }
+
+        if (typeof response.errors != "undefined") {
+            var keys = Object.keys(response.errors);
+
+            $(opt.container).find(".invalid-feedback").remove();
+            $(opt.container).find(".is-invalid").removeClass("is-invalid");
+
+            if (opt.errorPosition == "field") {
+                for (var i = 0; i < keys.length; i++) {
+                    // Escape dot that comes with error in array fields
+                    var key = keys[i].replace(".", "\\.");
+                    var formarray = keys[i];
+                    // If the response has form array
+                    if (formarray.indexOf(".") > 0) {
+                        var array = formarray.split(".");
+                        response.errors[keys[i]] = response.errors[keys[i]];
+                        key = array[0] + "[]";
+                    }
+
+                    var ele = $(opt.container).find("[name='" + key + "']");
+
+                    // If cannot find by name, then find by id
+                    if (ele.length == 0) {
+                        ele = $(opt.container).find("#" + key);
+                    }
+
+                    if (ele.closest(".input-group").length == 0) {
+                        var grp = ele.closest(".form-group");
+                    } else {
+                        var grp = ele.closest(".input-group");
+                    }
+                    $(grp).find(".invalid-feedback").remove();
+
+                    // var helpBlockContainer = $(grp).find("div:first");
+                    if ($(ele).is(":radio")) {
+                        helpBlockContainer = $(grp).find("div:eq(2)");
+                    }
+
+                    // if (helpBlockContainer.length == 0) {
+                    //     helpBlockContainer = $(grp);
+                    // }
+
+                    var helpBlockContainer = $(grp);
+
+                    helpBlockContainer.append(
+                        '<div class="invalid-feedback">' +
+                            response.errors[keys[i]] +
+                            "</div>"
+                    );
+                    ele.addClass("is-invalid");
+
+                    $(grp).find(".select-picker").addClass("is-invalid");
+                    $(grp).find(".bootstrap-select").addClass("is-invalid");
+                }
+
+                if (keys.length > 0) {
+                    var element = $("[name='" + keys[0] + "']");
+                    if (element.length > 0) {
+                        $("html, body").animate(
+                            { scrollTop: element.offset().top - 150 },
+                            200
+                        );
+                    }
+                }
+            } else {
+                var errorMsg = "<ul>";
+                for (var i = 0; i < keys.length; i++) {
+                    errorMsg += "<li>" + response.errors[keys[i]] + "</li>";
+                }
+                errorMsg += "</ul>";
+
+                var errorElement = $(opt.container).find("#alert");
+                var html =
+                    '<div class="alert alert-danger">' +
+                    errorMsg +
+                    "</div>";
+                if (errorElement.length == 0) {
+                    $(opt.container)
+                        .find(".form-group:first")
+                        .before('<div id="alert">' + html + "</div>");
+                } else {
+                    errorElement.html(html);
+                }
+            }
+        }
+    }
 
     $.easyBlockUI = function (container, message) {
         if (message == undefined) {
@@ -545,6 +615,7 @@
             //     helpBlockContainer = $(grp);
             // }
             var helpBlockContainer = $(grp);
+            console.log(helpBlockContainer);
 
             helpBlockContainer.append(
                 '<div class="invalid-feedback">' + object[keys[i]] + "</div>"
@@ -567,6 +638,9 @@ $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
 });
 
 // Prevent submit of ajax form
+$(document).on('click', '.sweet-alert .confirm', function (e) {
+    $('.sweet-alert .confirm').addClass('is-loading').prop("disabled", true);
+});
 $(document).on("ready", function () {
     $(".ajax-form").on("submit", function (e) {
         e.preventDefault();
@@ -578,19 +652,6 @@ $(document).on("ajaxPageLoad", function () {
     });
 });
 
-/*!
- * jQuery blockUI plugin
- * Version 2.70.0-2014.11.23
- * Requires jQuery v1.7 or later
- *
- * Examples at: http://malsup.com/jquery/block/
- * Copyright (c) 2007-2013 M. Alsup
- * Dual licensed under the MIT and GPL licenses:
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.gnu.org/licenses/gpl.html
- *
- * Thanks to Amir-Hossein Sobhi for some excellent contributions!
- */
 !(function () {
     "use strict";
     function e(e) {
@@ -601,7 +662,7 @@ $(document).on("ajaxPageLoad", function () {
                 y = n && void 0 !== n.message ? n.message : void 0;
             if (
                 ((n = e.extend({}, e.blockUI.defaults, n || {})),
-                    !n.ignoreIfBlocked || !e(t).data("blockUI.isBlocked"))
+                !n.ignoreIfBlocked || !e(t).data("blockUI.isBlocked"))
             ) {
                 if (
                     ((n.overlayCSS = e.extend(
@@ -609,16 +670,16 @@ $(document).on("ajaxPageLoad", function () {
                         e.blockUI.defaults.overlayCSS,
                         n.overlayCSS || {}
                     )),
-                        (s = e.extend({}, e.blockUI.defaults.css, n.css || {})),
-                        n.onOverlayClick && (n.overlayCSS.cursor = "pointer"),
-                        (h = e.extend(
-                            {},
-                            e.blockUI.defaults.themedCSS,
-                            n.themedCSS || {}
-                        )),
-                        (y = void 0 === y ? n.message : y),
-                        k && p && o(window, { fadeOut: 0 }),
-                        y && "string" != typeof y && (y.parentNode || y.jquery))
+                    (s = e.extend({}, e.blockUI.defaults.css, n.css || {})),
+                    n.onOverlayClick && (n.overlayCSS.cursor = "pointer"),
+                    (h = e.extend(
+                        {},
+                        e.blockUI.defaults.themedCSS,
+                        n.themedCSS || {}
+                    )),
+                    (y = void 0 === y ? n.message : y),
+                    k && p && o(window, { fadeOut: 0 }),
+                    y && "string" != typeof y && (y.parentNode || y.jquery))
                 ) {
                     var m = y.jquery ? y[0] : y,
                         v = {};
@@ -638,67 +699,67 @@ $(document).on("ajaxPageLoad", function () {
                 (g = e(
                     r || n.forceIframe
                         ? '<iframe class="blockUI" style="z-index:' +
-                        x++ +
-                        ';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="' +
-                        n.iframeSrc +
-                        '"></iframe>'
+                              x++ +
+                              ';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="' +
+                              n.iframeSrc +
+                              '"></iframe>'
                         : '<div class="blockUI" style="display:none"></div>'
                 )),
                     (I = e(
                         n.theme
                             ? '<div class="blockUI blockOverlay ui-widget-overlay" style="z-index:' +
-                            x++ +
-                            ';display:none"></div>'
+                                  x++ +
+                                  ';display:none"></div>'
                             : '<div class="blockUI blockOverlay" style="z-index:' +
-                            x++ +
-                            ';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>'
+                                  x++ +
+                                  ';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>'
                     )),
                     n.theme && k
                         ? ((U =
-                            '<div class="blockUI ' +
-                            n.blockMsgClass +
-                            ' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:' +
-                            (x + 10) +
-                            ';display:none;position:fixed">'),
-                            n.title &&
-                            (U +=
-                                '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
-                                (n.title || "&nbsp;") +
-                                "</div>"),
-                            (U +=
-                                '<div class="ui-widget-content ui-dialog-content"></div>'),
-                            (U += "</div>"))
+                              '<div class="blockUI ' +
+                              n.blockMsgClass +
+                              ' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:' +
+                              (x + 10) +
+                              ';display:none;position:fixed">'),
+                          n.title &&
+                              (U +=
+                                  '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
+                                  (n.title || "&nbsp;") +
+                                  "</div>"),
+                          (U +=
+                              '<div class="ui-widget-content ui-dialog-content"></div>'),
+                          (U += "</div>"))
                         : n.theme
-                            ? ((U =
-                                '<div class="blockUI ' +
-                                n.blockMsgClass +
-                                ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:' +
-                                (x + 10) +
-                                ';display:none;position:absolute">'),
-                                n.title &&
-                                (U +=
-                                    '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
-                                    (n.title || "&nbsp;") +
-                                    "</div>"),
-                                (U +=
-                                    '<div class="ui-widget-content ui-dialog-content"></div>'),
-                                (U += "</div>"))
-                            : (U = k
-                                ? '<div class="blockUI ' +
+                        ? ((U =
+                              '<div class="blockUI ' +
+                              n.blockMsgClass +
+                              ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:' +
+                              (x + 10) +
+                              ';display:none;position:absolute">'),
+                          n.title &&
+                              (U +=
+                                  '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
+                                  (n.title || "&nbsp;") +
+                                  "</div>"),
+                          (U +=
+                              '<div class="ui-widget-content ui-dialog-content"></div>'),
+                          (U += "</div>"))
+                        : (U = k
+                              ? '<div class="blockUI ' +
                                 n.blockMsgClass +
                                 ' blockPage" style="z-index:' +
                                 (x + 10) +
                                 ';display:none;position:fixed"></div>'
-                                : '<div class="blockUI ' +
+                              : '<div class="blockUI ' +
                                 n.blockMsgClass +
                                 ' blockElement" style="z-index:' +
                                 (x + 10) +
                                 ';display:none;position:absolute"></div>'),
                     (w = e(U)),
                     y &&
-                    (n.theme
-                        ? (w.css(h), w.addClass("ui-widget-content"))
-                        : w.css(s)),
+                        (n.theme
+                            ? (w.css(h), w.addClass("ui-widget-content"))
+                            : w.css(s)),
                     n.theme || I.css(n.overlayCSS),
                     I.css("position", k ? "fixed" : "absolute"),
                     (r || n.forceIframe) && g.css("opacity", 0);
@@ -708,12 +769,12 @@ $(document).on("ajaxPageLoad", function () {
                     this.appendTo(S);
                 }),
                     n.theme &&
-                    n.draggable &&
-                    e.fn.draggable &&
-                    w.draggable({
-                        handle: ".ui-dialog-titlebar",
-                        cancel: "li",
-                    });
+                        n.draggable &&
+                        e.fn.draggable &&
+                        w.draggable({
+                            handle: ".ui-dialog-titlebar",
+                            cancel: "li",
+                        });
                 var O =
                     f &&
                     (!e.support.boxModel ||
@@ -724,7 +785,7 @@ $(document).on("ajaxPageLoad", function () {
                             n.allowBodyStretch &&
                             e.support.boxModel &&
                             e("html,body").css("height", "100%"),
-                            (u || !e.support.boxModel) && !k)
+                        (u || !e.support.boxModel) && !k)
                     )
                         var E = d(t, "borderTopWidth"),
                             T = d(t, "borderLeftWidth"),
@@ -735,24 +796,24 @@ $(document).on("ajaxPageLoad", function () {
                         if (((o.position = "absolute"), 2 > e))
                             k
                                 ? o.setExpression(
-                                    "height",
-                                    "Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:" +
-                                    n.quirksmodeOffsetHack +
-                                    ') + "px"'
-                                )
+                                      "height",
+                                      "Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:" +
+                                          n.quirksmodeOffsetHack +
+                                          ') + "px"'
+                                  )
                                 : o.setExpression(
-                                    "height",
-                                    'this.parentNode.offsetHeight + "px"'
-                                ),
+                                      "height",
+                                      'this.parentNode.offsetHeight + "px"'
+                                  ),
                                 k
                                     ? o.setExpression(
-                                        "width",
-                                        'jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"'
-                                    )
+                                          "width",
+                                          'jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"'
+                                      )
                                     : o.setExpression(
-                                        "width",
-                                        'this.parentNode.offsetWidth + "px"'
-                                    ),
+                                          "width",
+                                          'this.parentNode.offsetWidth + "px"'
+                                      ),
                                 B && o.setExpression("left", B),
                                 M && o.setExpression("top", M);
                         else if (n.centerY)
@@ -764,9 +825,9 @@ $(document).on("ajaxPageLoad", function () {
                                 (o.marginTop = 0);
                         else if (!n.centerY && k) {
                             var i =
-                                n.css && n.css.top
-                                    ? parseInt(n.css.top, 10)
-                                    : 0,
+                                    n.css && n.css.top
+                                        ? parseInt(n.css.top, 10)
+                                        : 0,
                                 s =
                                     "((document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + " +
                                     i +
@@ -780,9 +841,9 @@ $(document).on("ajaxPageLoad", function () {
                         (n.theme
                             ? w.find(".ui-widget-content").append(y)
                             : w.append(y),
-                            (y.jquery || y.nodeType) && e(y).show()),
-                        (r || n.forceIframe) && n.showOverlay && g.show(),
-                        n.fadeIn)
+                        (y.jquery || y.nodeType) && e(y).show()),
+                    (r || n.forceIframe) && n.showOverlay && g.show(),
+                    n.fadeIn)
                 ) {
                     var j = n.onBlock ? n.onBlock : c,
                         H = n.showOverlay && !y ? j : c,
@@ -795,12 +856,12 @@ $(document).on("ajaxPageLoad", function () {
                         n.onBlock && n.onBlock.bind(w)();
                 if (
                     (i(1, t, n),
-                        k
-                            ? ((p = w[0]),
-                                (b = e(n.focusableElements, p)),
-                                n.focusInput && setTimeout(l, 20))
-                            : a(w[0], n.centerX, n.centerY),
-                        n.timeout)
+                    k
+                        ? ((p = w[0]),
+                          (b = e(n.focusableElements, p)),
+                          n.focusInput && setTimeout(l, 20))
+                        : a(w[0], n.centerX, n.centerY),
+                    n.timeout)
                 ) {
                     var W = setTimeout(function () {
                         k ? e.unblockUI(n) : e(t).unblock(n);
@@ -819,21 +880,21 @@ $(document).on("ajaxPageLoad", function () {
                 (o = e.extend({}, e.blockUI.defaults, o || {})),
                 i(0, t, o),
                 null === o.onUnblock &&
-                ((o.onUnblock = a.data("blockUI.onUnblock")),
+                    ((o.onUnblock = a.data("blockUI.onUnblock")),
                     a.removeData("blockUI.onUnblock"));
             var r;
             (r = l
                 ? e("body").children().filter(".blockUI").add("body > .blockUI")
                 : a.find(">.blockUI")),
                 o.cursorReset &&
-                (r.length > 1 && (r[1].style.cursor = o.cursorReset),
+                    (r.length > 1 && (r[1].style.cursor = o.cursorReset),
                     r.length > 2 && (r[2].style.cursor = o.cursorReset)),
                 l && (p = b = null),
                 o.fadeOut
                     ? ((s = r.length),
-                        r.stop().fadeOut(o.fadeOut, function () {
-                            0 === --s && n(r, d, o, t);
-                        }))
+                      r.stop().fadeOut(o.fadeOut, function () {
+                          0 === --s && n(r, d, o, t);
+                      }))
                     : n(r, d, o, t);
         }
         function n(t, o, n, i) {
@@ -843,8 +904,8 @@ $(document).on("ajaxPageLoad", function () {
                     this.parentNode && this.parentNode.removeChild(this);
                 }),
                     o &&
-                    o.el &&
-                    ((o.el.style.display = o.display),
+                        o.el &&
+                        ((o.el.style.display = o.display),
                         (o.el.style.position = o.position),
                         (o.el.style.cursor = "default"),
                         o.parent && o.parent.appendChild(o.el),
@@ -863,7 +924,7 @@ $(document).on("ajaxPageLoad", function () {
             if (
                 (t || ((!i || p) && (i || l.data("blockUI.isBlocked")))) &&
                 (l.data("blockUI.isBlocked", t),
-                    i && n.bindEvents && (!t || n.showOverlay))
+                i && n.bindEvents && (!t || n.showOverlay))
             ) {
                 var a =
                     "mousedown mouseup keydown keypress keyup touchstart touchend touchmove";
@@ -893,8 +954,8 @@ $(document).on("ajaxPageLoad", function () {
                 a = e(t.target);
             return (
                 a.hasClass("blockOverlay") &&
-                s.onOverlayClick &&
-                s.onOverlayClick(t),
+                    s.onOverlayClick &&
+                    s.onOverlayClick(t),
                 a.parents("div." + s.blockMsgClass).length > 0
                     ? !0
                     : 0 === a.parents().children().filter("div.blockUI").length
@@ -922,16 +983,16 @@ $(document).on("ajaxPageLoad", function () {
             return parseInt(e.css(t, o), 10) || 0;
         }
         e.fn._fadeIn = e.fn.fadeIn;
-        var c = e.noop || function () { },
+        var c = e.noop || function () {},
             r = /MSIE/.test(navigator.userAgent),
             u =
                 /MSIE 6.0/.test(navigator.userAgent) &&
                 !/MSIE 8.0/.test(navigator.userAgent),
             f =
                 (document.documentMode || 0,
-                    e.isFunction(
-                        document.createElement("div").style.setExpression
-                    ));
+                e.isFunction(
+                    document.createElement("div").style.setExpression
+                ));
         (e.blockUI = function (e) {
             t(window, e);
         }),
@@ -983,7 +1044,7 @@ $(document).on("ajaxPageLoad", function () {
                     this.each(function () {
                         "static" == e.css(this, "position") &&
                             ((this.style.position = "relative"),
-                                e(this).data("blockUI.static", !0)),
+                            e(this).data("blockUI.static", !0)),
                             (this.style.zoom = 1),
                             t(this, o);
                     })
@@ -993,8 +1054,8 @@ $(document).on("ajaxPageLoad", function () {
                 return this[0] === window
                     ? (e.unblockUI(t), this)
                     : this.each(function () {
-                        o(this, t);
-                    });
+                          o(this, t);
+                      });
             }),
             (e.blockUI.version = 2.7),
             (e.blockUI.defaults = {

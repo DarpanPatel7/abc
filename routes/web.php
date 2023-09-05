@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DesignationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,17 +31,18 @@ require __DIR__.'/auth.php';
     //Dashboard
     Route::resource('/dashboard', DashboardController::class);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //Employees
     Route::resource('employees', EmployeeController::class);
-    Route::get('employees.list', [EmployeeController::class, 'list'])->name('employees.list');
 
     //Role
-    Route::resource('roles', RoleController::class);
-    Route::get('roles.list', [RoleController::class, 'list'])->name('roles.list');
+    // Route::resource('roles', RoleController::class);
+
+    //Designations
+    Route::resource('designations', DesignationController::class);
 // });
 
 

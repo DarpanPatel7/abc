@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\Response;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,12 +34,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         // return redirect()->intended(RouteServiceProvider::HOME);
-        $response = [
-            'status' => 'success',
-            'redirect_url' => url(RouteServiceProvider::HOME),
-        ];
-
-        return response()->json($response, 200);
+        Session::put('success','Login success!');
+        return Response::json(['success' => 'Login success!', 'redirect_url' => url(RouteServiceProvider::HOME)], 202);
     }
 
     /**

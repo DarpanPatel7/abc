@@ -10,7 +10,7 @@
         "menuHeader": "Apps & Pages"
       },
       {
-        "name": "Users",
+        "name": "Employees",
         "icon": "menu-icon tf-icons bx bx-user",
         "slug": "employee",
         "submenu": [
@@ -37,6 +37,15 @@
             "slug": "app-access-permission"
           }
         ]
+      },
+      {
+        "menuHeader": "Masters"
+      },
+      {
+        "url": "designations",
+        "name": "Designations",
+        "icon": "menu-icon tf-icons bx bxs-user-badge",
+        "slug": "designations.index"
       }
     ]
   }
