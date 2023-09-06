@@ -12,7 +12,9 @@
         "laravel/jetstream": "^3.0",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "yajra/laravel-datatables-buttons": "*",
+        "yajra/laravel-datatables-oracle": "^10.8"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

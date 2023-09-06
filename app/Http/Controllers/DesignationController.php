@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Datatables;
 use App\Models\Designation;
-use App\Models\Desingation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\DataTables\DesignationDataTable;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Designation\StoreRequest;
 
 class DesignationController extends Controller
@@ -17,12 +17,40 @@ class DesignationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // $data = Designation::select('id','name','status')->latest()->get();
+        // dd($data);
         //get all employees by id desc
-        $designations = Designation::orderBy("id", "desc")->get();
+        // $designations = Designation::orderBy("id", "desc")->get();
 
-        return view('contents.designations.index', compact('designations'));
+        // return view('contents.designations.index', compact('designations'));
+        return view('contents.designations.index');
+
+
+    }
+
+    public function list1()
+    {
+        dd('sdfsdfd');
+        // return $dataTable->render();
+    }
+
+    public function sdfdfgfdg(Request $request)
+    {
+        dd('sdfdf1');
+        if ($request->ajax()) {
+            dd('sdfdf');
+            $data = Designation::select('id','name','status')->latest()->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
     }
 
     /**

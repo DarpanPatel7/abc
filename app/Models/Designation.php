@@ -9,8 +9,16 @@ class Designation extends Model
 {
     use HasFactory;
 
-    const STATUS_PENDING = 0;
-    const STATUS_APPROVED = 1;
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+    const STATUS_INACTIVE_TEXT = 'Inactive';
+    const STATUS_ACTIVE_TEXT = 'Active';
+
+    const CORE_STATUS_ARRAY = [
+        self::STATUS_INACTIVE => self::STATUS_INACTIVE_TEXT,
+        self::STATUS_ACTIVE => self::STATUS_ACTIVE_TEXT,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +43,16 @@ class Designation extends Model
     }
 
     /**
+     * get status string
+     *
+     * @var array<string, string>
+     */
+    public function getstringStatusAttribute()
+    {
+        return self::CORE_STATUS_ARRAY[$this->status] ?? '';
+    }
+
+    /**
      * get status class
      *
      * @var array<string, string>
@@ -42,9 +60,9 @@ class Designation extends Model
     public function getbadgeStatusAttribute()
     {
         switch ($this->status) {
-            case self::STATUS_PENDING:
+            case self::STATUS_INACTIVE:
                 return 'badge bg-label-danger';
-            case self::STATUS_APPROVED:
+            case self::STATUS_ACTIVE:
                 return 'badge bg-label-success';
             default:
                 return '';

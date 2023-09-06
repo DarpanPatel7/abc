@@ -198,6 +198,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\MenuServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
@@ -216,6 +217,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Helper' => App\Helpers\Helpers::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
     ])->toArray(),
 
 ];

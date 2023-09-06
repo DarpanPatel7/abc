@@ -299,6 +299,12 @@
                                 if (opt.reload) {
                                     window.location.reload()
                                 }
+                                $('.offcanvas').offcanvas('hide');
+                                // $('.datatables-designations').draw();
+                                // $('.datatables-designations').DataTable().reload();
+                                var oTable = $('.datatables-designations').DataTable();
+                                // to reload
+                                oTable.ajax.reload();
                             }
                             if (response.error) {
                                 if (typeof response.error != "undefined") {

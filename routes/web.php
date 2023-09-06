@@ -43,6 +43,7 @@ require __DIR__.'/auth.php';
 
     //Designations
     Route::resource('designations', DesignationController::class);
+    Route::get('designations/list1', [DesignationController::class, 'list1'])->name('designations.list1');
 // });
 
 
