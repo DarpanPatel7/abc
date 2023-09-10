@@ -24,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules() :array
     {
         return [
-            'designation_name' => ['required', 'max:255'],
+            'designation_name' => ['required', 'max:255', 'unique:designations,name' ,'not_regex:/<\/?[^>]*>/'],
         ];
     }
 }

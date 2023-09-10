@@ -6,146 +6,66 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/animate-css/animate.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.css')}}" />
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/cleavejs/cleave.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
+    <script src="{{asset('assets/vendor/libs/sweetalert2/sweetalert2.js')}}"></script>
 @endsection
 
 @section('page-script')
-    {{--  <script src="{{ asset('assets/js/designation.js') }}"></script>  --}}
-    <script src="{{ asset('assets/js/helper.js') }}"></script>
-    <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
-    {{--  <script>
-        var url = "{{ route('designations.store') }}";
-        $(document).on('click', '#designation-submit', function() {
-            $.easyAjax({
-                url: url,
-                type: "POST",
-                buttonSelector: $(this),
-                data: $("#addDesignationForm").serialize(),
-            })
-        });
-    </script>  --}}
-    <script>
-        $(function() {
-
-            var table = $('.datatables-designations').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    "url": "{{ route('designations.list') }}",
-                    "type": "GET", // Adjust the type (GET, POST, etc.) as needed
-                    "headers": {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
-                    },
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: true,
-                        searchable: true
-                    },
-                ]
-            });
-
-        });
-    </script>
+    <script src="{{ asset('assets/js/designation.js') }}"></script>
+    <script src="{{asset('assets/js/ui-modals.js')}}"></script>
+    <script src="{{asset('assets/js/extended-ui-sweetalert2.js')}}"></script>
 @endsection
 
 @section('content')
-
-    <h4 class="py-3 breadcrumb-wrapper mb-4">
-        <span class="text-muted fw-light">Designation /</span> List
-    </h4>
+    <h4 class="py-3 breadcrumb-wrapper mb-2">Designation List</h4>
+    
     <!-- Designations List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
             <table class="datatables-designations table border-top">
                 <thead>
                     <tr>
-                        {{--  <td class="  control" tabindex="0" style="display: none;"></td>
-                        <td>Name</td>
-                        <td>Status</td>
-                        <td>Actions</td>  --}}
-                        <th>No</th>
+                        <!-- <th>No</th> -->
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{--  @foreach ($designations as $designation)
-                        <tr>
-                            <td class="control" style="display: none;"></td>
-                            <td>
-                                {{ $designation->name ?? '' }}
-                            </td>
-                            <td>
-                                <span
-                                    class="{{ $designation->badgeStatus ?? '' }}">{{ $designation->stringStatus ?? '' }}</span>
-                            </td>
-                            <td>
-                                <div class="d-inline-block text-nowrap">
-                                    <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
-                                    <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
-                                    <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                                    <div class="dropdown-menu dropdown-menu-end m-0">
-                                        <a href="http://localhost:8080/test/frest-admin-v4.1.0/laravel-version/full-version%20-%20Copy/public/app/user/view/account"
-                                            class="dropdown-item">View</a>
-                                        <a href="javascript:;" class="dropdown-item">Suspend</a>
+                    @if (!empty($designations))
+                        @php $i=1; @endphp 
+                        @foreach ($designations as $designation)
+                            <tr>
+                                <!-- <td class="control">{{ $i++; }}</td> -->
+                                <td>
+                                    {{ $designation->name ?? '' }}
+                                </td>
+                                <td>
+                                    <span class="{{ $designation->badgeStatus ?? '' }}">{{ $designation->stringStatus ?? '' }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-inline-block text-nowrap">
+                                        <button class="btn btn-sm btn-icon editDesignation" data-url="{{ url('designations/'.Crypt::Encrypt($designation->id).'/edit') }}"><i class="bx bx-edit"></i></button>
+                                        <button class="btn btn-sm btn-icon deleteDesignation" data-url="{!! url('designations/'.Crypt::Encrypt($designation->id)) !!}"><i class="bx bx-trash"></i></button>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach  --}}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
-        <!-- Offcanvas to add new user -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddDesignation"
-            aria-labelledby="offcanvasAddDesignationLabel">
-            <div class="offcanvas-header border-bottom">
-                <h6 id="offcanvasAddDesignationLabel" class="offcanvas-title">Add Designation</h6>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body mx-0 flex-grow-0">
-                <form class="addDesignation pt-0" id="addDesignationForm" onsubmit="return false">
-                    <div class="mb-3">
-                        <label class="form-label" for="designation_name">Designation Name</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="designation_name" placeholder="Designation Name"
-                                name="designation_name" aria-label="Designation Name" />
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-primary me-sm-3 me-1" id="designation-submit">Submit</button>
-                    <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                </form>
-            </div>
-        </div>
     </div>
+@endsection
+
+@section('modal')
+    @component('contents.designations.modal') 
+    @endcomponent
 @endsection

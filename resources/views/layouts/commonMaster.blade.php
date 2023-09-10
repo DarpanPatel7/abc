@@ -38,7 +38,25 @@
 
   <!-- Include Scripts -->
   @include('layouts/sections/scripts')
-
+  <script>
+    // show toast noti after page refresh using session
+    @if(Session::has('success'))
+        $.showToastr("{{ Session::get('success') }}", "success");
+        {{ Session::forget('success') }}
+    @endif
+    @if(Session::has('error'))
+        $.showToastr("{{ Session::get('error') }}", "error");
+        {{ Session::forget('error') }}
+    @endif
+    @if(Session::has('warning'))
+        $.showToastr("{{ Session::get('warning') }}", "warning");
+        {{ Session::forget('warning') }}
+    @endif
+    @if(Session::has('info'))
+        $.showToastr("{{ Session::get('info') }}", "info");
+        {{ Session::forget('info') }}
+    @endif
+  </script>
 </body>
 
 </html>

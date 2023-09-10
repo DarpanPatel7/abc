@@ -61,6 +61,8 @@ $container = ($container ?? 'container-xxl');
 
             @yield('content')
 
+            @yield('modal')
+
             <!-- pricingModal -->
             @if ($pricingModal)
             @include('_partials/_modals/modal-pricing')

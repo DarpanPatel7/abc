@@ -8,7 +8,7 @@
             disableButton: false,
             buttonSelector: "[type='submit']",
             dataType: "json",
-            csrfToken: $('meta[name="csrf-token"]').attr('content'),
+            csrfToken: $('meta[name="csrf-token"]').attr("content"),
             messagePosition: "toastr",
             errorPosition: "field",
             hideElements: false,
@@ -26,6 +26,7 @@
             restrictPopupClose: false,
             loader: false,
             loaderMessage: "",
+            datatable: false,
         };
 
         var opt = defaults;
@@ -38,7 +39,6 @@
         // Methods if not given in option
         if (typeof opt.beforeSend != "function") {
             opt.beforeSend = function () {
-
                 if (opt.historyPush) {
                     historyPush(opt.url);
                 }
@@ -61,13 +61,17 @@
                             <div class="sk-chase-dot"></div>
                             <div class="sk-chase-dot"></div>
                         </div>
-                        <p class="w-1/3 text-center text-white mt-3">${opt.loaderMessage ?? ''}</p>
+                        <p class="w-1/3 text-center text-white mt-3">${
+                            opt.loaderMessage ?? ""
+                        }</p>
                     </div>`;
                     $(opt.container).append(loader_html);
                 }
 
                 if (opt.restrictPopupClose) {
-                    blockPopupClose('#'+$(opt.container).parents("div.modal").attr('id'));
+                    blockPopupClose(
+                        "#" + $(opt.container).parents("div.modal").attr("id")
+                    );
                 }
             };
         }
@@ -83,15 +87,17 @@
                 }
 
                 if (opt.loader) {
-                    $('.message-loader').remove();
+                    $(".message-loader").remove();
                 }
 
                 if (opt.restrictPopupClose) {
-                    unblockPopupClose('#'+$(opt.container).parents("div.modal").attr('id'));
+                    unblockPopupClose(
+                        "#" + $(opt.container).parents("div.modal").attr("id")
+                    );
                 }
 
-                if(opt.showModal){
-                    if ( typeof initAjaxDropdown == 'function' ) {
+                if (opt.showModal) {
+                    if (typeof initAjaxDropdown == "function") {
                         initAjaxDropdown(opt.showModal);
                     }
                 }
@@ -104,10 +110,13 @@
                 try {
                     var response = JSON.parse(jqXHR.responseText);
                     if (typeof response == "object") {
-                        if (opt.type == 'DELETE' || opt.sweetAlert){
-                            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+                        if (opt.type == "DELETE" || opt.sweetAlert) {
+                            $(".sweet-alert .confirm")
+                                .removeClass("is-loading")
+                                .prop("disabled", false);
                         }
-                        handleFail(response);
+
+                        handleFail(response, opt);
                     } else {
                         var msg =
                             "A server side error occurred. Please try again after sometime.";
@@ -117,11 +126,13 @@
                                 "Connection timed out! Please check your internet connection";
                         }
                         // showResponseMessage(msg, "error");
-                        $.showToastr(msg, 'error')
+                        $.showToastr(msg, "error");
                     }
                 } catch (e) {
-                    if (opt.type == 'DELETE' || opt.sweetAlert){
-                        $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+                    if (opt.type == "DELETE" || opt.sweetAlert) {
+                        $(".sweet-alert .confirm")
+                            .removeClass("is-loading")
+                            .prop("disabled", false);
                     }
                     // when session expire then it reload user to login page
                     // window.location.reload();
@@ -130,22 +141,30 @@
         }
 
         function showSweetAlert(button) {
-            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
             !(function st(n) {
                 var e = {
-                    title: void 0 !== n.data("swal-title") ? n.data("swal-title") : "Are you sure?",
-                    text: n.data("swal-text") ? n.data("swal-text") : 'You will not be able to recover this record!',
-                    type: void 0 !== n.data("swal-type") ? n.data("swal-type") : 'warning',
-                    html: n.data("swal-html"),
-                    showCancelButton: n.data("swal-show-cancel-button") ? n.data("swal-show-cancel-button") : true,
-                    cancelButtonText: n.data("swal-cancel-button-text"),
-                    closeOnCancel: void 0 === n.data("swal-close-on-cancel") || n.data("swal-close-on-cancel"),
-                    confirmButtonText: n.data("swal-confirm-button-text") ? n.data("swal-confirm-button-text") : 'Yes, delete it!',
-                    confirmButtonColor: void 0 !== n.data("swal-confirm-button-color") ? n.data("swal-confirm-button-color") : '#FB821F',
-                    closeOnConfirm: n.data("swal-close-on-confirm") ? n.data("swal-close-on-confirm") : false,
+                    title:
+                        void 0 !== n.data("swal-title")
+                            ? n.data("swal-title")
+                            : "Are you sure?",
+                    text: n.data("swal-text")
+                        ? n.data("swal-text")
+                        : "You won't be able to revert this!",
+                    icon:
+                        void 0 !== n.data("swal-type")
+                            ? n.data("swal-type")
+                            : "warning",
+                    showCancelButton: n.data("swal-show-cancel-button")
+                        ? n.data("swal-show-cancel-button")
+                        : true,
+                    confirmButtonText: n.data("swal-confirm-button-text")
+                        ? n.data("swal-confirm-button-text")
+                        : "Yes, delete it!",
+                    backdrop: true,
+                    allowOutsideClick: false,
                 };
-                swal(e, function(isConfirm){
-                    if (isConfirm){
+                Swal.fire(e).then((result) => {
+                    if (result["isConfirmed"]) {
                         loadAjax();
                     }
                 });
@@ -239,26 +258,26 @@
             opt.data = data;
         }
 
-        if (opt.type == 'DELETE' || opt.sweetAlert){
+        if (opt.type == "DELETE" || opt.sweetAlert) {
             showSweetAlert(opt.buttonSelector);
-        } else{
+        } else {
             loadAjax();
         }
 
-        function loadAjax(){
+        function loadAjax() {
             var post_data = {};
-            if (typeof opt.data !== 'undefined' && opt.data.length > 0) {
+            if (typeof opt.data !== "undefined" && opt.data.length > 0) {
                 post_data = opt.data;
-            }else{
+            } else {
                 post_data = $(opt.container).serializeArray();
             }
             $.ajax({
                 type: opt.type,
                 async: opt.async,
-                url: opt.url ? opt.url : $(opt.container).prop('action'),
+                url: opt.url ? opt.url : $(opt.container).prop("action"),
                 dataType: opt.dataType,
                 headers: {
-                    'X-CSRF-TOKEN': opt.csrfToken
+                    "X-CSRF-TOKEN": opt.csrfToken,
                 },
                 data: post_data,
                 beforeSend: opt.beforeSend,
@@ -274,51 +293,56 @@
                         // Show success message
                         if (typeof opt.success == "function") {
                             opt.success(response);
-                        }else{
-
+                        } else {
                             if (response.success) {
-                                if (typeof response.redirect_url != "undefined") {
-                                    window.location.href = response.redirect_url;
+                                if (
+                                    typeof response.redirect_url != "undefined"
+                                ) {
+                                    window.location.href =
+                                        response.redirect_url;
                                 }
                                 if (opt.redirect) {
-                                    if(response.url){
+                                    if (response.url) {
                                         window.location.href = response.url;
                                     }
                                 }
                                 if (response.data) {
-                                    if(opt.appendHtmlModal){
-                                        $(opt.appendHtmlModal).html(response.data);
+                                    if (opt.appendHtmlModal) {
+                                        $(opt.appendHtmlModal).html(
+                                            response.data
+                                        );
                                     }
                                 }
                                 if (opt.showModal) {
-                                    $(opt.showModal).modal('show');
+                                    $(opt.showModal).modal("show");
                                 }
                                 if (opt.formReset == true) {
                                     $(opt.container)[0].reset();
                                 }
                                 if (opt.reload) {
-                                    window.location.reload()
+                                    window.location.reload();
                                 }
-                                $('.offcanvas').offcanvas('hide');
-                                // $('.datatables-designations').draw();
-                                // $('.datatables-designations').DataTable().reload();
-                                var oTable = $('.datatables-designations').DataTable();
-                                // to reload
-                                oTable.ajax.reload();
+                                if (opt.datatable) {
+                                    opt.datatable.remove().draw();
+                                }
+
+                                $(".offcanvas").offcanvas("hide");
                             }
                             if (response.error) {
                                 if (typeof response.error != "undefined") {
-                                    $.showToastr(response.error, 'error')
+                                    $.showToastr(response.error, "error");
                                 }
                             }
                             if (response.info) {
                                 if (typeof response.info != "undefined") {
-                                    $.showToastr(response.info, 'info')
+                                    $.showToastr(response.info, "info");
                                 }
                             }
                         }
-                        if (opt.type == 'DELETE' || opt.sweetAlert){
-                            $('.sweet-alert .confirm').removeClass('is-loading').prop("disabled", false);
+                        if (opt.type == "DELETE" || opt.sweetAlert) {
+                            $(".sweet-alert .confirm")
+                                .removeClass("is-loading")
+                                .prop("disabled", false);
                         }
                     }
                 },
@@ -352,21 +376,24 @@
         function blockPopupClose(selector) {
             var $modal = $(selector);
             var keyboard = false; // Prevent to close by ESC
-            var backdrop = 'static'; // Prevent to close on click outside the modal
+            var backdrop = "static"; // Prevent to close on click outside the modal
 
-            if(typeof $modal.data('bs.modal') === 'undefined') { // Modal did not open yet
+            if (typeof $modal.data("bs.modal") === "undefined") {
+                // Modal did not open yet
                 $modal.modal({
                     keyboard: keyboard,
-                    backdrop: backdrop
+                    backdrop: backdrop,
                 });
-            } else { // Modal has already been opened
-                $modal.data('bs.modal')._config.keyboard = keyboard;
-                $modal.data('bs.modal')._config.backdrop = backdrop;
+            } else {
+                // Modal has already been opened
+                $modal.data("bs.modal")._config.keyboard = keyboard;
+                $modal.data("bs.modal")._config.backdrop = backdrop;
 
-                if(keyboard === false) {
-                    $modal.off('keydown.dismiss.bs.modal'); // Disable ESC
-                } else { //
-                    $modal.data('bs.modal').escape(); // Resets ESC
+                if (keyboard === false) {
+                    $modal.off("keydown.dismiss.bs.modal"); // Disable ESC
+                } else {
+                    //
+                    $modal.data("bs.modal").escape(); // Resets ESC
                 }
             }
         }
@@ -376,24 +403,28 @@
             var keyboard = true; // Prevent to close by ESC
             var backdrop = false; // Prevent to close on click outside the modal
 
-            if(typeof $modal.data('bs.modal') === 'undefined') { // Modal did not open yet
+            if (typeof $modal.data("bs.modal") === "undefined") {
+                // Modal did not open yet
                 $modal.modal({
                     keyboard: keyboard,
-                    backdrop: backdrop
+                    backdrop: backdrop,
                 });
-            } else { // Modal has already been opened
-                $modal.data('bs.modal')._config.keyboard = keyboard;
-                $modal.data('bs.modal')._config.backdrop = backdrop;
+            } else {
+                // Modal has already been opened
+                $modal.data("bs.modal")._config.keyboard = keyboard;
+                $modal.data("bs.modal")._config.backdrop = backdrop;
             }
         }
     };
 
-    function handleFail(response) {
-
-        if (typeof response.message != "undefined" && response.message != '') {
-            $.showToastr(response.message, 'error')
-        }else{
-            $.showToastr('A server side error occurred. Please try again after sometime.', 'error');
+    function handleFail(response, opt) {
+        if (typeof response.message != "undefined" && response.message != "") {
+            $.showToastr(response.message, "error");
+        } else {
+            $.showToastr(
+                "A server side error occurred. Please try again after sometime.",
+                "error"
+            );
         }
 
         if (typeof response.errors != "undefined") {
@@ -421,10 +452,10 @@
                         ele = $(opt.container).find("#" + key);
                     }
 
-                    if (ele.closest(".input-group").length == 0) {
+                    if (ele.closest(".inp-group").length == 0) {
                         var grp = ele.closest(".form-group");
                     } else {
-                        var grp = ele.closest(".input-group");
+                        var grp = ele.closest(".inp-group");
                     }
                     $(grp).find(".invalid-feedback").remove();
 
@@ -468,9 +499,7 @@
 
                 var errorElement = $(opt.container).find("#alert");
                 var html =
-                    '<div class="alert alert-danger">' +
-                    errorMsg +
-                    "</div>";
+                    '<div class="alert alert-danger">' + errorMsg + "</div>";
                 if (errorElement.length == 0) {
                     $(opt.container)
                         .find(".form-group:first")
@@ -644,8 +673,8 @@ $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
 });
 
 // Prevent submit of ajax form
-$(document).on('click', '.sweet-alert .confirm', function (e) {
-    $('.sweet-alert .confirm').addClass('is-loading').prop("disabled", true);
+$(document).on("click", ".sweet-alert .confirm", function (e) {
+    $(".sweet-alert .confirm").addClass("is-loading").prop("disabled", true);
 });
 $(document).on("ready", function () {
     $(".ajax-form").on("submit", function (e) {

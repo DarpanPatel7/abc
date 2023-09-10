@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
@@ -39,11 +40,10 @@ require __DIR__.'/auth.php';
     Route::resource('employees', EmployeeController::class);
 
     //Role
-    // Route::resource('roles', RoleController::class);
+    Route::resource('roles', RoleController::class);
 
     //Designations
     Route::resource('designations', DesignationController::class);
-    Route::get('designations/list1', [DesignationController::class, 'list1'])->name('designations.list1');
 // });
 
 
