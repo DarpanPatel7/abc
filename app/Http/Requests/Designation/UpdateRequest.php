@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Designation;
 
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,17 +27,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $id = Crypt::decrypt($this->designation);
-            
-        $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:designations,id'
-        ]);
-        
-        if ($validator->fails()) {
-            return Response::json(['error' => $validator->errors()->first()], 202);
-        }
 
         return [
-            // 'id' => 'required|exists:designations,id',
             'designation_name' => ['required', 'max:255', 'not_regex:/<\/?[^>]*>/', 'unique:designations,name,' . $id],
         ];
     }

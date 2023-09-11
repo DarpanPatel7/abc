@@ -79,11 +79,11 @@ class DesignationController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
-            
+
             $validator = Validator::make(['id' => $id], [
                 'id' => 'required|exists:designations,id'
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
@@ -109,11 +109,19 @@ class DesignationController extends Controller
         try {
             $id = Crypt::decrypt($id);
 
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'required|exists:designations,id'
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(['error' => $validator->errors()->first()], 202);
+            }
+
             $designation = Designation::where('id', $id)->first();
             $designation->name = $request['designation_name'] ?? '';
             $designation->status = !empty($request['status']) ? 1 : 0;
             $designation->save();
-        
+
             Session::put('success','Designation updated successfully!');
             return Response::json(['success' => 'Designation updated successfully!'], 202);
         } catch (\Throwable $th) {
@@ -129,13 +137,13 @@ class DesignationController extends Controller
      */
     public function destroy($id)
     {
-        try {      
+        try {
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
                 'id' => 'required|exists:designations,id'
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }

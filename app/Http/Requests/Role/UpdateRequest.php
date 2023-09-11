@@ -4,6 +4,7 @@ namespace App\Http\Requests\Role;
 
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -17,7 +18,7 @@ class UpdateRequest extends FormRequest
     public function authorize() :bool
     {
         return true;
-        
+
     }
 
     /**
@@ -28,19 +29,6 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $id = Crypt::decrypt($this->role);
-            
-        $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:roles,id'
-        ]);
-        
-        if ($validator->fails()) {
-            return Response::json(['error' => $validator->errors()->first()], 202);
-        }
-
-        $checksuperadmin = Role::where('id',$id)->where('name','Super Admin')->count();
-        if($checksuperadmin > 0){
-            return Response::json(['error' => 'Can not update super admin role.'], 202);
-        }
 
         return [
             'role_name' => ['required', 'unique:roles,name,'.$id ,'not_regex:/<\/?[^>]*>/', 'max:50'],

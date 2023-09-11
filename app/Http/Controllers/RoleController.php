@@ -52,10 +52,10 @@ class RoleController extends Controller
     {
         try {
             $input['name'] = $request->input('role_name');
-            
+
             $role = Role::create($input);
             $role->syncPermissions($request->input('permission'));
-    
+
             Session::put('success','Role created successfully!');
             return Response::json(['success' => 'Role created successfully!'], 202);
         } catch (\Throwable $th) {
@@ -84,11 +84,11 @@ class RoleController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
-        
+
             $validator = Validator::make(['id' => $id], [
                 'id' => 'required|exists:roles,id'
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
@@ -120,13 +120,26 @@ class RoleController extends Controller
     {
         try {
             $id = Crypt::decrypt($id);
-            
+
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'required|exists:roles,id'
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(['error' => $validator->errors()->first()], 202);
+            }
+
+            $checksuperadmin = Role::where('id',$id)->where('name','Super Admin')->count();
+            if($checksuperadmin > 0){
+                return Response::json(['error' => 'You cannot update super admin role.'], 202);
+            }
+
             $role = Role::where('id', $id)->first();
             $role->name = $request->input('role_name');
             $role->save();
 
             $role->syncPermissions($request->input('permission'));
-        
+
             Session::put('success','Role updated successfully!');
             return Response::json(['success' => 'Role updated successfully!'], 202);
         } catch (\Throwable $th) {
@@ -142,16 +155,16 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        try {      
+        try {
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
                 'id' => 'required|exists:roles,id'
             ]);
-            
+
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
-            }  
+            }
 
             $checksuperadmin = Role::where('id',$id)->where('name','Super Admin')->count();
             if($checksuperadmin > 0){
