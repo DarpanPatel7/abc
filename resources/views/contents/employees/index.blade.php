@@ -6,106 +6,35 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
 @endsection
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/cleavejs/cleave.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
+    <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+    <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
+    <script src="{{asset('assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
+    <script src="{{asset('assets/vendor/libs/bloodhound/bloodhound.js')}}"></script>
 @endsection
 
 @section('page-script')
     <script src="{{ asset('assets/js/employee.js') }}"></script>
+    <script src="{{asset('assets/js/forms-selects.js')}}"></script>
+    <script src="{{asset('assets/js/forms-typeahead.js')}}"></script>
 @endsection
 
 @section('content')
     <h4 class="py-3 breadcrumb-wrapper mb-2">Employee List</h4>
-    
-    {{--  <div class="row g-4 mb-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div class="content-left">
-                            <span>Session</span>
-                            <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">21,459</h4>
-                                <small class="text-success">(+29%)</small>
-                            </div>
-                            <small>Total Users</small>
-                        </div>
-                        <span class="badge bg-label-primary rounded p-2">
-                            <i class="bx bx-user bx-sm"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div class="content-left">
-                            <span>Paid Users</span>
-                            <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">4,567</h4>
-                                <small class="text-success">(+18%)</small>
-                            </div>
-                            <small>Last week analytics </small>
-                        </div>
-                        <span class="badge bg-label-danger rounded p-2">
-                            <i class="bx bx-user-plus bx-sm"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div class="content-left">
-                            <span>Active Users</span>
-                            <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">19,860</h4>
-                                <small class="text-danger">(-14%)</small>
-                            </div>
-                            <small>Last week analytics</small>
-                        </div>
-                        <span class="badge bg-label-success rounded p-2">
-                            <i class="bx bx-group bx-sm"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div class="content-left">
-                            <span>Pending Users</span>
-                            <div class="d-flex align-items-end mt-2">
-                                <h4 class="mb-0 me-2">237</h4>
-                                <small class="text-success">(+42%)</small>
-                            </div>
-                            <small>Last week analytics</small>
-                        </div>
-                        <span class="badge bg-label-warning rounded p-2">
-                            <i class="bx bx-user-voice bx-sm"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  --}}
+
     <!-- Users List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
@@ -169,6 +98,6 @@
 @endsection
 
 @section('modal')
-    @component('contents.employees.modal') 
+    @component('contents.employees.modal')
     @endcomponent
 @endsection
