@@ -28,8 +28,13 @@
             "submenu": [
                 {
                     "url": "roles",
-                    "name": "List",
+                    "name": "Roles",
                     "slug": "roles.index"
+                },
+                {
+                    "url": "permissions",
+                    "name": "Permissions",
+                    "slug": "permissions.index"
                 }
             ]
         },

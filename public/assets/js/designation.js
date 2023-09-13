@@ -55,7 +55,6 @@ $(function () {
         ".deleteDesignation",
         function () {
             dt_designation = dt_designation.row($(this).parents("tr"));
-            // dt_designation.row($(this).parents("tr")).remove().draw();
 
             var url = $(this).attr("data-url");
             $.easyAjax({

@@ -5,6 +5,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DesignationController;
 
 /*
@@ -39,8 +40,9 @@ require __DIR__.'/auth.php';
     //Employees
     Route::resource('employees', EmployeeController::class);
 
-    //Role
+    //Role & Permissions
     Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 
     //Designations
     Route::resource('designations', DesignationController::class);
