@@ -18,10 +18,13 @@ return [
     //12345678
 
     'default_logo' => env('APP_URL').'/public/assets/img/dashboard/logos/logo/bulkit-red.png',
- 
+
     'default_favicon' => env('APP_URL').'/public/assets/img/dashboard/logos/logo/bulkit-red.png',
 
     'default_user_image' => env('APP_URL').'/public/assets/img/user.jpg',
+
+    'datepicker_date_placeholder' => env('DATEPICKER_DATE_PLACEHOLDER', 'DD/MM/YYYY'),
+    'datepicker_date_format' => env('DATEPICKER_DATE_FORMAT', 'dd/mm/yyyy'),
 
     'date_format' => env('DATE_FORMAT', 'm/d/Y'),
     'time_format' => env('TIME_FORMAT', 'g:i A'),

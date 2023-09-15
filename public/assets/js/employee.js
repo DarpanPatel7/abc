@@ -84,6 +84,7 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addEmployeeSubmit",
             reload: true,
+            file: true,
         });
     });
 

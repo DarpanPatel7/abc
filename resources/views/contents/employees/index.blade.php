@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css')}}" />
 @endsection
 
 @section('vendor-script')
@@ -22,14 +22,14 @@
     <script src="{{ asset('assets/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
     <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
     <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
-    <script src="{{asset('assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
     <script src="{{asset('assets/vendor/libs/bloodhound/bloodhound.js')}}"></script>
+    <script src="{{asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
 @endsection
 
 @section('page-script')
     <script src="{{ asset('assets/js/employee.js') }}"></script>
     <script src="{{asset('assets/js/forms-selects.js')}}"></script>
-    <script src="{{asset('assets/js/forms-typeahead.js')}}"></script>
+    <script src="{{asset('assets/js/forms-pickers.js')}}"></script>
 @endsection
 
 @section('content')
@@ -98,6 +98,6 @@
 @endsection
 
 @section('modal')
-    @component('contents.employees.modal')
+    @component('contents.employees.modal', ['designations' => $designations ?? []])
     @endcomponent
 @endsection

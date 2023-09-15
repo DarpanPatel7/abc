@@ -21,11 +21,13 @@ $(function () {
   // Default
   if (select2.length) {
     select2.each(function () {
-      var $this = $(this);
-      $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
-        dropdownParent: $this.parent()
-      });
+      var $this = $(this),
+        r = {
+            AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
+            dropdownParent: $this.parent(),
+            placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
+        };
+      $this.wrap('<div class="position-relative"></div>').select2(r);
     });
   }
 
