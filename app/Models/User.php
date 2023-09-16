@@ -26,9 +26,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'current_team_id',
+        'designation_id',
+        'employee_no',
         'name',
         'email',
-        'password',
+        'email_verified_at',
+        'two_factor_confirmed_at',
+        'current_address',
+        'permanent_address',
+        'date_of_birth',
+        'joining_date',
+        'profile_photo',
+        'identity_proof',
+        'status',
     ];
 
     /**
@@ -81,5 +92,16 @@ class User extends Authenticatable
     public function scopeGetSuperAdmin($query)
     {
         $query->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')->join('roles', 'model_has_roles.role_id', '=', 'roles.id')->where('roles.name', 'Super Admin');
+    }
+
+    /**
+     * Scope a query to get data by company.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function getProfilePhotoUrlAttribute($query)
+    {
+        return 'sdkjfhdkghfdgf';
     }
 }

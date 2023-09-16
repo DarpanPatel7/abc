@@ -109,4 +109,87 @@ $(function () {
             reload: true,
         });
     });
+
+    // Start upload,crop,preview image - croppie plugin
+    var $uploadCrop,
+    tempFilename,
+    rawImg,
+    imageId;
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+            input.value = null;
+        }
+        else {
+            console.log("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 105,
+            height: 105,
+            type: 'circle'
+        },
+        enforceBoundary: false,
+        enableExif: true
+    });
+
+    $('#cropImagePop').on('shown.bs.modal', function(){
+        $uploadCrop.croppie('bind', {
+            url: rawImg
+        }).then(function(){
+            console.log('jQuery bind complete');
+        });
+    });
+
+    $('.item-img').on('change', function () { imageId = $(this).data('id'); tempFilename = $(this).val();
+    $('#cancelCropBtn').data('id', imageId); readFile(this); });
+    $('#cropImageBtn').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'base64',
+            format: 'png',
+            size: {width: 105, height: 105}
+        }).then(function (resp) {
+            $('#preview-profile-image').attr('src', resp);
+            $('#cropImagePop').modal('hide');
+
+            return false;
+
+
+            var id = $('#user_id').val();
+
+            //upload image
+            $.ajax({
+                type: 'POST',
+                url: update_profile_picture,
+                data: {'id':id, 'image':resp},
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success : function(data) {
+                    if(data.success){
+                        $('#preview-profile-image').attr('src', resp);
+                        $('#cropImagePop').modal('hide');
+                        toastr.success(data.success);
+                    }else if(data.error){
+                        toastr.error(data.error);
+                    }
+                }
+            });
+        });
+    });
+    // End upload preview image
+
+    // file trigger using anchor tag
+    $(document).on("click", "#edit_profile_img", function (ev) {
+        ev.preventDefault();
+        $("#h_file:file").trigger('click');
+    });
 });

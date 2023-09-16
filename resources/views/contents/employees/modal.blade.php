@@ -14,50 +14,75 @@
                     'class' => 'restrict-enter',
                 ]) !!}
                 <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
+                            <div class="profile-img profile-avatar-xxl">
+                                <a href="javascript:;" id="profile_img"><img id="preview-profile-image"
+                                        alt="Profile Picture" src="{{ url('assets/img/default-pfp.png'); }}"
+                                        class="avatar-img rounded-circle" height="100"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <button type="button" class="btn btn-label-primary" id="edit_profile_img">
+                                Select Profile Photo
+                            </button>
+                            <button type="button" class="btn btn-label-primary" id="edit_profile_img>
+                                Clear
+                            </button>
+                            <input type="hidden" id="user_id" value="5867469">
+                            <input type="file" id="h_file" class="item-img file center-block" accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Employee No</label>
                             <input type="text" class="form-control" placeholder="Employee No" name="employee_no"
                                 aria-label="Employee No" />
                         </div>
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Name</label>
                             <input type="text" class="form-control" placeholder="Name" name="name"
                                 aria-label="Name" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Current Address</label>
                             <textarea class="form-control" name="current_address" rows="3"></textarea>
                         </div>
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Permanent Address</label>
                             <textarea class="form-control" name="permanent_address" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Date of Birth</label>
-                            <input type="text" name="date_of_birth" placeholder="{{ config('global.datepicker_date_placeholder'); }}" class="form-control bs-datepicker" data-autoclose="true" data-format="{{ config('global.datepicker_date_format'); }}"/>
+                            <input type="text" name="date_of_birth"
+                                placeholder="{{ config('global.datepicker_date_placeholder') }}"
+                                class="form-control bs-datepicker" data-autoclose="true"
+                                data-format="{{ config('global.datepicker_date_format') }}" />
                         </div>
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Joining Date</label>
-                            <input type="text" name="joining_date" placeholder="{{ config('global.datepicker_date_placeholder'); }}" class="form-control bs-datepicker" data-autoclose="true" data-format="{{ config('global.datepicker_date_format'); }}"/>
+                            <input type="text" name="joining_date"
+                                placeholder="{{ config('global.datepicker_date_placeholder') }}"
+                                class="form-control bs-datepicker" data-autoclose="true"
+                                data-format="{{ config('global.datepicker_date_format') }}" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Profile Pic</label>
                             <input class="form-control" name="profile_photo" type="file" name="profile_photo">
                         </div>
-                        <div class="col mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Identiy Proof</label>
                             <input class="form-control" type="file" name="identiy_proof">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6 mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Designation</label>
                             {!! Form::select(
                                 'designation',
@@ -100,11 +125,36 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                    <h5 class="modal-title">Edit Employee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div id="editEmployeeContent"></div>
             </div>
         </div>
     </div>
+    <!-- edit employee -->
+
+    <!-- profile photo -->
+    <div class="modal fade" id="cropImagePop" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Profile</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <div id="upload-demo" class="center-block"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="cropImageBtn">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- profile photo -->
 @endif

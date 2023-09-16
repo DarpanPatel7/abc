@@ -61,8 +61,7 @@
                             <div class="sk-chase-dot"></div>
                             <div class="sk-chase-dot"></div>
                         </div>
-                        <p class="w-1/3 text-center text-white mt-3">${
-                            opt.loaderMessage ?? ""
+                        <p class="w-1/3 text-center text-white mt-3">${opt.loaderMessage ?? ""
                         }</p>
                     </div>`;
                     $(opt.container).append(loader_html);
@@ -246,18 +245,6 @@
         }
 
         // Execute ajax request
-
-        if (opt.file == true) {
-            var data = new FormData($(opt.container)[0]);
-            var keys = Object.keys(opt.data);
-
-            for (var i = 0; i < keys.length; i++) {
-                data.append(keys[i], opt.data[keys[i]]);
-            }
-
-            opt.data = data;
-        }
-
         if (opt.type == "DELETE" || opt.sweetAlert) {
             showSweetAlert(opt.buttonSelector);
         } else {
@@ -265,12 +252,27 @@
         }
 
         function loadAjax() {
+
+            //set post data based on file object //if file upload is set to true then it will set to formdata format
             var post_data = {};
             if (typeof opt.data !== "undefined" && opt.data.length > 0) {
                 post_data = opt.data;
             } else {
-                post_data = $(opt.container).serializeArray();
+                if (opt.file == true) {
+
+                    var data = new FormData($(opt.container)[0]);
+                    var keys = Object.keys(opt.data);
+
+                    for (var i = 0; i < keys.length; i++) {
+                        data.append(keys[i], opt.data[keys[i]]);
+                    }
+
+                    post_data = data;
+                } else {
+                    post_data = $(opt.container).serializeArray();
+                }
             }
+
             $.ajax({
                 type: opt.type,
                 async: opt.async,
@@ -472,8 +474,8 @@
 
                     helpBlockContainer.append(
                         '<div class="invalid-feedback">' +
-                            response.errors[keys[i]] +
-                            "</div>"
+                        response.errors[keys[i]] +
+                        "</div>"
                     );
                     ele.addClass("is-invalid");
 
@@ -697,7 +699,7 @@ $(document).on("ajaxPageLoad", function () {
                 y = n && void 0 !== n.message ? n.message : void 0;
             if (
                 ((n = e.extend({}, e.blockUI.defaults, n || {})),
-                !n.ignoreIfBlocked || !e(t).data("blockUI.isBlocked"))
+                    !n.ignoreIfBlocked || !e(t).data("blockUI.isBlocked"))
             ) {
                 if (
                     ((n.overlayCSS = e.extend(
@@ -705,16 +707,16 @@ $(document).on("ajaxPageLoad", function () {
                         e.blockUI.defaults.overlayCSS,
                         n.overlayCSS || {}
                     )),
-                    (s = e.extend({}, e.blockUI.defaults.css, n.css || {})),
-                    n.onOverlayClick && (n.overlayCSS.cursor = "pointer"),
-                    (h = e.extend(
-                        {},
-                        e.blockUI.defaults.themedCSS,
-                        n.themedCSS || {}
-                    )),
-                    (y = void 0 === y ? n.message : y),
-                    k && p && o(window, { fadeOut: 0 }),
-                    y && "string" != typeof y && (y.parentNode || y.jquery))
+                        (s = e.extend({}, e.blockUI.defaults.css, n.css || {})),
+                        n.onOverlayClick && (n.overlayCSS.cursor = "pointer"),
+                        (h = e.extend(
+                            {},
+                            e.blockUI.defaults.themedCSS,
+                            n.themedCSS || {}
+                        )),
+                        (y = void 0 === y ? n.message : y),
+                        k && p && o(window, { fadeOut: 0 }),
+                        y && "string" != typeof y && (y.parentNode || y.jquery))
                 ) {
                     var m = y.jquery ? y[0] : y,
                         v = {};
@@ -734,67 +736,67 @@ $(document).on("ajaxPageLoad", function () {
                 (g = e(
                     r || n.forceIframe
                         ? '<iframe class="blockUI" style="z-index:' +
-                              x++ +
-                              ';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="' +
-                              n.iframeSrc +
-                              '"></iframe>'
+                        x++ +
+                        ';display:none;border:none;margin:0;padding:0;position:absolute;width:100%;height:100%;top:0;left:0" src="' +
+                        n.iframeSrc +
+                        '"></iframe>'
                         : '<div class="blockUI" style="display:none"></div>'
                 )),
                     (I = e(
                         n.theme
                             ? '<div class="blockUI blockOverlay ui-widget-overlay" style="z-index:' +
-                                  x++ +
-                                  ';display:none"></div>'
+                            x++ +
+                            ';display:none"></div>'
                             : '<div class="blockUI blockOverlay" style="z-index:' +
-                                  x++ +
-                                  ';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>'
+                            x++ +
+                            ';display:none;border:none;margin:0;padding:0;width:100%;height:100%;top:0;left:0"></div>'
                     )),
                     n.theme && k
                         ? ((U =
-                              '<div class="blockUI ' +
-                              n.blockMsgClass +
-                              ' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:' +
-                              (x + 10) +
-                              ';display:none;position:fixed">'),
-                          n.title &&
-                              (U +=
-                                  '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
-                                  (n.title || "&nbsp;") +
-                                  "</div>"),
-                          (U +=
-                              '<div class="ui-widget-content ui-dialog-content"></div>'),
-                          (U += "</div>"))
+                            '<div class="blockUI ' +
+                            n.blockMsgClass +
+                            ' blockPage ui-dialog ui-widget ui-corner-all" style="z-index:' +
+                            (x + 10) +
+                            ';display:none;position:fixed">'),
+                            n.title &&
+                            (U +=
+                                '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
+                                (n.title || "&nbsp;") +
+                                "</div>"),
+                            (U +=
+                                '<div class="ui-widget-content ui-dialog-content"></div>'),
+                            (U += "</div>"))
                         : n.theme
-                        ? ((U =
-                              '<div class="blockUI ' +
-                              n.blockMsgClass +
-                              ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:' +
-                              (x + 10) +
-                              ';display:none;position:absolute">'),
-                          n.title &&
-                              (U +=
-                                  '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
-                                  (n.title || "&nbsp;") +
-                                  "</div>"),
-                          (U +=
-                              '<div class="ui-widget-content ui-dialog-content"></div>'),
-                          (U += "</div>"))
-                        : (U = k
-                              ? '<div class="blockUI ' +
+                            ? ((U =
+                                '<div class="blockUI ' +
+                                n.blockMsgClass +
+                                ' blockElement ui-dialog ui-widget ui-corner-all" style="z-index:' +
+                                (x + 10) +
+                                ';display:none;position:absolute">'),
+                                n.title &&
+                                (U +=
+                                    '<div class="ui-widget-header ui-dialog-titlebar ui-corner-all blockTitle">' +
+                                    (n.title || "&nbsp;") +
+                                    "</div>"),
+                                (U +=
+                                    '<div class="ui-widget-content ui-dialog-content"></div>'),
+                                (U += "</div>"))
+                            : (U = k
+                                ? '<div class="blockUI ' +
                                 n.blockMsgClass +
                                 ' blockPage" style="z-index:' +
                                 (x + 10) +
                                 ';display:none;position:fixed"></div>'
-                              : '<div class="blockUI ' +
+                                : '<div class="blockUI ' +
                                 n.blockMsgClass +
                                 ' blockElement" style="z-index:' +
                                 (x + 10) +
                                 ';display:none;position:absolute"></div>'),
                     (w = e(U)),
                     y &&
-                        (n.theme
-                            ? (w.css(h), w.addClass("ui-widget-content"))
-                            : w.css(s)),
+                    (n.theme
+                        ? (w.css(h), w.addClass("ui-widget-content"))
+                        : w.css(s)),
                     n.theme || I.css(n.overlayCSS),
                     I.css("position", k ? "fixed" : "absolute"),
                     (r || n.forceIframe) && g.css("opacity", 0);
@@ -804,12 +806,12 @@ $(document).on("ajaxPageLoad", function () {
                     this.appendTo(S);
                 }),
                     n.theme &&
-                        n.draggable &&
-                        e.fn.draggable &&
-                        w.draggable({
-                            handle: ".ui-dialog-titlebar",
-                            cancel: "li",
-                        });
+                    n.draggable &&
+                    e.fn.draggable &&
+                    w.draggable({
+                        handle: ".ui-dialog-titlebar",
+                        cancel: "li",
+                    });
                 var O =
                     f &&
                     (!e.support.boxModel ||
@@ -820,7 +822,7 @@ $(document).on("ajaxPageLoad", function () {
                             n.allowBodyStretch &&
                             e.support.boxModel &&
                             e("html,body").css("height", "100%"),
-                        (u || !e.support.boxModel) && !k)
+                            (u || !e.support.boxModel) && !k)
                     )
                         var E = d(t, "borderTopWidth"),
                             T = d(t, "borderLeftWidth"),
@@ -831,24 +833,24 @@ $(document).on("ajaxPageLoad", function () {
                         if (((o.position = "absolute"), 2 > e))
                             k
                                 ? o.setExpression(
-                                      "height",
-                                      "Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:" +
-                                          n.quirksmodeOffsetHack +
-                                          ') + "px"'
-                                  )
+                                    "height",
+                                    "Math.max(document.body.scrollHeight, document.body.offsetHeight) - (jQuery.support.boxModel?0:" +
+                                    n.quirksmodeOffsetHack +
+                                    ') + "px"'
+                                )
                                 : o.setExpression(
-                                      "height",
-                                      'this.parentNode.offsetHeight + "px"'
-                                  ),
+                                    "height",
+                                    'this.parentNode.offsetHeight + "px"'
+                                ),
                                 k
                                     ? o.setExpression(
-                                          "width",
-                                          'jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"'
-                                      )
+                                        "width",
+                                        'jQuery.support.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"'
+                                    )
                                     : o.setExpression(
-                                          "width",
-                                          'this.parentNode.offsetWidth + "px"'
-                                      ),
+                                        "width",
+                                        'this.parentNode.offsetWidth + "px"'
+                                    ),
                                 B && o.setExpression("left", B),
                                 M && o.setExpression("top", M);
                         else if (n.centerY)
@@ -860,9 +862,9 @@ $(document).on("ajaxPageLoad", function () {
                                 (o.marginTop = 0);
                         else if (!n.centerY && k) {
                             var i =
-                                    n.css && n.css.top
-                                        ? parseInt(n.css.top, 10)
-                                        : 0,
+                                n.css && n.css.top
+                                    ? parseInt(n.css.top, 10)
+                                    : 0,
                                 s =
                                     "((document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + " +
                                     i +
@@ -876,9 +878,9 @@ $(document).on("ajaxPageLoad", function () {
                         (n.theme
                             ? w.find(".ui-widget-content").append(y)
                             : w.append(y),
-                        (y.jquery || y.nodeType) && e(y).show()),
-                    (r || n.forceIframe) && n.showOverlay && g.show(),
-                    n.fadeIn)
+                            (y.jquery || y.nodeType) && e(y).show()),
+                        (r || n.forceIframe) && n.showOverlay && g.show(),
+                        n.fadeIn)
                 ) {
                     var j = n.onBlock ? n.onBlock : c,
                         H = n.showOverlay && !y ? j : c,
@@ -891,12 +893,12 @@ $(document).on("ajaxPageLoad", function () {
                         n.onBlock && n.onBlock.bind(w)();
                 if (
                     (i(1, t, n),
-                    k
-                        ? ((p = w[0]),
-                          (b = e(n.focusableElements, p)),
-                          n.focusInput && setTimeout(l, 20))
-                        : a(w[0], n.centerX, n.centerY),
-                    n.timeout)
+                        k
+                            ? ((p = w[0]),
+                                (b = e(n.focusableElements, p)),
+                                n.focusInput && setTimeout(l, 20))
+                            : a(w[0], n.centerX, n.centerY),
+                        n.timeout)
                 ) {
                     var W = setTimeout(function () {
                         k ? e.unblockUI(n) : e(t).unblock(n);
@@ -915,21 +917,21 @@ $(document).on("ajaxPageLoad", function () {
                 (o = e.extend({}, e.blockUI.defaults, o || {})),
                 i(0, t, o),
                 null === o.onUnblock &&
-                    ((o.onUnblock = a.data("blockUI.onUnblock")),
+                ((o.onUnblock = a.data("blockUI.onUnblock")),
                     a.removeData("blockUI.onUnblock"));
             var r;
             (r = l
                 ? e("body").children().filter(".blockUI").add("body > .blockUI")
                 : a.find(">.blockUI")),
                 o.cursorReset &&
-                    (r.length > 1 && (r[1].style.cursor = o.cursorReset),
+                (r.length > 1 && (r[1].style.cursor = o.cursorReset),
                     r.length > 2 && (r[2].style.cursor = o.cursorReset)),
                 l && (p = b = null),
                 o.fadeOut
                     ? ((s = r.length),
-                      r.stop().fadeOut(o.fadeOut, function () {
-                          0 === --s && n(r, d, o, t);
-                      }))
+                        r.stop().fadeOut(o.fadeOut, function () {
+                            0 === --s && n(r, d, o, t);
+                        }))
                     : n(r, d, o, t);
         }
         function n(t, o, n, i) {
@@ -939,8 +941,8 @@ $(document).on("ajaxPageLoad", function () {
                     this.parentNode && this.parentNode.removeChild(this);
                 }),
                     o &&
-                        o.el &&
-                        ((o.el.style.display = o.display),
+                    o.el &&
+                    ((o.el.style.display = o.display),
                         (o.el.style.position = o.position),
                         (o.el.style.cursor = "default"),
                         o.parent && o.parent.appendChild(o.el),
@@ -959,7 +961,7 @@ $(document).on("ajaxPageLoad", function () {
             if (
                 (t || ((!i || p) && (i || l.data("blockUI.isBlocked")))) &&
                 (l.data("blockUI.isBlocked", t),
-                i && n.bindEvents && (!t || n.showOverlay))
+                    i && n.bindEvents && (!t || n.showOverlay))
             ) {
                 var a =
                     "mousedown mouseup keydown keypress keyup touchstart touchend touchmove";
@@ -989,8 +991,8 @@ $(document).on("ajaxPageLoad", function () {
                 a = e(t.target);
             return (
                 a.hasClass("blockOverlay") &&
-                    s.onOverlayClick &&
-                    s.onOverlayClick(t),
+                s.onOverlayClick &&
+                s.onOverlayClick(t),
                 a.parents("div." + s.blockMsgClass).length > 0
                     ? !0
                     : 0 === a.parents().children().filter("div.blockUI").length
@@ -1018,16 +1020,16 @@ $(document).on("ajaxPageLoad", function () {
             return parseInt(e.css(t, o), 10) || 0;
         }
         e.fn._fadeIn = e.fn.fadeIn;
-        var c = e.noop || function () {},
+        var c = e.noop || function () { },
             r = /MSIE/.test(navigator.userAgent),
             u =
                 /MSIE 6.0/.test(navigator.userAgent) &&
                 !/MSIE 8.0/.test(navigator.userAgent),
             f =
                 (document.documentMode || 0,
-                e.isFunction(
-                    document.createElement("div").style.setExpression
-                ));
+                    e.isFunction(
+                        document.createElement("div").style.setExpression
+                    ));
         (e.blockUI = function (e) {
             t(window, e);
         }),
@@ -1079,7 +1081,7 @@ $(document).on("ajaxPageLoad", function () {
                     this.each(function () {
                         "static" == e.css(this, "position") &&
                             ((this.style.position = "relative"),
-                            e(this).data("blockUI.static", !0)),
+                                e(this).data("blockUI.static", !0)),
                             (this.style.zoom = 1),
                             t(this, o);
                     })
@@ -1089,8 +1091,8 @@ $(document).on("ajaxPageLoad", function () {
                 return this[0] === window
                     ? (e.unblockUI(t), this)
                     : this.each(function () {
-                          o(this, t);
-                      });
+                        o(this, t);
+                    });
             }),
             (e.blockUI.version = 2.7),
             (e.blockUI.defaults = {

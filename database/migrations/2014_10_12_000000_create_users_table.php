@@ -21,10 +21,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->text('current_address')->nullable();
-            $table->text('permanent_address_address')->nullable();
+            $table->text('permanent_address')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->date('joining_date')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('profile_photo', 2048)->nullable();
             $table->string('identity_proof', 2048)->nullable();
             $table->rememberToken();
             $table->boolean('status')->comment('0=Inactive, 1=Active, 2=Delete')->default(0);

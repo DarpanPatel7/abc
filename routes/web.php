@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
@@ -46,6 +47,7 @@ require __DIR__.'/auth.php';
 
     //Designations
     Route::resource('designations', DesignationController::class);
+    Route::resource('test', TestController::class);
 // });
 
 

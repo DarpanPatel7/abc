@@ -41,14 +41,22 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         try {
-            dd($request->all());
-            $designation = new User();
-            // $designation->name = $request['designation_name'] ?? '';
-            // $designation->status = !empty($request['status']) ? 1 : 0;
-            // $designation->save();
+            $employee = new User();
+            $employee->employee_no = $request['designation_name'] ?? '';
+            $employee->name = $request['designation_name'] ?? '';
+            $employee->current_address = $request['designation_name'] ?? '';
+            $employee->permanent_address = $request['designation_name'] ?? '';
+            $employee->date_of_birth = $request['designation_name'] ?? '';
+            $employee->joining_date = $request['designation_name'] ?? '';
+            $employee->profile_photo = $request['designation_name'] ?? '';
+            $employee->identiy_proof = $request['designation_name'] ?? '';
+            $employee->designation = $request['designation_name'] ?? '';
+            $employee->status = !empty($request['status']) ? 1 : 0;
+            $employee->save();
 
             Session::put('success','Designation created successfully!');
             return Response::json(['success' => 'Designation created successfully!'], 202);
