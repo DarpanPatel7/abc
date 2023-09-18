@@ -85,6 +85,8 @@ $(function () {
             buttonSelector: "#addEmployeeSubmit",
             reload: true,
             file: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -158,38 +160,22 @@ $(function () {
             size: {width: 105, height: 105}
         }).then(function (resp) {
             $('#preview-profile-image').attr('src', resp);
+            $('#profile_photo').val(resp);
             $('#cropImagePop').modal('hide');
-
-            return false;
-
-
-            var id = $('#user_id').val();
-
-            //upload image
-            $.ajax({
-                type: 'POST',
-                url: update_profile_picture,
-                data: {'id':id, 'image':resp},
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success : function(data) {
-                    if(data.success){
-                        $('#preview-profile-image').attr('src', resp);
-                        $('#cropImagePop').modal('hide');
-                        toastr.success(data.success);
-                    }else if(data.error){
-                        toastr.error(data.error);
-                    }
-                }
-            });
         });
     });
     // End upload preview image
 
     // file trigger using anchor tag
-    $(document).on("click", "#edit_profile_img", function (ev) {
+    $(document).on("click", "#select_image", function (ev) {
         ev.preventDefault();
         $("#h_file:file").trigger('click');
+    });
+
+    // clear image event
+    $(document).on("click", "#clear_image", function (ev) {
+        ev.preventDefault();
+        $('#preview-profile-image').attr('src', defaultImage);
+        $('#profile_photo').val('');
     });
 });

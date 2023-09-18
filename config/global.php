@@ -26,9 +26,9 @@ return [
     'datepicker_date_placeholder' => env('DATEPICKER_DATE_PLACEHOLDER', 'DD/MM/YYYY'),
     'datepicker_date_format' => env('DATEPICKER_DATE_FORMAT', 'dd/mm/yyyy'),
 
-    'date_format' => env('DATE_FORMAT', 'm/d/Y'),
+    'date_format' => env('DATE_FORMAT', 'd/m/Y'),
     'time_format' => env('TIME_FORMAT', 'g:i A'),
-    'datetime_format' => env('DATE_FORMAT', 'm/d/Y').' '.env('TIME_FORMAT', 'g:i A'),
+    'datetime_format' => env('DATE_FORMAT', 'd/m/Y').' '.env('TIME_FORMAT', 'g:i A'),
 
     'db_date_format' => env('DB_DATE_FORMAT', 'Y-m-d'),
     'db_time_format' => env('DB_TIME_FORMAT', 'H:i:s'),

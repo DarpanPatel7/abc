@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('designation_id')->nullable();
             $table->string('employee_no')->nullable();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->text('current_address')->nullable();
             $table->text('permanent_address')->nullable();
             $table->date('date_of_birth')->nullable();

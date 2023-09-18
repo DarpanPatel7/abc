@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use App\Http\Traits\FileTrait;
+use App\Http\Traits\ImageTrait;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\Employee\StoreRequest;
 
 class EmployeeController extends Controller
 {
+    use ImageTrait;
+    use FileTrait;
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +37,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        dd('creayte');
+        //
     }
 
     /**
@@ -41,25 +46,37 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        dd($request->all());
         try {
+            //validate and upload base 64 image
+            if (!empty($request->profile_photo)) {
+                $ValidateBase64 = $this->ValidateBase64Image($request->profile_photo);
+                if (!$ValidateBase64) {
+                    return Response::json(['error' => 'The photo must be a file of type: jpeg, png, jpg, svg.'], 202);
+                }
+            }
+
             $employee = new User();
-            $employee->employee_no = $request['designation_name'] ?? '';
-            $employee->name = $request['designation_name'] ?? '';
-            $employee->current_address = $request['designation_name'] ?? '';
-            $employee->permanent_address = $request['designation_name'] ?? '';
-            $employee->date_of_birth = $request['designation_name'] ?? '';
-            $employee->joining_date = $request['designation_name'] ?? '';
-            $employee->profile_photo = $request['designation_name'] ?? '';
-            $employee->identiy_proof = $request['designation_name'] ?? '';
-            $employee->designation = $request['designation_name'] ?? '';
+            $employee->employee_no = $request['employee_no'] ?? '';
+            $employee->name = $request['name'] ?? '';
+            $employee->current_address = $request['current_address'] ?? '';
+            $employee->permanent_address = $request['permanent_address'] ?? '';
+            $employee->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
+            $employee->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
+            if (!empty($request->profile_photo)) {
+                $employee->profile_photo = $this->UploadBase64Image('employee', $request->profile_photo);
+            }
+            if (!empty($request->file('identity_proof'))) {
+                $file = $this->UploadFile('employee', $request->file('identity_proof'));
+                $employee->identity_proof = $file ?? '';
+            }
+            $employee->designation_id = $request['designation'] ?? '';
             $employee->status = !empty($request['status']) ? 1 : 0;
             $employee->save();
 
-            Session::put('success','Designation created successfully!');
-            return Response::json(['success' => 'Designation created successfully!'], 202);
+            Session::put('success', 'Employee created successfully!');
+            return Response::json(['success' => 'Employee created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

@@ -24,15 +24,15 @@ class StoreRequest extends FormRequest
     public function rules() :array
     {
         return [
-            'employee_no' => ['required', 'max:255', 'unique:users,employee_no' ,'not_regex:/<\/?[^>]*>/'],
+            'employee_no' => ['required', 'alpha_num', 'max:255', 'unique:users,employee_no'],
             'name' => ['required', 'max:255' ,'not_regex:/<\/?[^>]*>/'],
-            'current_address' => ['required'],
-            'permanent_address' => ['required'],
-            'date_of_birth' => ['required'],
-            'joining_date' => ['required'],
-            'profile_photo' => ['required'],
-            'identiy_proof' => ['required'],
-            'designation' => ['required'],
+            'current_address' => ['required','not_regex:/<\/?[^>]*>/'],
+            'permanent_address' => ['required','not_regex:/<\/?[^>]*>/'],
+            'date_of_birth' => ['required', 'before:today', 'date_format:'.Config('global.date_format')],
+            'joining_date' => ['required', 'date_format:'.Config('global.date_format')],
+            'profile_photo' => ['nullable'],
+            'identity_proof' => ['required', 'mimes:jpg,jpeg,png,svg,pdf', 'max:2048'],
+            'designation' => ['required', 'exists:designations,id'],
         ];
     }
 }

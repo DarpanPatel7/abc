@@ -354,25 +354,15 @@
         function loadingButton(selector) {
             var button = $(opt.container).find(selector);
 
-            if (!button.is("input")) {
-                button.addClass("is-loading is-loading-sm");
-                button.prop("disabled", true);
-            } else {
-                button.addClass("is-loading is-loading-sm");
-                button.prop("disabled", true);
-            }
+            button.prepend('<span class="spinner-border me-1" role="status" aria-hidden="true"></span>');
+            button.prop("disabled", true);
         }
 
         function unloadingButton(selector) {
             var button = $(opt.container).find(selector);
 
-            if (!button.is("input")) {
-                button.removeClass("is-loading is-loading-sm");
-                button.prop("disabled", false);
-            } else {
-                button.removeClass("is-loading is-loading-sm");
-                button.prop("disabled", false);
-            }
+            button.children("span.spinner-border").remove();
+            button.prop("disabled", false);
         }
 
         function blockPopupClose(selector) {
@@ -479,7 +469,7 @@
                     );
                     ele.addClass("is-invalid");
 
-                    $(grp).find(".select-picker").addClass("is-invalid");
+                    $(grp).find(".select2").parent().addClass("is-invalid");
                     $(grp).find(".bootstrap-select").addClass("is-invalid");
                 }
 
@@ -518,13 +508,6 @@
             message = "Loading...";
         }
 
-        var html =
-            '<div class="d-flex justify-content-center">' +
-            '<div class="spinner-border" role="status">' +
-            '<span class="sr-only">Loading...</span>' +
-            "</div>" +
-            "</div>";
-
         if (container != undefined) {
             // element blocking
             var el = $(container);
@@ -533,39 +516,32 @@
                 centerY = true;
             }
             el.block({
-                message: html,
+                message: '<div class="spinner-border text-white" role="status"></div>',
                 baseZ: 999999,
                 centerX: true,
                 centerY: centerY,
                 css: {
-                    top: "30%",
-                    width: "100%",
-                    left: "0",
-                    border: "0",
-                    padding: "0",
-                    backgroundColor: "none",
+                  backgroundColor: 'transparent',
+                  border: '0'
                 },
                 overlayCSS: {
-                    backgroundColor: "transparent",
-                    opacity: 0.05,
-                    cursor: "wait",
-                },
-            });
+                  opacity: 0.5,
+                  cursor: "wait",
+                }
+              });
         } else {
             // page blocking
             $.blockUI({
-                message: html,
+                message: '<div class="spinner-border text-white" role="status"></div>',
                 baseZ: 999999,
                 css: {
-                    border: "0",
-                    padding: "0",
-                    backgroundColor: "none",
+                  backgroundColor: 'transparent',
+                  border: '0'
                 },
                 overlayCSS: {
-                    backgroundColor: "#555",
-                    opacity: 0.05,
-                    cursor: "wait",
-                },
+                  opacity: 0.5,
+                  cursor: "wait",
+                }
             });
         }
     };

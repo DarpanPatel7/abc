@@ -18,19 +18,21 @@
                         <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                             <div class="profile-img profile-avatar-xxl">
                                 <a href="javascript:;" id="profile_img"><img id="preview-profile-image"
-                                        alt="Profile Picture" src="{{ url('assets/img/default-pfp.png'); }}"
+                                        alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}"
                                         class="avatar-img rounded-circle" height="100"></a>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <button type="button" class="btn btn-label-primary" id="edit_profile_img">
+                            <button type="button" class="btn btn-sm btn-label-primary mb-3" id="select_image">
                                 Select Profile Photo
                             </button>
-                            <button type="button" class="btn btn-label-primary" id="edit_profile_img>
+                            </br>
+                            <button type="button" class="btn btn-sm btn-label-primary" id="clear_image">
                                 Clear
                             </button>
-                            <input type="hidden" id="user_id" value="5867469">
-                            <input type="file" id="h_file" class="item-img file center-block" accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
+                            <input type="hidden" name="profile_photo" id="profile_photo">
+                            <input type="file" id="h_file" class="item-img file center-block"
+                                accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
                         </div>
                     </div>
                     <div class="row">
@@ -73,16 +75,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Profile Pic</label>
-                            <input class="form-control" name="profile_photo" type="file" name="profile_photo">
-                        </div>
-                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Identiy Proof</label>
-                            <input class="form-control" type="file" name="identiy_proof">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Designation</label>
                             {!! Form::select(
                                 'designation',
@@ -94,6 +86,10 @@
                                     'data-allow-clear' => 'true',
                                 ],
                             ) !!}
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label class="form-label">Identity Proof</label>
+                            <input class="form-control" type="file" name="identity_proof" accept="application/pdf,image/*">
                         </div>
                     </div>
                     <div class="row">
@@ -140,9 +136,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Upload Profile</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fas fa-times"></i>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex justify-content-center">
