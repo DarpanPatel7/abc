@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
@@ -47,7 +48,9 @@ require __DIR__.'/auth.php';
 
     //Designations
     Route::resource('designations', DesignationController::class);
-    Route::resource('test', TestController::class);
+
+    //Menu
+    Route::resource('menus', MenuController::class);
 // });
 
 

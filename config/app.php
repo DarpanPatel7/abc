@@ -218,6 +218,7 @@ return [
         'Helper' => App\Helpers\Helpers::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Menu' => Spatie\Menu\Laravel\Facades\Menu::class,
     ])->toArray(),
 
 ];

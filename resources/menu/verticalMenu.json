@@ -1,23 +1,34 @@
 {
     "menu": [
         {
+            "icon": "menu-icon tf-icons bx bx-grid-alt",
             "url": "dashboard",
             "name": "Dashboard",
-            "icon": "menu-icon tf-icons bx bx-grid-alt",
             "slug": "dashboard.index"
         },
         {
-            "menuHeader": "Apps & Pages"
+            "menuHeader": "Apps & Pages",
+            "permission": [
+                "employee-list",
+                "role-list",
+                "permission-list"
+            ]
         },
         {
             "name": "Employees",
             "icon": "menu-icon tf-icons bx bx-user",
             "slug": "employee",
+            "permission": [
+                "employee-list"
+            ],
             "submenu": [
                 {
                     "url": "employees",
                     "name": "List",
-                    "slug": "employees.index"
+                    "slug": "employees.index",
+                    "permission": [
+                        "employee-list"
+                    ]
                 }
             ]
         },
@@ -25,27 +36,43 @@
             "name": "Roles & Permissions",
             "icon": "menu-icon tf-icons bx bx-check-shield",
             "slug": "role",
+            "permission": [
+                "role-list",
+                "permission-list"
+            ],
             "submenu": [
                 {
                     "url": "roles",
                     "name": "Roles",
-                    "slug": "roles.index"
+                    "slug": "roles.index",
+                    "permission": [
+                        "role-list"
+                    ]
                 },
                 {
                     "url": "permissions",
                     "name": "Permissions",
-                    "slug": "permissions.index"
+                    "slug": "permissions.index",
+                    "permission": [
+                        "permission-list"
+                    ]
                 }
             ]
         },
         {
-            "menuHeader": "Masters"
+            "menuHeader": "Masters",
+            "permission": [
+                "designation-list"
+            ]
         },
         {
             "url": "designations",
             "name": "Designations",
             "icon": "menu-icon tf-icons bx bxs-user-badge",
-            "slug": "designations.index"
+            "slug": "designations.index",
+            "permission": [
+                "designation-list"
+            ]
         }
     ]
 }
