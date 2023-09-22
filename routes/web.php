@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\CustomerSourceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,9 @@ require __DIR__.'/auth.php';
 
     //Menu
     Route::resource('menus', MenuController::class);
+
+    //Customer
+    Route::resource('customer-sources', CustomerSourceController::class);
 // });
 
 

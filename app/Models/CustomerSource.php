@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Designation extends Model
+class CustomerSource extends Model
 {
     use HasFactory;
 
@@ -33,7 +33,7 @@ class Designation extends Model
     ];
 
     /**
-     * Scope a query to only include active users.
+     * Scope a query to only include customer sources.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return void
@@ -41,6 +41,17 @@ class Designation extends Model
     public function scopeActive($query)
     {
         $query->where('status', 1);
+    }
+
+    /**
+     * Scope a query to only remove deleted customer sources.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeNotDeleted($query)
+    {
+        $query->where('status', '!=', 3);
     }
 
     /**
