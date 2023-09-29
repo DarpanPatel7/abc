@@ -328,6 +328,10 @@
                                     opt.datatable.remove().draw();
                                 }
 
+                                if (opt.deleteToast) {
+                                    $.showToastr(response.success, "success");
+                                }
+
                                 $(".offcanvas").offcanvas("hide");
                             }
                             if (response.error) {

@@ -60,7 +60,7 @@ $(function () {
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                // reload: true,
+                deleteToast: true,
                 buttonSelector: ".deleteCustomerSource",
                 datatable: dt_customer_source,
             });

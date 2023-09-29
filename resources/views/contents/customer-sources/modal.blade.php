@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col mb-3 inp-group">
                             <label class="form-label" for="customer_source_name">Customer Source Name</label>
-                            <input type="text" class="form-control" placeholder="Customer Source Name" name="designation_name" aria-label="Customer Source Name" />
+                            <input type="text" class="form-control" placeholder="Customer Source Name" name="customer_source_name" aria-label="Customer Source Name" />
                         </div>
                     </div>
                     <div class="row">
