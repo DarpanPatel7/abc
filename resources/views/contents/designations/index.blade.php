@@ -18,14 +18,14 @@
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/designation.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/designation.js') }}"></script>
     <script src="{{asset('assets/js/ui-modals.js')}}"></script>
     <script src="{{asset('assets/js/extended-ui-sweetalert2.js')}}"></script>
 @endsection
 
 @section('content')
     <h4 class="py-3 breadcrumb-wrapper mb-2">Designation List</h4>
-    
+
     <!-- Designations List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                     @if (!empty($designations))
-                        @php $i=1; @endphp 
+                        @php $i=1; @endphp
                         @foreach ($designations as $designation)
                             <tr>
                                 <!-- <td class="control">{{ $i++; }}</td> -->
@@ -66,6 +66,6 @@
 @endsection
 
 @section('modal')
-    @component('contents.designations.modal') 
+    @component('contents.designations.modal')
     @endcomponent
 @endsection

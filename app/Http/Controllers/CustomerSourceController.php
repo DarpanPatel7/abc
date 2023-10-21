@@ -121,8 +121,8 @@ class CustomerSourceController extends Controller
             $customer_source->status = !empty($request['status']) ? 1 : 0;
             $customer_source->save();
 
-            Session::put('success','Designation updated successfully!');
-            return Response::json(['success' => 'Designation updated successfully!'], 202);
+            Session::put('success','Customer Source updated successfully!');
+            return Response::json(['success' => 'Customer Source updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -149,7 +149,7 @@ class CustomerSourceController extends Controller
 
             CustomerSource::where('id',$id)->delete();
 
-            return Response::json(['success' => 'Designation deleted successfully!'], 202);
+            return Response::json(['success' => 'Customer Source deleted successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

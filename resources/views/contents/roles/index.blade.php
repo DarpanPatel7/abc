@@ -20,8 +20,8 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/app-access-roles.js')}}"></script>
-<script src="{{asset('assets/js/modal-add-role.js')}}"></script>
+<script src="{{asset('assets/js/modules/app-access-roles.js')}}"></script>
+<script src="{{asset('assets/js/modules/modal-add-role.js')}}"></script>
 @endsection
 
 @section('content')
@@ -197,7 +197,7 @@ $configData = Helper::appClasses();
   </div> -->
 
     @if (!empty($roles))
-        @php $i=1; @endphp 
+        @php $i=1; @endphp
         @foreach ($roles as $role)
             <div class="col-xl-4 col-lg-6 col-md-6">
                 <div class="card">
@@ -278,6 +278,6 @@ $configData = Helper::appClasses();
 @endsection
 
 @section('modal')
-    @component('contents.roles.modal',['module_permissions' => $module_permissions]) 
+    @component('contents.roles.modal',['module_permissions' => $module_permissions])
     @endcomponent
 @endsection

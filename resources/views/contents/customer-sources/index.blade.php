@@ -18,7 +18,7 @@
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/customer-source.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/customer-source.js') }}"></script>
     <script src="{{asset('assets/js/ui-modals.js')}}"></script>
     <script src="{{asset('assets/js/extended-ui-sweetalert2.js')}}"></script>
 @endsection

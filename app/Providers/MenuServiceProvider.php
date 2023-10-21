@@ -2,10 +2,6 @@
 
 namespace App\Providers;
 
-// use Spatie\Menu\Link;
-// use Spatie\Menu\Menu;
-// use Spatie\Menu\Macro;
-
 use App\Models\Menu;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
@@ -27,24 +23,39 @@ class MenuServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $verticalMenuJson = $horizontalMenuJson = '';
+        //check if menus table exists if not then it will get menu json data from file otherwise menu json data comes from table.
+        //also seperately check vertical and horizontal menus json data from tables.
         if (Schema::hasTable('menus')) {
-            // Code to create table
             $menu = new Menu;
             $verticalMenu = $menu->where('type', 'vertical')->Active()->first();
+            if(!empty($verticalMenu)){
+                //get vertical menu json data
+                if (!empty($verticalMenu)) {
+                    $verticalMenuJson = $verticalMenu->json_menu;
+                }
+                $verticalMenuData = json_decode($verticalMenuJson);
+            }else{
+                $verticalMenuJson = file_get_contents(base_path('resources/menu/verticalMenu.json'));
+                $verticalMenuData = json_decode($verticalMenuJson);
+            }
+
             $horizontalMenu = $menu->where('type', 'horizontal')->Active()->first();
+            if(!empty($horizontalMenu)){
+                //get horizontal menu json data
+                if (!empty($horizontalMenu)) {
+                    $horizontalMenuJson = $horizontalMenu->json_menu;
+                }
+                $horizontalMenuData = json_decode($horizontalMenuJson);
+            }else{
+                $horizontalMenuJson = file_get_contents(base_path('resources/menu/horizontalMenu.json'));
+                $horizontalMenuData = json_decode($horizontalMenuJson);
+            }
+        } else {
+            $verticalMenuJson = file_get_contents(base_path('resources/menu/verticalMenu.json'));
+            $verticalMenuData = json_decode($verticalMenuJson);
+            $horizontalMenuJson = file_get_contents(base_path('resources/menu/horizontalMenu.json'));
+            $horizontalMenuData = json_decode($horizontalMenuJson);
         }
-
-        //get vertical menu json data
-        if(!empty($verticalMenu)){
-            $verticalMenuJson = $verticalMenu->json_menu;
-        }
-        $verticalMenuData = json_decode($verticalMenuJson);
-
-        //get horizontal menu json data
-        if(!empty($horizontalMenu)){
-            $horizontalMenuJson = $horizontalMenu->json_menu;
-        }
-        $horizontalMenuData = json_decode($horizontalMenuJson);
 
         // Share all menuData to all the views
         View::share('menuData', [$verticalMenuData, $horizontalMenuData]);

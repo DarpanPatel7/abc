@@ -17,7 +17,7 @@
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/app-access-permission.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/app-access-permission.js') }}"></script>
 @endsection
 
 @section('content')
