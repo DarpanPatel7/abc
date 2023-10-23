@@ -61,7 +61,6 @@ $(function () {
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                // reload: true,
                 buttonSelector: ".deleteDesignation",
                 datatable: dt_designation,
             });
@@ -83,6 +82,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addDesignationSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -94,6 +95,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editDesignationContent",
             showModal: "#editDesignationModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -105,6 +108,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editDesignationSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 });

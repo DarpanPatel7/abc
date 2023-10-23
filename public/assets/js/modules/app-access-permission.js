@@ -174,6 +174,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addPermissionSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -185,6 +187,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editPermissionContent",
             showModal: "#editPermissionModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -196,6 +200,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editPermissionSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 });

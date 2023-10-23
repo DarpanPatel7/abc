@@ -1,5 +1,9 @@
 @if (!empty($customer_source))
     {!! Form::model($customer_source, ['method' => 'PATCH','route' => ['customer-sources.update', Crypt::Encrypt($customer_source->id)], 'id'=>'editCustomerSourceForm']) !!}
+        <div class="modal-header">
+            <h5 class="modal-title" id="editCustomerSourceModalLabel">Edit Customer Source</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col mb-3 inp-group">

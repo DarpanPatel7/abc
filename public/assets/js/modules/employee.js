@@ -62,7 +62,6 @@ $(function () {
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                // reload: true,
                 buttonSelector: ".deleteEmployee",
                 datatable: dt_employee,
             });
@@ -98,6 +97,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editEmployeeContent",
             showModal: "#editEmployeeModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -109,6 +110,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editEmployeeSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 

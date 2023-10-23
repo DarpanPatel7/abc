@@ -82,6 +82,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addCustomerSourceSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -93,6 +95,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editCustomerSourceContent",
             showModal: "#editCustomerSourceModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -104,6 +108,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editCustomerSourceSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 });

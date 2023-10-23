@@ -81,6 +81,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addMenuSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -92,6 +94,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editMenuContent",
             showModal: "#editMenuModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -103,6 +107,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editMenuSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 });

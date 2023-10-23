@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\HasProfilePhoto;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,17 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use HasRoles;
+
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+
+    const STATUS_INACTIVE_TEXT = 'Inactive';
+    const STATUS_ACTIVE_TEXT = 'Active';
+
+    const CORE_STATUS_ARRAY = [
+        self::STATUS_INACTIVE => self::STATUS_INACTIVE_TEXT,
+        self::STATUS_ACTIVE => self::STATUS_ACTIVE_TEXT,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -86,6 +98,48 @@ class User extends Authenticatable
     }
 
     /**
+     * get status string
+     *
+     * @var array<string, string>
+     */
+    public function getstringStatusAttribute()
+    {
+        return self::CORE_STATUS_ARRAY[$this->status] ?? '';
+    }
+
+    /**
+     * get status class
+     *
+     * @var array<string, string>
+     */
+    public function getbadgeStatusAttribute()
+    {
+        switch ($this->status) {
+            case self::STATUS_INACTIVE:
+                return 'badge bg-label-danger';
+            case self::STATUS_ACTIVE:
+                return 'badge bg-label-success';
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * get profile photo path.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function getProfilePhotoPathAttribute($value)
+    {
+        if(!empty($this->profile_photo) && Storage::disk('uploads')->exists($this->profile_photo)){
+            return Storage::disk('uploads')->url($this->profile_photo);
+        }else{
+            return Config('global.default_pfp');
+        }
+    }
+
+    /**
      * Scope a query to get data by company.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -97,13 +151,40 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get data by company.
+     * get designation relation
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
+     * @return array<int, string>
      */
-    public function getProfilePhotoUrlAttribute($query)
+    public function Designation()
     {
-        return 'sdkjfhdkghfdgf';
+        return $this->hasOne(Designation::class, 'id', 'designation_id');
+    }
+
+    /**
+     * set default date format
+     *
+     * @return array<int, string>
+     */
+    public function getDobAttribute()
+    {
+        if(!empty($this->date_of_birth)){
+            return \Carbon\Carbon::parse($this->date_of_birth)->format(config('global.date_format'));
+        }else{
+            return '';
+        }
+    }
+
+    /**
+     * set default date format
+     *
+     * @return array<int, string>
+     */
+    public function getJdAttribute()
+    {
+        if(!empty($this->joining_date)){
+            return \Carbon\Carbon::parse($this->joining_date)->format(config('global.date_format'));
+        }else{
+            return '';
+        }
     }
 }

@@ -272,6 +272,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#addRoleSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -283,6 +285,8 @@ $(function () {
             type: "GET",
             appendHtmlModal: "#editRoleContent",
             showModal: "#editRoleModal",
+            blockUI: true,
+            disableButton: true,
         });
     });
 
@@ -294,6 +298,8 @@ $(function () {
             disableButton: true,
             buttonSelector: "#editRoleSubmit",
             reload: true,
+            blockUI: true,
+            disableButton: true,
         });
     });
 

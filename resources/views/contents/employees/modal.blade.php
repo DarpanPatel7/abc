@@ -3,23 +3,21 @@
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Employee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 {!! Form::open([
                     'route' => 'employees.store',
                     'method' => 'POST',
                     'id' => 'addEmployeeForm',
                     'class' => 'restrict-enter',
                 ]) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                             <div class="profile-img profile-avatar-xxl">
-                                <a href="javascript:;" id="profile_img"><img id="preview-profile-image"
-                                        alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}"
-                                        class="avatar-img rounded-circle" height="100"></a>
+                                <a href="javascript:;" id="profile_img"><img id="preview-profile-image" alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle" height="100"></a>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
@@ -84,6 +82,7 @@
                                     'class' => 'select2 form-select form-select-lg',
                                     'placeholder' => 'Select Designation',
                                     'data-allow-clear' => 'true',
+                                    'id' => 'select212sfsdf'
                                 ],
                             ) !!}
                         </div>
@@ -118,12 +117,8 @@
 
     <!-- edit employee -->
     <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Employee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 <div id="editEmployeeContent"></div>
             </div>
         </div>

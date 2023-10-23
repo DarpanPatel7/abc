@@ -87,9 +87,10 @@
                 <thead>
                     <tr>
                         <td>User</td>
+                        <td>Employee No</td>
                         <td>Role</td>
-                        <td>Plan</td>
-                        <td>Billing</td>
+                        <td>Designation</td>
+                        <td>Date Of Birth</td>
                         <td>Status</td>
                         <td>Actions</td>
                     </tr>
@@ -101,33 +102,34 @@
                                 <div class="d-flex justify-content-start align-items-center user-name">
                                     <div class="avatar-wrapper">
                                         <div class="avatar avatar-sm me-3">
-                                            <img src="{{ url('assets\img\default-pfp.png') }}" alt="Avatar"
-                                                class="rounded-circle">
+                                            <img src="{{ $employee->ProfilePhotoPath ?? '' }}" alt="Avatar" class="rounded-circle">
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <a href="http://localhost:8080/test/frest-admin-v4.1.0/laravel-version/full-version%20-%20Copy/public/app/user/view/account"
-                                            class="text-body text-truncate"><span
-                                                class="fw-semibold">{{ $employee->name ?? '' }}</span></a>
+                                        <a href="#" class="text-body text-truncate"><span class="fw-semibold">{{ $employee->name ?? '' }}</span></a>
                                         <small class="text-muted">{{ $employee->email ?? '' }}</small>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <span class="text-truncate d-flex align-items-center">
-                                    <span class="badge badge-center rounded-pill bg-label-primary w-px-30 h-px-30 me-2">
-                                        <i class="bx bx-pie-chart-alt bx-xs"></i>
-                                    </span>Maintainer</span>
+                                {{ $employee->employee_no ?? '' }}
                             </td>
                             <td>
-                                <span class="fw-semibold">Enterprise</span>
+                                @if(!empty($employee->getRoleNames()))
+                                    @foreach($employee->getRoleNames() as $v)
+                                        <span class="btn btn-info btn-sm">{{ $v }}</span>
+                                    @endforeach
+                                @endif
                             </td>
-                            <td>Auto Debit</td>
                             <td>
-                                <span class="badge bg-label-success">Active</span>
+                                {{ $employee->Designation->name ?? '' }}
+                            </td>
+                            <td>{{ $employee->Dob ?? '' }}</td>
+                            <td>
+                                <span class="{{ $employee->badgeStatus ?? '' }}">{{ $employee->stringStatus ?? '' }}</span>
                             </td>
                             <td>
-                                <div class="d-inline-block text-nowrap">
+                                {{--  <div class="d-inline-block text-nowrap">
                                     <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
                                     <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
                                     <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow"
@@ -137,6 +139,10 @@
                                             class="dropdown-item">View</a>
                                         <a href="javascript:;" class="dropdown-item">Suspend</a>
                                     </div>
+                                </div>  --}}
+                                <div class="d-inline-block text-nowrap">
+                                    <button class="btn btn-sm btn-icon editEmployee" data-url="{{ url('employees/' . Crypt::Encrypt($employee->id) . '/edit') }}"><i class="bx bx-edit"></i></button>
+                                    <button class="btn btn-sm btn-icon deleteEmployee" data-url="{!! url('employees/' . Crypt::Encrypt($employee->id)) !!}"><i class="bx bx-trash"></i></button>
                                 </div>
                             </td>
                         </tr>

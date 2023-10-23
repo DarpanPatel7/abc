@@ -3,11 +3,11 @@
 <div class="modal fade" id="addCustomerSourceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addCustomerSourceModalLabel">Add Customer Source</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             {!! Form::open(array('route' => 'customer-sources.store','method'=>'POST','id'=>'addCustomerSourceForm','class'=>'restrict-enter')) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCustomerSourceModalLabel">Add Customer Source</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col mb-3 inp-group">
@@ -43,10 +43,6 @@
 <div class="modal fade" id="editCustomerSourceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editCustomerSourceModalLabel">Edit Customer Source</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
             <div id="editCustomerSourceContent"></div>
         </div>
     </div>

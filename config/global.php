@@ -21,7 +21,7 @@ return [
 
     'default_favicon' => env('APP_URL').'/public/assets/img/dashboard/logos/logo/bulkit-red.png',
 
-    'default_user_image' => env('APP_URL').'/public/assets/img/user.jpg',
+    'default_pfp' => env('APP_URL').'/public/assets/img/default-pfp.png',
 
     'datepicker_date_placeholder' => env('DATEPICKER_DATE_PLACEHOLDER', 'DD/MM/YYYY'),
     'datepicker_date_format' => env('DATEPICKER_DATE_FORMAT', 'dd/mm/yyyy'),
