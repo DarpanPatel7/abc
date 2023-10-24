@@ -119,8 +119,6 @@ trait ImageTrait
 
     public function resize($file, $width = 0, $height = 0, $default = '', $file_new)
     {
-
-
         if (file_exists($file)) {
 
             $info = getimagesize($file);

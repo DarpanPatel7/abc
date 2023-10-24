@@ -140,6 +140,21 @@ class User extends Authenticatable
     }
 
     /**
+     * get profile photo path.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function getIdentityProofPathAttribute($value)
+    {
+        if(!empty($this->identity_proof) && Storage::disk('uploads')->exists($this->identity_proof)){
+            return Storage::disk('uploads')->url($this->identity_proof);
+        }else{
+            return '';
+        }
+    }
+
+    /**
      * Scope a query to get data by company.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query

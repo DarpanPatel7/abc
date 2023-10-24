@@ -50,8 +50,9 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         try {
             //validate and upload base 64 image
             if (!empty($request->profile_photo)) {
@@ -133,14 +134,13 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        dd('$employee');
         try {
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:users,id'
+                'id' => 'required|exists:users,id',
             ]);
 
             if ($validator->fails()) {
@@ -149,29 +149,27 @@ class EmployeeController extends Controller
 
             $employee = User::where('id', $id)->first();
 
-
             $employee->employee_no = $request['employee_no'] ?? '';
             $employee->name = $request['name'] ?? '';
             $employee->current_address = $request['current_address'] ?? '';
             $employee->permanent_address = $request['permanent_address'] ?? '';
             $employee->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
             $employee->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
+            //add or replace profile photo
+            $user = User::where('id', $id)->first();
             if (!empty($request->profile_photo)) {
                 $employee->profile_photo = $this->UploadBase64Image('employee', $request->profile_photo);
-            }
-
-            $user = User::where('id', $id)->CompanyID()->first();
-            if (!empty($request->profile_photo)) {
-                $image = $this->UploadBase64Image('employee', $request->profile_photo);
-                if(!empty($employee->profile_pic)){
-                    $this->DeleteImage($employee->profile_pic);
+                if(!empty($user->profile_photo)){
+                    $this->DeleteImage($user->profile_photo);
                 }
             }
-
 
             if (!empty($request->file('identity_proof'))) {
                 $file = $this->UploadFile('employee', $request->file('identity_proof'));
                 $employee->identity_proof = $file ?? '';
+                if(!empty($user->identity_proof)){
+                    $this->DeleteImage($user->identity_proof);
+                }
             }
             $employee->designation_id = $request['designation'] ?? '';
             $employee->status = !empty($request['status']) ? 1 : 0;
@@ -203,7 +201,15 @@ class EmployeeController extends Controller
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            //User::where('id',$id)->delete();
+            $user = User::where('id', $id)->first();
+            if(!empty($user->profile_photo)){
+                $this->DeleteImage($user->profile_photo);
+            }
+            if(!empty($user->identity_proof)){
+                $this->DeleteImage($user->identity_proof);
+            }
+            User::where('id',$id)->delete();
+
 
             return Response::json(['success' => 'Employee deleted successfully!'], 202);
         } catch (\Throwable $th) {

@@ -11,12 +11,14 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
-    <link rel="stylesheet" href="{{asset('assets/vendor/libs/spinkit/spinkit.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/animate-css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <style>
         #upload-demo {
             width: 250px;
             height: 250px;
-            padding-bottom:25px;
+            padding-bottom: 25px;
         }
     </style>
 @endsection
@@ -34,46 +36,17 @@
     <script src="{{ asset('assets/vendor/libs/bloodhound/bloodhound.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js"></script>
-    <script src="{{asset('assets/vendor/libs/block-ui/block-ui.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/block-ui/block-ui.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
     <script src="{{ asset('assets/js/modules/employee.js') }}"></script>
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
     <script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
     <script type="text/javascript">
         var defaultImage = "{{ url('assets/img/default-pfp.png') }}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $uploadCrop = $('#cropie-demo').croppie({
-            enableExif: true,
-            viewport: {
-                width: 200,
-                height: 200,
-                type: 'circle'
-            },
-            boundary: {
-                width: 300,
-                height: 300
-            }
-        });
-
-
-        $('#upload').on('change', function() {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $uploadCrop.croppie('bind', {
-                    url: e.target.result
-                }).then(function() {
-                    console.log('jQuery bind complete');
-                });
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
     </script>
 @endsection
 
@@ -102,11 +75,13 @@
                                 <div class="d-flex justify-content-start align-items-center user-name">
                                     <div class="avatar-wrapper">
                                         <div class="avatar avatar-sm me-3">
-                                            <img src="{{ $employee->ProfilePhotoPath ?? '' }}" alt="Avatar" class="rounded-circle">
+                                            <img src="{{ $employee->ProfilePhotoPath ?? '' }}" alt="Avatar"
+                                                class="rounded-circle">
                                         </div>
                                     </div>
                                     <div class="d-flex flex-column">
-                                        <a href="#" class="text-body text-truncate"><span class="fw-semibold">{{ $employee->name ?? '' }}</span></a>
+                                        <a href="#" class="text-body text-truncate"><span
+                                                class="fw-semibold">{{ $employee->name ?? '' }}</span></a>
                                         <small class="text-muted">{{ $employee->email ?? '' }}</small>
                                     </div>
                                 </div>
@@ -115,8 +90,8 @@
                                 {{ $employee->employee_no ?? '' }}
                             </td>
                             <td>
-                                @if(!empty($employee->getRoleNames()))
-                                    @foreach($employee->getRoleNames() as $v)
+                                @if (!empty($employee->getRoleNames()))
+                                    @foreach ($employee->getRoleNames() as $v)
                                         <span class="btn btn-info btn-sm">{{ $v }}</span>
                                     @endforeach
                                 @endif
@@ -126,23 +101,16 @@
                             </td>
                             <td>{{ $employee->Dob ?? '' }}</td>
                             <td>
-                                <span class="{{ $employee->badgeStatus ?? '' }}">{{ $employee->stringStatus ?? '' }}</span>
+                                <span
+                                    class="{{ $employee->badgeStatus ?? '' }}">{{ $employee->stringStatus ?? '' }}</span>
                             </td>
                             <td>
-                                {{--  <div class="d-inline-block text-nowrap">
-                                    <button class="btn btn-sm btn-icon"><i class="bx bx-edit"></i></button>
-                                    <button class="btn btn-sm btn-icon delete-record"><i class="bx bx-trash"></i></button>
-                                    <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
-                                    <div class="dropdown-menu dropdown-menu-end m-0">
-                                        <a href="http://localhost:8080/test/frest-admin-v4.1.0/laravel-version/full-version%20-%20Copy/public/app/user/view/account"
-                                            class="dropdown-item">View</a>
-                                        <a href="javascript:;" class="dropdown-item">Suspend</a>
-                                    </div>
-                                </div>  --}}
                                 <div class="d-inline-block text-nowrap">
-                                    <button class="btn btn-sm btn-icon editEmployee" data-url="{{ url('employees/' . Crypt::Encrypt($employee->id) . '/edit') }}"><i class="bx bx-edit"></i></button>
-                                    <button class="btn btn-sm btn-icon deleteEmployee" data-url="{!! url('employees/' . Crypt::Encrypt($employee->id)) !!}"><i class="bx bx-trash"></i></button>
+                                    <button class="btn btn-sm btn-icon editEmployee"
+                                        data-url="{{ url('employees/' . Crypt::Encrypt($employee->id) . '/edit') }}"><i
+                                            class="bx bx-edit"></i></button>
+                                    <button class="btn btn-sm btn-icon deleteEmployee" data-url="{!! url('employees/' . Crypt::Encrypt($employee->id)) !!}"><i
+                                            class="bx bx-trash"></i></button>
                                 </div>
                             </td>
                         </tr>

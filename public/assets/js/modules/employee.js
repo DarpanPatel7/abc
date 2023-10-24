@@ -55,7 +55,6 @@ $(function () {
         ".deleteEmployee",
         function () {
             dt_employee = dt_employee.row($(this).parents("tr"));
-            // dt_employee.row($(this).parents("tr")).remove().draw();
 
             var url = $(this).attr("data-url");
             $.easyAjax({
@@ -106,10 +105,11 @@ $(function () {
     $("body").on("click", "#editEmployeeSubmit", function (event) {
         $.easyAjax({
             container: "#editEmployeeForm",
-            type: "PATCH",
+            type: "POST",
             disableButton: true,
             buttonSelector: "#editEmployeeSubmit",
             reload: true,
+            file: true,
             blockUI: true,
             disableButton: true,
         });
@@ -162,8 +162,8 @@ $(function () {
             format: 'png',
             size: {width: 105, height: 105}
         }).then(function (resp) {
-            $('#preview-profile-image').attr('src', resp);
-            $('#profile_photo').val(resp);
+            $('.preview-profile-image').attr('src', resp);
+            $('.profile_photo').val(resp);
             $('#cropImagePop').modal('hide');
         });
     });
@@ -178,7 +178,7 @@ $(function () {
     // clear image event
     $(document).on("click", "#clear_image", function (ev) {
         ev.preventDefault();
-        $('#preview-profile-image').attr('src', defaultImage);
-        $('#profile_photo').val('');
+        $('.preview-profile-image').attr('src', defaultImage);
+        $('.profile_photo').val('');
     });
 });

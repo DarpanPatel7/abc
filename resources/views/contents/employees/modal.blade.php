@@ -17,10 +17,10 @@
                     <div class="row mb-3">
                         <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                             <div class="profile-img profile-avatar-xxl">
-                                <a href="javascript:;" id="profile_img"><img id="preview-profile-image" alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle" height="100"></a>
+                                <a href="javascript:;" id="profile_img"><img alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle preview-profile-image" height="100"></a>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group mt-3">
                             <button type="button" class="btn btn-sm btn-label-primary mb-3" id="select_image">
                                 Select Profile Photo
                             </button>
@@ -28,7 +28,7 @@
                             <button type="button" class="btn btn-sm btn-label-primary" id="clear_image">
                                 Clear
                             </button>
-                            <input type="hidden" name="profile_photo" id="profile_photo">
+                            <input type="hidden" name="profile_photo" class="profile_photo">
                             <input type="file" id="h_file" class="item-img file center-block"
                                 accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
                         </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\CustomerSourceController;
+use App\Http\Controllers\CustomerBusinessController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,9 @@ require __DIR__.'/auth.php';
 
     //Customer
     Route::resource('customer-sources', CustomerSourceController::class);
+
+    //Customer
+    Route::resource('customer-businesses', CustomerBusinessController::class);
 // });
 
 

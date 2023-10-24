@@ -1,5 +1,5 @@
 @if (!empty($employee))
-    {!! Form::model($employee, ['method' => 'PATCH','route' => ['employees.update', Crypt::Encrypt($employee->id)], 'id'=>'editEmployeeForm']) !!}
+    {!! Form::model($employee, ['method' => 'PATCH','route' => ['employees.update', Crypt::Encrypt($employee->id)], 'id'=>'editEmployeeForm', 'class' => 'restrict-enter']) !!}
         <div class="modal-header">
             <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -8,10 +8,10 @@
             <div class="row mb-3">
                 <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                     <div class="profile-img profile-avatar-xxl">
-                        <a href="javascript:;" id="profile_img"><img id="preview-profile-image" alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle" height="100"></a>
+                        <a href="javascript:;" id="profile_img"><img alt="Profile Picture" src="{{ $employee->ProfilePhotoPath ?? '' }}" class="avatar-img rounded-circle preview-profile-image" height="100"></a>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                <div class="col-md-6 col-sm-12 mb-3 inp-group mt-3">
                     <button type="button" class="btn btn-sm btn-label-primary mb-3" id="select_image">
                         Select Profile Photo
                     </button>
@@ -19,7 +19,7 @@
                     <button type="button" class="btn btn-sm btn-label-primary" id="clear_image">
                         Clear
                     </button>
-                    <input type="hidden" name="profile_photo" id="profile_photo">
+                    <input type="hidden" name="profile_photo" class="profile_photo">
                     <input type="file" id="h_file" class="item-img file center-block"
                         accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
                 </div>
@@ -68,9 +68,17 @@
                         ],
                     ) !!}
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label class="form-label">Identity Proof</label>
                     <input class="form-control" type="file" name="identity_proof" accept="application/pdf,image/*">
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label class="form-label"></label>
+                    @if (!empty($employee->IdentityProofPath))
+                        <a href="{{ $employee->IdentityProofPath }}" class="btn btn-label-secondary btn-icon mt-4" target="_blank"><i class="bx bx-show"></i></a>
+                    @endif
                 </div>
             </div>
             <div class="row">
@@ -90,7 +98,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="editMEmployeeSubmit">Save changes</button>
+            <button type="button" class="btn btn-primary" id="editEmployeeSubmit">Save changes</button>
         </div>
     {!! Form::close() !!}
 @endif
