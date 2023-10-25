@@ -98,6 +98,7 @@
                 if (opt.showModal) {
                     if (typeof initAjaxDropdown == "function") {
                         initAjaxDropdown(opt.showModal);
+                        initDatePicker();
                     }
                 }
             };

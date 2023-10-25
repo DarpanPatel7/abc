@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\Role\StoreRequest;
 use Illuminate\Support\Facades\Response;
 use Spatie\Permission\Models\Permission;
-use App\Http\Requests\Role\StoreRequest;
 use App\Http\Requests\Role\UpdateRequest;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +30,8 @@ class RoleController extends Controller
         foreach ($permissions as $key => $value) {
             $module_permissions[$value->flag][] = $value;
         }
-        return view('contents.roles.index', compact('roles', 'permissions', 'module_permissions'));
+        $employees = User::orderBy("id", "desc")->get();
+        return view('contents.roles.index', compact('roles', 'permissions', 'module_permissions', 'employees'));
     }
 
     /**
@@ -177,6 +179,65 @@ class RoleController extends Controller
 
             Session::put('success','Role Deleted successfully!');
             return Response::json(['success' => 'Role Deleted successfully!'], 202);
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Get role
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getRole($id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'required|exists:users,id'
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(['error' => $validator->errors()->first()], 202);
+            }
+
+            $employee = User::where('id', $id)->first();
+            $roles = Role::where('name', '!=', 'Super Admin')->pluck('name', 'name')->all();
+            $employeeRole = $employee->roles->pluck('name', 'name')->all();
+            dd($employeeRole);
+
+            $returnHTML = view('contents.roles.modal-assign')->with(compact('roles', 'employeeRole'))->render();
+            return Response::json(['success' => 'success.','data' => $returnHTML], 202);
+
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Update role
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRole(UpdateRequest $request, $id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'required|exists:roles,id'
+            ]);
+
+            if ($validator->fails()) {
+                return Response::json(['error' => $validator->errors()->first()], 202);
+            }
+
+            Session::put('success','Assing role updated successfully!');
+            return Response::json(['success' => 'Assign role updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

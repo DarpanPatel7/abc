@@ -46,6 +46,8 @@ require __DIR__.'/auth.php';
 
     //Role & Permissions
     Route::resource('roles', RoleController::class);
+    Route::get('roles.getRole/{id}', [RoleController::class, 'getRole'])->name('roles.getRole');
+    Route::patch('roles.updateRole/{id}', [RoleController::class, 'updateRole'])->name('roles.updateRole');
     Route::resource('permissions', PermissionController::class);
 
     //Designations

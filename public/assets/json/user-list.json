@@ -6,7 +6,6 @@
       "role": "Editor",
       "username": "gslixby0",
       "email": "gslixby0@abc.net.au",
-      "current_plan": "Enterprise",
       "billing": "Manual - Credit Card",
       "status": 3,
       "avatar": ""
@@ -17,7 +16,6 @@
       "role": "Author",
       "username": "hredmore1",
       "email": "hredmore1@imgur.com",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": "10.png"
@@ -28,7 +26,6 @@
       "role": "Maintainer",
       "username": "msicely2",
       "email": "msicely2@who.int",
-      "current_plan": "Enterprise",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "1.png"
@@ -39,7 +36,6 @@
       "role": "Maintainer",
       "username": "crisby3",
       "email": "crisby3@wordpress.com",
-      "current_plan": "Team",
       "billing": "Manual - Credit Card",
       "status": 3,
       "avatar": "9.png"
@@ -50,7 +46,6 @@
       "role": "Subscriber",
       "username": "mhurran4",
       "email": "mhurran4@yahoo.co.jp",
-      "current_plan": "Enterprise",
       "billing": "Auto Debit",
       "status": 1,
       "avatar": "10.png"
@@ -61,7 +56,6 @@
       "role": "Author",
       "username": "shalstead5",
       "email": "shalstead5@shinystat.com",
-      "current_plan": "Company",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": ""
@@ -72,7 +66,6 @@
       "role": "Subscriber",
       "username": "bgallemore6",
       "email": "bgallemore6@boston.com",
-      "current_plan": "Company",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": ""
@@ -83,7 +76,6 @@
       "role": "Author",
       "username": "kliger7",
       "email": "kliger7@vinaora.com",
-      "current_plan": "Enterprise",
       "billing": "Manual - Cash",
       "status": 1,
       "avatar": "9.png"
@@ -94,7 +86,6 @@
       "role": "Subscriber",
       "username": "fscotfurth8",
       "email": "fscotfurth8@dailymotion.com",
-      "current_plan": "Team",
       "billing": "Auto Debit",
       "status": 1,
       "avatar": "2.png"
@@ -105,7 +96,6 @@
       "role": "Maintainer",
       "username": "jbellany9",
       "email": "jbellany9@kickstarter.com",
-      "current_plan": "Company",
       "billing": "Auto Debit",
       "status": 3,
       "avatar": "9.png"
@@ -116,7 +106,6 @@
       "role": "Subscriber",
       "username": "jwharltona",
       "email": "jwharltona@oakley.com",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 3,
       "avatar": "4.png"
@@ -127,7 +116,6 @@
       "role": "Subscriber",
       "username": "shallamb",
       "email": "shallamb@hugedomains.com",
-      "current_plan": "Team",
       "billing": "Manual - Credit Card",
       "status": 1,
       "avatar": "5.png"
@@ -138,7 +126,6 @@
       "role": "Subscriber",
       "username": "ypottiec",
       "email": "ypottiec@privacy.gov.au",
-      "current_plan": "Basic",
       "billing": "Auto Debit",
       "status": 3,
       "avatar": "7.png"
@@ -149,7 +136,6 @@
       "role": "Author",
       "username": "mkraused",
       "email": "mkraused@stanford.edu",
-      "current_plan": "Team",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "9.png"
@@ -160,7 +146,6 @@
       "role": "Maintainer",
       "username": "zmcclevertye",
       "email": "zmcclevertye@soundcloud.com",
-      "current_plan": "Enterprise",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "2.png"
@@ -171,7 +156,6 @@
       "role": "Author",
       "username": "bemblinf",
       "email": "bemblinf@wired.com",
-      "current_plan": "Company",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "6.png"
@@ -182,7 +166,6 @@
       "role": "Maintainer",
       "username": "bmylesg",
       "email": "bmylesg@amazon.com",
-      "current_plan": "Basic",
       "billing": "Manual - Paypal",
       "status": 2,
       "avatar": ""
@@ -193,7 +176,6 @@
       "role": "Editor",
       "username": "bbinerh",
       "email": "bbinerh@mozilla.com",
-      "current_plan": "Team",
       "billing": "Manual - Cash",
       "status": 2,
       "avatar": "7.png"
@@ -204,7 +186,6 @@
       "role": "Admin",
       "username": "tbruntjeni",
       "email": "tbruntjeni@sitemeter.com",
-      "current_plan": "Enterprise",
       "billing": "Manual - Cash",
       "status": 2,
       "avatar": ""
@@ -215,7 +196,6 @@
       "role": "Editor",
       "username": "wburlandj",
       "email": "wburlandj@uiuc.edu",
-      "current_plan": "Team",
       "billing": "Auto Debit",
       "status": 3,
       "avatar": "6.png"
@@ -226,7 +206,6 @@
       "role": "Author",
       "username": "sdelamainek",
       "email": "sdelamainek@who.int",
-      "current_plan": "Basic",
       "billing": "Auto Debit",
       "status": 1,
       "avatar": "1.png"
@@ -237,7 +216,6 @@
       "role": "Editor",
       "username": "jlysterl",
       "email": "jlysterl@guardian.co.uk",
-      "current_plan": "Company",
       "billing": "Auto Debit",
       "status": 3,
       "avatar": "8.png"
@@ -248,7 +226,6 @@
       "role": "Maintainer",
       "username": "kskitterelm",
       "email": "kskitterelm@washingtonpost.com",
-      "current_plan": "Basic",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": "3.png"
@@ -259,7 +236,6 @@
       "role": "Admin",
       "username": "chatherleighn",
       "email": "chatherleighn@washington.edu",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": "2.png"
@@ -270,7 +246,6 @@
       "role": "Admin",
       "username": "amiccoo",
       "email": "amiccoo@whitehouse.gov",
-      "current_plan": "Enterprise",
       "billing": "Manual - Credit Card",
       "status": 1,
       "avatar": ""
@@ -281,7 +256,6 @@
       "role": "Admin",
       "username": "hhassonp",
       "email": "hhassonp@bizjournals.com",
-      "current_plan": "Basic",
       "billing": "Manual - Cash",
       "status": 3,
       "avatar": "4.png"
@@ -292,7 +266,6 @@
       "role": "Editor",
       "username": "gjacombsq",
       "email": "gjacombsq@jigsy.com",
-      "current_plan": "Enterprise",
       "billing": "Manual - Cash",
       "status": 2,
       "avatar": "10.png"
@@ -303,7 +276,6 @@
       "role": "Maintainer",
       "username": "bkildayr",
       "email": "bkildayr@mashable.com",
-      "current_plan": "Team",
       "billing": "Manual - Credit Card",
       "status": 2,
       "avatar": ""
@@ -314,7 +286,6 @@
       "role": "Maintainer",
       "username": "cpinyons",
       "email": "cpinyons@behance.net",
-      "current_plan": "Team",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "7.png"
@@ -325,7 +296,6 @@
       "role": "Subscriber",
       "username": "imallindinet",
       "email": "imallindinet@shinystat.com",
-      "current_plan": "Team",
       "billing": "Manual - Credit Card",
       "status": 1,
       "avatar": ""
@@ -336,7 +306,6 @@
       "role": "Admin",
       "username": "gmeinekenu",
       "email": "gmeinekenu@hc360.com",
-      "current_plan": "Basic",
       "billing": "Manual - Cash",
       "status": 1,
       "avatar": "1.png"
@@ -347,7 +316,6 @@
       "role": "Editor",
       "username": "rsnowballv",
       "email": "rsnowballv@indiegogo.com",
-      "current_plan": "Basic",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": "5.png"
@@ -358,7 +326,6 @@
       "role": "Admin",
       "username": "remerw",
       "email": "remerw@blogtalkradio.com",
-      "current_plan": "Basic",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "8.png"
@@ -369,7 +336,6 @@
       "role": "Subscriber",
       "username": "ofibbensx",
       "email": "ofibbensx@booking.com",
-      "current_plan": "Company",
       "billing": "Manual - Cash",
       "status": 2,
       "avatar": "4.png"
@@ -380,7 +346,6 @@
       "role": "Maintainer",
       "username": "smacgilfoyley",
       "email": "smacgilfoyley@bigcartel.com",
-      "current_plan": "Company",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": ""
@@ -391,7 +356,6 @@
       "role": "Subscriber",
       "username": "brosebothamz",
       "email": "brosebothamz@tripadvisor.com",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 3,
       "avatar": ""
@@ -402,7 +366,6 @@
       "role": "Admin",
       "username": "shebblethwaite10",
       "email": "shebblethwaite10@arizona.edu",
-      "current_plan": "Company",
       "billing": "Manual - Cash",
       "status": 3,
       "avatar": "9.png"
@@ -413,7 +376,6 @@
       "role": "Maintainer",
       "username": "mpiccard11",
       "email": "mpiccard11@vimeo.com",
-      "current_plan": "Enterprise",
       "billing": "Manual - Credit Card",
       "status": 3,
       "avatar": "1.png"
@@ -424,7 +386,6 @@
       "role": "Subscriber",
       "username": "twidmore12",
       "email": "twidmore12@bravesites.com",
-      "current_plan": "Team",
       "billing": "Manual - Cash",
       "status": 1,
       "avatar": ""
@@ -435,7 +396,6 @@
       "role": "Author",
       "username": "fdesporte13",
       "email": "fdesporte13@omniture.com",
-      "current_plan": "Company",
       "billing": "Manual - Cash",
       "status": 2,
       "avatar": "6.png"
@@ -446,7 +406,6 @@
       "role": "Maintainer",
       "username": "ebaldetti14",
       "email": "ebaldetti14@theguardian.com",
-      "current_plan": "Team",
       "billing": "Manual - Credit Card",
       "status": 1,
       "avatar": ""
@@ -457,7 +416,6 @@
       "role": "Editor",
       "username": "brossiter15",
       "email": "brossiter15@craigslist.org",
-      "current_plan": "Team",
       "billing": "Manual - Cash",
       "status": 3,
       "avatar": ""
@@ -468,7 +426,6 @@
       "role": "Admin",
       "username": "mmcnirlan16",
       "email": "mmcnirlan16@hc360.com",
-      "current_plan": "Basic",
       "billing": "Manual - Credit Card",
       "status": 3,
       "avatar": ""
@@ -479,7 +436,6 @@
       "role": "Author",
       "username": "vkoschek17",
       "email": "vkoschek17@abc.net.au",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 2,
       "avatar": ""
@@ -490,7 +446,6 @@
       "role": "Subscriber",
       "username": "cperot18",
       "email": "cperot18@goo.ne.jp",
-      "current_plan": "Team",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": "3.png"
@@ -501,7 +456,6 @@
       "role": "Maintainer",
       "username": "soffner19",
       "email": "soffner19@mac.com",
-      "current_plan": "Enterprise",
       "billing": "Auto Debit",
       "status": 1,
       "avatar": ""
@@ -512,7 +466,6 @@
       "role": "Admin",
       "username": "kcourtliff1a",
       "email": "kcourtliff1a@bbc.co.uk",
-      "current_plan": "Basic",
       "billing": "Manual - Paypal",
       "status": 2,
       "avatar": "1.png"
@@ -523,7 +476,6 @@
       "role": "Admin",
       "username": "owind1b",
       "email": "owind1b@yandex.ru",
-      "current_plan": "Basic",
       "billing": "Manual - Paypal",
       "status": 1,
       "avatar": ""
@@ -534,7 +486,6 @@
       "role": "Subscriber",
       "username": "pdurber1c",
       "email": "pdurber1c@gov.uk",
-      "current_plan": "Team",
       "billing": "Manual - Cash",
       "status": 3,
       "avatar": ""
@@ -545,7 +496,6 @@
       "role": "Editor",
       "username": "bkrabbe1d",
       "email": "bkrabbe1d@home.pl",
-      "current_plan": "Company",
       "billing": "Auto Debit",
       "status": 2,
       "avatar": "9.png"

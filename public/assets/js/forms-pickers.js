@@ -424,3 +424,18 @@ $(function () {
         });
     }
 })();
+
+function initDatePicker(){
+    if ($('.bs-datepicker').length) {
+        $('.bs-datepicker').each(function () {
+            var $this = $(this),
+                r = {
+                    todayHighlight: $this.data("todayHighlight") ? $this.data("todayHighlight") : true,
+                    autoclose: $this.data("autoclose") ? $this.data("autoclose") : false,
+                    orientation: isRtl ? 'auto right' : 'auto left',
+                    format: $this.data("format") ? $this.data("format") : 'dd/mm/yyyy',
+                };
+            $this.datepicker(r);
+        });
+    }
+  }

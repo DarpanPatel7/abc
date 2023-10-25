@@ -24,7 +24,6 @@ $(function () {
     // Users datatable
     if (dt_employee_table.length) {
         var dt_employee = dt_employee_table.DataTable({
-            // order: [[1, "desc"]],
             dom:
                 '<"row mx-2"' +
                 '<"col-md-2"<"me-3"l>>' +
@@ -34,7 +33,6 @@ $(function () {
                 '<"col-sm-12 col-md-6"i>' +
                 '<"col-sm-12 col-md-6"p>' +
                 ">",
-
             // Buttons with Dropdown
             buttons: [
                 {
