@@ -98,7 +98,12 @@
                 if (opt.showModal) {
                     if (typeof initAjaxDropdown == "function") {
                         initAjaxDropdown(opt.showModal);
+                    }
+                    if (typeof initDatePicker == "function") {
                         initDatePicker();
+                    }
+                    if (typeof initAjaxDropdownMultiple == "function") {
+                        initAjaxDropdownMultiple();
                     }
                 }
             };

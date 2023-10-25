@@ -206,9 +206,8 @@ class RoleController extends Controller
             $employee = User::where('id', $id)->first();
             $roles = Role::where('name', '!=', 'Super Admin')->pluck('name', 'name')->all();
             $employeeRole = $employee->roles->pluck('name', 'name')->all();
-            dd($employeeRole);
 
-            $returnHTML = view('contents.roles.modal-assign')->with(compact('roles', 'employeeRole'))->render();
+            $returnHTML = view('contents.roles.modal-assign')->with(compact('employee', 'roles', 'employeeRole'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
 
         } catch (\Throwable $th) {
@@ -223,21 +222,29 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateRole(UpdateRequest $request, $id)
+    public function updateRole(Request $request, $id)
     {
         try {
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:roles,id'
+                'id' => 'required|exists:users,id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            Session::put('success','Assing role updated successfully!');
-            return Response::json(['success' => 'Assign role updated successfully!'], 202);
+            // update/assign role
+            $employee = User::where('id', $id)->first();
+            DB::table('model_has_roles')->where('model_id', $id)->delete();
+            if(!empty($request->input('roles'))){
+                $role = Role::wherein('name', $request->input('roles'))->get();
+                $employee->assignRole($role);
+            }
+
+            Session::put('success','Assing role successfully!');
+            return Response::json(['success' => 'Assign role successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

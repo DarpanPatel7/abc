@@ -61,7 +61,7 @@
                     <tr>
                         <td>User</td>
                         <td>Employee No</td>
-                        <td>Role</td>
+                        {{--  <td>Role</td>  --}}
                         <td>Designation</td>
                         <td>Date Of Birth</td>
                         <td>Status</td>
@@ -89,13 +89,13 @@
                             <td>
                                 {{ $employee->employee_no ?? '' }}
                             </td>
-                            <td>
+                            {{--  <td>
                                 @if (!empty($employee->getRoleNames()))
                                     @foreach ($employee->getRoleNames() as $v)
                                         <span class="btn btn-info btn-sm">{{ $v }}</span>
                                     @endforeach
                                 @endif
-                            </td>
+                            </td>  --}}
                             <td>
                                 {{ $employee->Designation->name ?? '' }}
                             </td>

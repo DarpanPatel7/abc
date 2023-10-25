@@ -21,7 +21,7 @@ $(function () {
             dom:
                 '<"row mx-2"' +
                 '<"col-sm-12 col-md-4 col-lg-6" l>' +
-                '<"col-sm-12 col-md-8 col-lg-6"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center align-items-center flex-sm-nowrap flex-wrap me-1"<"me-3"f><"user_role w-px-200 pb-3 pb-sm-0">>>' +
+                '<"col-sm-12 col-md-8 col-lg-6"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-md-end justify-content-center align-items-center flex-sm-nowrap flex-wrap me-1"<"me-3"f>>>' +
                 ">t" +
                 '<"row mx-2"' +
                 '<"col-sm-12 col-md-6"i>' +
@@ -32,10 +32,10 @@ $(function () {
                 search: "Search",
                 searchPlaceholder: "Search..",
             },
-            initComplete: function () {
+            /* initComplete: function () {
                 // Adding role filter once table initialized
                 this.api()
-                    .columns(2)
+                    .columns(1)
                     .every(function () {
                         var column = this;
                         var select = $(
@@ -69,7 +69,7 @@ $(function () {
                                 );
                             });
                     });
-            },
+            }, */
         });
     }
 
@@ -144,7 +144,6 @@ $(function () {
             disableButton: true,
         });
     });
-
 
     // Handle click on "Select all" control for add
     // $("body").on("click", "#addall_permissions", function (event) {
