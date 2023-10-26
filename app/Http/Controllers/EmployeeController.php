@@ -28,7 +28,7 @@ class EmployeeController extends Controller
     public function index()
     {
         //get all employees by id desc
-        $employees = User::orderBy("id", "desc")->get();
+        $employees = User::orderBy("id", "desc")->NoSuperAdminUser()->get();
         $designations = Designation::Active()->get()->pluck('name', 'id');
 
         return view('contents.employees.index', compact('employees', 'designations'));

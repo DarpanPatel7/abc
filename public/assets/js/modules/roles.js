@@ -145,6 +145,18 @@ $(function () {
         });
     });
 
+    // delete role
+    $(document).on("click", ".deleteRole", function () {
+        var url = $(this).data("url");
+        $.easyAjax({
+            url: url,
+            type: "DELETE",
+            disableButton: true,
+            buttonSelector: ".deleteRole",
+            reload: true,
+        });
+    });
+
     // Handle click on "Select all" control for add
     // $("body").on("click", "#addall_permissions", function (event) {
     //     $(".addmodule_all_permissions").prop("checked", this.checked);

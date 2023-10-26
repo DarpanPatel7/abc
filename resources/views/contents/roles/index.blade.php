@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 @endsection
 
 @section('vendor-script')
@@ -21,11 +22,13 @@
     <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
     <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
     <script src="{{ asset('assets/js/modules/roles.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
 @endsection
 
 @section('content')
@@ -69,7 +72,9 @@
                                         data-url="{{ url('roles/' . Crypt::Encrypt($role->id) . '/edit') }}"><small>Edit
                                             Role</small></a>
                                 </div>
-                                <a href="javascript:void(0);" class="text-muted"><i class="bx bx-trash"></i></a>
+                                @if ($role->name != 'Super Admin')
+                                    <a href="javascript:void(0);" class="text-muted deleteRole" data-url="{!! url('roles/' . Crypt::Encrypt($role->id)) !!}"><i class="bx bx-trash"></i></a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -142,9 +147,11 @@
                                     </td>
                                     <td>
                                         <div class="d-inline-block text-nowrap">
-                                            <button class="btn btn-sm btn-icon assignRole"
-                                                data-url="{{ url('roles.getRole/' . Crypt::Encrypt($employee->id)) }}"><i
-                                                    class="bx bx-edit"></i></button>
+                                            @if (!$employee->hasRole('Super Admin'))
+                                                <button class="btn btn-sm btn-icon assignRole"
+                                                    data-url="{{ url('roles.getRole/' . Crypt::Encrypt($employee->id)) }}"><i
+                                                        class="bx bx-edit"></i></button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

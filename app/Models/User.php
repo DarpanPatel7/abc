@@ -202,4 +202,17 @@ class User extends Authenticatable
             return '';
         }
     }
+
+    /**
+     * Scope a query to get data for users with Not Super Admin.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return void
+     */
+    public function scopeNoSuperAdminUser($query)
+    {
+        $query->where(function ($qu) {
+            $qu->orwhereHas("roles", function ($q) { $q->where("name", '!=', "Super Admin"); });
+        });
+    }
 }
