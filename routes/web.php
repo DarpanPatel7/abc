@@ -9,6 +9,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\CustomerSourceController;
 use App\Http\Controllers\CustomerBusinessController;
 
@@ -61,6 +62,15 @@ require __DIR__.'/auth.php';
 
     //Customer
     Route::resource('customer-businesses', CustomerBusinessController::class);
+
+    //Admin Settings
+    // Route::resource('admin-settings', AdminSettingController::class);
+    // Route::resource('admin-settings', AdminSettingController::class);
+    Route::get('admin-settings', [AdminSettingController::class, 'index'])->name('admin-settings');
+    Route::get('admin-settings.getVerticalMenu', [AdminSettingController::class, 'getVerticalMenu'])->name('roles.getVerticalMenu');
+    Route::get('admin-settings.saveVerticalMenu', [AdminSettingController::class, 'saveVerticalMenu'])->name('roles.saveVerticalMenu');
+    Route::get('admin-settings.getHorizontalMenu', [AdminSettingController::class, 'getHorizontalMenu'])->name('roles.getHorizontalMenu');
+    Route::get('admin-settings.saveHorizontalMenu', [AdminSettingController::class, 'saveHorizontalMenu'])->name('roles.saveHorizontalMenu');
 // });
 
 
