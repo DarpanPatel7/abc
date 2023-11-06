@@ -331,10 +331,7 @@
                                     window.location.reload();
                                 }
                                 if (opt.datatable) {
-                                    opt.datatable.remove().draw();
-                                }
-
-                                if (opt.deleteToast) {
+                                    opt.datatable.draw();
                                     $.showToastr(response.success, "success");
                                 }
 

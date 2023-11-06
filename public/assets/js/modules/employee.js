@@ -1,5 +1,5 @@
 /**
- * Page User List
+ * Page Employee List
  */
 
 "use strict";
@@ -7,6 +7,7 @@
 // Datatable (jquery)
 $(function () {
     let borderColor, bodyBg, headingColor;
+    var main = 'Employee';
 
     if (isDarkStyle) {
         borderColor = config.colors_dark.borderColor;
@@ -19,11 +20,13 @@ $(function () {
     }
 
     // Variable declaration for table
-    var dt_employee_table = $(".datatables-employees");
+    var dt_selector = $(".datatable"+main);
 
     // Users datatable
-    if (dt_employee_table.length) {
-        var dt_employee = dt_employee_table.DataTable({
+    if (dt_selector.length) {
+        var datatable = dt_selector.DataTable({
+            processing: true,
+            serverSide: true,
             dom:
                 '<"row mx-2"' +
                 '<"col-md-2"<"me-3"l>>' +
@@ -36,31 +39,45 @@ $(function () {
             // Buttons with Dropdown
             buttons: [
                 {
-                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Add Employee</span>',
+                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Add '+main+'</span>',
                     className: "add-new btn btn-primary mx-3",
                     attr: {
                         "data-bs-toggle": "modal",
-                        "data-bs-target": "#addEmployeeModal",
+                        "data-bs-target": "#add"+main+"Modal",
                     },
                 },
             ],
+            ajax: dt_selector.data('url'),
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'user', name: 'user' },
+                { data: 'employee_no', name: 'employee_no' },
+                { data: 'designation', name: 'designation' },
+                { data: 'date_of_birth', name: 'date_of_birth' },
+                { data: 'status', name: 'status' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
         });
     }
 
     // Delete Record
-    $(".datatables-employees tbody").on(
+    $(".datatable"+main+" tbody").on(
         "click",
-        ".deleteEmployee",
+        ".delete"+main,
         function () {
-            dt_employee = dt_employee.row($(this).parents("tr"));
-
+            datatable = datatable.row($(this).parents("tr"));
             var url = $(this).attr("data-url");
             $.easyAjax({
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                buttonSelector: ".deleteEmployee",
-                datatable: dt_employee,
+                buttonSelector: ".delete"+main,
+                datatable: datatable,
             });
         }
     );
@@ -73,13 +90,12 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#addEmployeeSubmit", function () {
+    $(document).on("click", "#add"+main+"Submit", function () {
         $.easyAjax({
-            container: "#addEmployeeForm",
+            container: "#add"+main+"Form",
             type: "POST",
             disableButton: true,
-            buttonSelector: "#addEmployeeSubmit",
-            reload: true,
+            buttonSelector: "#add"+main+"Submit",
             file: true,
             blockUI: true,
             disableButton: true,
@@ -87,29 +103,29 @@ $(function () {
     });
 
     // render edit data
-    $(document).on("click", ".editEmployee", function () {
+    $(document).on("click", ".edit"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#editEmployeeContent",
-            showModal: "#editEmployeeModal",
+            appendHtmlModal: "#edit"+main+"Content",
+            showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#editEmployeeSubmit", function (event) {
+    $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#editEmployeeForm",
+            container: "#edit"+main+"Form",
             type: "POST",
             disableButton: true,
-            buttonSelector: "#editEmployeeSubmit",
-            reload: true,
+            buttonSelector: "#edit"+main+"Submit",
             file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 

@@ -83,7 +83,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        // 'profile_photo_url',
     ];
 
     /**
@@ -212,6 +212,7 @@ class User extends Authenticatable
     public function scopeNoSuperAdminUser($query)
     {
         $query->where(function ($qu) {
+            $qu->whereDoesntHave('roles');
             $qu->orwhereHas("roles", function ($q) { $q->where("name", '!=', "Super Admin"); });
         });
     }

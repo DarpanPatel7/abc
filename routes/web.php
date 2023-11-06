@@ -44,6 +44,7 @@ require __DIR__.'/auth.php';
 
     //Employees
     Route::resource('employees', EmployeeController::class);
+    Route::get('employees.getEmployees', [EmployeeController::class, 'getEmployees'])->name('employees.getEmployees');
 
     //Role & Permissions
     Route::resource('roles', RoleController::class);

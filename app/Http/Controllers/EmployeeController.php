@@ -8,6 +8,7 @@ use App\Models\Designation;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use App\Http\Traits\ImageTrait;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -28,10 +29,9 @@ class EmployeeController extends Controller
     public function index()
     {
         //get all employees by id desc
-        $employees = User::orderBy("id", "desc")->NoSuperAdminUser()->get();
         $designations = Designation::Active()->get()->pluck('name', 'id');
 
-        return view('contents.employees.index', compact('employees', 'designations'));
+        return view('contents.employees.index', compact('designations'));
     }
 
     /**
@@ -50,7 +50,7 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         dd($request->all());
         try {
@@ -134,7 +134,7 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         try {
             $id = Crypt::decrypt($id);
@@ -210,10 +210,61 @@ class EmployeeController extends Controller
             }
             User::where('id',$id)->delete();
 
-
             return Response::json(['success' => 'Employee deleted successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getEmployees(Request $request)
+    {
+        if ($request->ajax()) {
+            $employees = User::select('id', 'name', 'employee_no', 'designation_id', 'date_of_birth', 'status')->orderBy("id", "desc")->NoSuperAdminUser()->get();
+
+            return DataTables::of($employees)
+                ->addIndexColumn()
+                ->addColumn('user', function ($user) {
+                    $ProfilePhotoPath = $user->ProfilePhotoPath ?? '';
+                    $name = $user->name ?? '';
+                    $email = $user->email ?? '';
+                    $userHtml = '<div class="d-flex justify-content-start align-items-center user-name">
+                        <div class="avatar-wrapper">
+                            <div class="avatar avatar-sm me-3">
+                                <img src="'.$ProfilePhotoPath.'" alt="Avatar" class="rounded-circle">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <a href="#" class="text-body text-truncate"><span class="fw-semibold">'.$name.'</span></a>
+                            <small class="text-muted">'.$email.'</small>
+                        </div>
+                    </div>';
+                    return $userHtml;
+                })
+                ->addColumn('designation', function ($designation) {
+                    return $designation->Designation->name ?? '';
+                })
+                ->editColumn('date_of_birth', function ($date_of_birth) {
+                    return $date_of_birth->Dob ?? '';
+                })
+                ->editColumn('status', function ($status) {
+                    $badgeStatus = $status->badgeStatus ?? '';
+                    $stringStatus = $status->stringStatus ?? '';
+                    $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                    return $userHtml;
+                })
+                ->addColumn('action', function($action){
+                    $editUrl = url('employees/' . Crypt::Encrypt($action->id) . '/edit');
+                    $deleteUrl = url('employees/' . Crypt::Encrypt($action->id));
+                    $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editEmployee" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteEmployee" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                    return $actionHtml;
+                })
+                ->rawColumns(['user', 'status', 'action'])
+                ->make(true);
         }
     }
 }
