@@ -303,11 +303,8 @@
                             opt.success(response);
                         } else {
                             if (response.success) {
-                                if (
-                                    typeof response.redirect_url != "undefined"
-                                ) {
-                                    window.location.href =
-                                        response.redirect_url;
+                                if (typeof response.redirect_url != "undefined") {
+                                    window.location.href = response.redirect_url;
                                 }
                                 if (opt.redirect) {
                                     if (response.url) {
@@ -332,10 +329,9 @@
                                 }
                                 if (opt.datatable) {
                                     opt.datatable.draw();
+                                    $('.modal').modal("hide");
                                     $.showToastr(response.success, "success");
                                 }
-
-                                $(".offcanvas").offcanvas("hide");
                             }
                             if (response.error) {
                                 if (typeof response.error != "undefined") {
@@ -528,26 +524,26 @@
                 centerX: true,
                 centerY: centerY,
                 css: {
-                  backgroundColor: 'transparent',
-                  border: '0'
+                    backgroundColor: 'transparent',
+                    border: '0'
                 },
                 overlayCSS: {
-                  opacity: 0.5,
-                  cursor: "wait",
+                    opacity: 0.5,
+                    cursor: "wait",
                 }
-              });
+            });
         } else {
             // page blocking
             $.blockUI({
                 message: '<div class="spinner-border text-white" role="status"></div>',
                 baseZ: 999999,
                 css: {
-                  backgroundColor: 'transparent',
-                  border: '0'
+                    backgroundColor: 'transparent',
+                    border: '0'
                 },
                 overlayCSS: {
-                  opacity: 0.5,
-                  cursor: "wait",
+                    opacity: 0.5,
+                    cursor: "wait",
                 }
             });
         }
