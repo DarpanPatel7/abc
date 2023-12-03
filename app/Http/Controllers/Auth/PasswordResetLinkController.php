@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\View\View;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Password;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Response;
 
 class PasswordResetLinkController extends Controller
 {
@@ -15,7 +17,9 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        return view('auth.forgot-password');
+        $pageConfigs = ['myLayout' => 'blank'];
+        return view('contents.authentications.forgot-password', ['pageConfigs' => $pageConfigs]);
+        // return view('auth.forgot-password');
     }
 
     /**
@@ -23,7 +27,7 @@ class PasswordResetLinkController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email'],
@@ -36,6 +40,13 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
+        if($status == Password::RESET_LINK_SENT){
+            Session::put('success','We have e-mailed your password reset link!');
+            return Response::json(['success' => 'We have e-mailed your password reset link!'], 202);
+        }else{
+            Session::put('success','Error occured while sending mail please contact administrator!');
+            return Response::json(['success' => 'Error occured while sending mail please contact administrator!'], 202);
+        }
         return $status == Password::RESET_LINK_SENT
                     ? back()->with('status', __($status))
                     : back()->withInput($request->only('email'))

@@ -13,7 +13,7 @@ $containerNav = $containerNav ?? 'container-fluid';
         <span class="app-brand-logo demo">
           @include('_partials.macros')
         </span>
-        <span class="app-brand-text demo menu-text fw-bold">{{config('variables.templateName')}}</span>
+        <span class="app-brand-text demo menu-text fw-bold">{{config('global.templateName')}}</span>
       </a>
 
       @if(isset($menuHorizontal))
