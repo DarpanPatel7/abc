@@ -26,6 +26,7 @@
             restrictPopupClose: false,
             loader: false,
             loaderMessage: "",
+            blockUIMessage:"",
             datatable: false,
         };
 
@@ -44,7 +45,7 @@
                 }
 
                 if (opt.blockUI) {
-                    $.easyBlockUI(opt.container);
+                    $.easyBlockUI(opt.container, opt.blockUIMessage);
                 }
 
                 if (opt.disableButton) {
@@ -332,6 +333,7 @@
                                     $('.modal').modal("hide");
                                     $.showToastr(response.success, "success");
                                 }
+                                $.showToastr(response.success, "success");
                             }
                             if (response.error) {
                                 if (typeof response.error != "undefined") {
@@ -507,8 +509,10 @@
     }
 
     $.easyBlockUI = function (container, message) {
-        if (message == undefined) {
-            message = "Loading...";
+        if (message != '') {
+            message = '<div class="d-flex justify-content-center"><p class="mb-0">'+message+'</p> <div class="sk-wave m-0"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div> </div>';
+        }else{
+            message = '<div class="spinner-border text-white" role="status"></div>';
         }
 
         if (container != undefined) {
@@ -519,7 +523,7 @@
                 centerY = true;
             }
             el.block({
-                message: '<div class="spinner-border text-white" role="status"></div>',
+                message: message,
                 baseZ: 999999,
                 centerX: true,
                 centerY: centerY,

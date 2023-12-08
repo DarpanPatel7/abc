@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -30,8 +31,10 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'string', 'email', 'exists:' . User::class],
         ]);
+
+        // return Response::json(['success' => 'We have e-mailed your password reset link!'], 202);
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -41,15 +44,9 @@ class PasswordResetLinkController extends Controller
         );
 
         if($status == Password::RESET_LINK_SENT){
-            Session::put('success','We have e-mailed your password reset link!');
             return Response::json(['success' => 'We have e-mailed your password reset link!'], 202);
         }else{
-            Session::put('success','Error occured while sending mail please contact administrator!');
-            return Response::json(['success' => 'Error occured while sending mail please contact administrator!'], 202);
+            return Response::json(['success' => 'Error occured while sending e-mail please contact administrator!'], 202);
         }
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
     }
 }

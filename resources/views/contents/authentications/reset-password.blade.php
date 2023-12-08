@@ -3,7 +3,7 @@
 @endphp
 @extends('layouts/layoutMaster')
 
-@section('title', 'Forgot Password Basic - Pages')
+@section('title', 'Reset Password')
 
 @section('vendor-style')
     <!-- Vendor -->
@@ -27,14 +27,17 @@
 @section('page-script')
     <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
     <script src="{{ asset('assets/js/helper.js') }}"></script>
-    <script src="{{ asset('assets/js/modules/authentications/forgot-password.js') }}"></script>
+    <script>
+        var url = '{{ route("password.store") }}';
+    </script>
+    <script src="{{ asset('assets/js/modules/authentications/reset-password.js') }}"></script>
 @endsection
 
 @section('content')
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner py-4">
-                <!-- Forgot Password -->
+                <!-- Reset Password -->
                 <div class="card">
                     <div class="card-body">
                         <!-- Logo -->
@@ -49,19 +52,41 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Forgot Password? 🔒</h4>
-                        <p class="mb-4">Enter your email and we will send you instructions to reset your password</p>
+                        <h4 class="mb-2">Reset Password 🔒</h4>
+                        <p class="mb-4">for <span class="fw-bold">{{ old('email', $request->email) }}</span></p>
                         {!! Form::open([
-                            'route' => 'password.email',
+                            'route' => 'password.store',
                             'method' => 'POST',
-                            'id' => 'forgot-password-form',
+                            'id' => 'reset-password-form',
                             'class' => 'restrict-enter mb-3',
                         ]) !!}
-                            <div class="mb-3 inp-group">
+                            <!-- Password Reset Token -->
+                            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                            <input type="hidden" id="email" name="email" value="{{ old('email', $request->email) }}">
+                            {{--<div class="mb-3 inp-group">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus>
+                            </div>  --}}
+
+                            <div class="mb-3 form-password-toggle">
+                                <label class="form-label" for="password">New Password</label>
+                                <div class="input-group input-group-merge inp-group">
+                                    <input type="password" id="password" class="form-control" name="password"
+                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                        aria-describedby="password" />
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                </div>
                             </div>
-                            <button class="btn btn-primary w-100" type="button" id="forgot-password">Send reset link</button>
+                            <div class="mb-3 form-password-toggle">
+                                <label class="form-label" for="password_confirmation">Confirm Password</label>
+                                <div class="input-group input-group-merge inp-group">
+                                    <input type="password" id="password_confirmation" class="form-control" name="password_confirmation"
+                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                        aria-describedby="password" />
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary w-100" type="button" id="reset-password">Set new password</button>
                         {!! Form::close() !!}
                         <div class="text-center">
                             <a href="{{ url('login') }}" class="d-flex align-items-center justify-content-center">
@@ -71,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- /Forgot Password -->
+                <!-- /Reset Password -->
             </div>
         </div>
     </div>

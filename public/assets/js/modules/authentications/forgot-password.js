@@ -9,8 +9,11 @@ $(function () {
     $(document).on("click", "#forgot-password", function () {
         $.easyAjax({
             type: "POST",
-            buttonSelector: $(this),
+            buttonSelector: "#forgot-password",
             data: $("#forgot-password-form").serialize(),
+            blockUI: true,
+            blockUIMessage: 'Please wait while sending e-mail...',
+            disableButton: true,
         });
     });
 });

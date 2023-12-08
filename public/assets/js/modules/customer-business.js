@@ -79,7 +79,6 @@ $(function () {
         $.easyAjax({
             container: "#addCustomerBusinessForm",
             type: "POST",
-            disableButton: true,
             buttonSelector: "#addCustomerBusinessSubmit",
             reload: true,
             blockUI: true,
@@ -105,7 +104,6 @@ $(function () {
         $.easyAjax({
             container: "#editCustomerBusinessForm",
             type: "PATCH",
-            disableButton: true,
             buttonSelector: "#editCustomerBusinessSubmit",
             reload: true,
             blockUI: true,
