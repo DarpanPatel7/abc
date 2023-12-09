@@ -14,6 +14,7 @@ $(function () {
             blockUI: true,
             blockUIMessage: 'Please wait while sending e-mail...',
             disableButton: true,
+            isSuccessToast: true,
         });
     });
 });

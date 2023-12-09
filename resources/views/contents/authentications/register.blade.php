@@ -4,30 +4,14 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Register Basic - Pages')
-
-@section('vendor-style')
-    <!-- Vendor -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/animate-css/animate.css') }}" />
-@endsection
+@section('title', 'Register')
 
 @section('page-style')
     <!-- Page -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
 @endsection
 
-@section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
-@endsection
-
 @section('page-script')
-    <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
-    <script src="{{ asset('assets/js/helper.js') }}"></script>
     <script src="{{ asset('assets/js/modules/authentications/register.js') }}"></script>
 @endsection
 

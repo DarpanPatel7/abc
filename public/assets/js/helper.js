@@ -11,7 +11,6 @@
             csrfToken: $('meta[name="csrf-token"]').attr("content"),
             messagePosition: "toastr",
             errorPosition: "field",
-            hideElements: false,
             redirect: false,
             reload: false,
             data: {},
@@ -24,10 +23,9 @@
             hideModal: true,
             sweetAlert: false,
             restrictPopupClose: false,
-            loader: false,
-            loaderMessage: "",
             blockUIMessage:"",
             datatable: false,
+            isSuccessToast: false,
         };
 
         var opt = defaults;
@@ -52,22 +50,6 @@
                     loadingButton(opt.buttonSelector);
                 }
 
-                if (opt.loader) {
-                    var loader_html = `<div wire:loading class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center message-loader">
-                        <div class="sk-chase">
-                            <div class="sk-chase-dot"></div>
-                            <div class="sk-chase-dot"></div>
-                            <div class="sk-chase-dot"></div>
-                            <div class="sk-chase-dot"></div>
-                            <div class="sk-chase-dot"></div>
-                            <div class="sk-chase-dot"></div>
-                        </div>
-                        <p class="w-1/3 text-center text-white mt-3">${opt.loaderMessage ?? ""
-                        }</p>
-                    </div>`;
-                    $(opt.container).append(loader_html);
-                }
-
                 if (opt.restrictPopupClose) {
                     blockPopupClose(
                         "#" + $(opt.container).parents("div.modal").attr("id")
@@ -84,10 +66,6 @@
 
                 if (opt.disableButton) {
                     unloadingButton(opt.buttonSelector);
-                }
-
-                if (opt.loader) {
-                    $(".message-loader").remove();
                 }
 
                 if (opt.restrictPopupClose) {
@@ -259,7 +237,6 @@
         }
 
         function loadAjax() {
-
             //set post data based on file object //if file upload is set to true then it will set to formdata format
             var post_data = {};
             if (typeof opt.data !== "undefined" && opt.data.length > 0) {
@@ -333,7 +310,9 @@
                                     $('.modal').modal("hide");
                                     $.showToastr(response.success, "success");
                                 }
-                                $.showToastr(response.success, "success");
+                                if (opt.isSuccessToast) {
+                                    $.showToastr(response.success, "success");
+                                }
                             }
                             if (response.error) {
                                 if (typeof response.error != "undefined") {

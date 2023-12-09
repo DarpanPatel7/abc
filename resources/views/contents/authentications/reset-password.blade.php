@@ -5,28 +5,12 @@
 
 @section('title', 'Reset Password')
 
-@section('vendor-style')
-    <!-- Vendor -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/animate-css/animate.css') }}" />
-@endsection
-
 @section('page-style')
     <!-- Page -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
 @endsection
 
-@section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
-@endsection
-
 @section('page-script')
-    <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
-    <script src="{{ asset('assets/js/helper.js') }}"></script>
     <script>
         var url = '{{ route("password.store") }}';
     </script>
@@ -63,10 +47,6 @@
                             <!-- Password Reset Token -->
                             <input type="hidden" name="token" value="{{ $request->route('token') }}">
                             <input type="hidden" id="email" name="email" value="{{ old('email', $request->email) }}">
-                            {{--<div class="mb-3 inp-group">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus>
-                            </div>  --}}
 
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password">New Password</label>

@@ -23,7 +23,6 @@ class StoreRequest extends FormRequest
      */
     public function rules() :array
     {
-        dd($this->request);
         return [
             'employee_no' => ['required', 'alpha_num', 'max:255', 'unique:users,employee_no'],
             'name' => ['required', 'max:255' ,'not_regex:/<\/?[^>]*>/'],

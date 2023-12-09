@@ -60,7 +60,7 @@ class NewPasswordController extends Controller
         // redirect them back to where they came from with their error message.
         if($status == Password::PASSWORD_RESET){
             Session::put('success','Password successfully changed!');
-            return Response::json(['success' => 'Login success!', 'redirect_url' => route('login')], 202);
+            return Response::json(['success' => 'Password successfully changed!', 'redirect_url' => route('login')], 202);
         }else{
             return Response::json(['success' => 'Error occured while sending e-mail please contact administrator!'], 202);
         }

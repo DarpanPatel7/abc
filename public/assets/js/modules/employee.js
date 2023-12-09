@@ -94,11 +94,11 @@ $(function () {
         $.easyAjax({
             container: "#add"+main+"Form",
             type: "POST",
-            disableButton: true,
             buttonSelector: "#add"+main+"Submit",
             file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 
@@ -120,7 +120,6 @@ $(function () {
         $.easyAjax({
             container: "#edit"+main+"Form",
             type: "POST",
-            disableButton: true,
             buttonSelector: "#edit"+main+"Submit",
             file: true,
             blockUI: true,

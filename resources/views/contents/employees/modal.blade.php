@@ -8,7 +8,6 @@
                     'method' => 'POST',
                     'id' => 'addEmployeeForm',
                     'class' => 'restrict-enter',
-                    'enctype' => 'multipart/form-data'
                 ]) !!}
                 <div class="modal-header">
                     <h5 class="modal-title">Add Employee</h5>

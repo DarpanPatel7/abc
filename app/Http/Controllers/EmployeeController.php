@@ -52,7 +52,6 @@ class EmployeeController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        dd($request->all());
         try {
             //validate and upload base 64 image
             if (!empty($request->profile_photo)) {
@@ -80,7 +79,6 @@ class EmployeeController extends Controller
             $employee->status = !empty($request['status']) ? 1 : 0;
             $employee->save();
 
-            Session::put('success', 'Employee created successfully!');
             return Response::json(['success' => 'Employee created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -175,7 +173,6 @@ class EmployeeController extends Controller
             $employee->status = !empty($request['status']) ? 1 : 0;
             $employee->save();
 
-            Session::put('success','Employee updated successfully!');
             return Response::json(['success' => 'Employee updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -224,7 +221,7 @@ class EmployeeController extends Controller
     public function getEmployees(Request $request)
     {
         if ($request->ajax()) {
-            $employees = User::select('id', 'name', 'employee_no', 'designation_id', 'date_of_birth', 'status')->orderBy("id", "desc")->NoSuperAdminUser()->get();
+            $employees = User::select('id', 'name', 'profile_photo', 'employee_no', 'designation_id', 'date_of_birth', 'status')->orderBy("id", "desc")->NoSuperAdminUser()->get();
 
             return DataTables::of($employees)
                 ->addIndexColumn()
