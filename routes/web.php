@@ -54,12 +54,14 @@ require __DIR__.'/auth.php';
 
     //Designations
     Route::resource('designations', DesignationController::class);
+    Route::get('designations.getDesignations', [DesignationController::class, 'getDesignations'])->name('designations.getDesignations');
 
     //Menu
     Route::resource('menus', MenuController::class);
 
     //Customer
     Route::resource('customer-sources', CustomerSourceController::class);
+    Route::get('customer-sources.getCustomerSources', [CustomerSourceController::class, 'getCustomerSources'])->name('customer-sources.getCustomerSources');
 
     //Customer
     Route::resource('customer-businesses', CustomerBusinessController::class);

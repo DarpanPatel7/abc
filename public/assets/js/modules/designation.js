@@ -7,6 +7,7 @@
 // Datatable (jquery)
 $(function () {
     let borderColor, bodyBg, headingColor;
+    var main = 'Designation';
 
     if (isDarkStyle) {
         borderColor = config.colors_dark.borderColor;
@@ -19,12 +20,13 @@ $(function () {
     }
 
     // Variable declaration for table
-    var dt_designation_table = $(".datatables-designations");
+    var dt_selector = $(".datatable"+main);
 
     // Users datatable
-    if (dt_designation_table.length) {
-        var dt_designation = dt_designation_table.DataTable({
-            // order: [[1, "desc"]],
+    if (dt_selector.length) {
+        var datatable = dt_selector.DataTable({
+            processing: true,
+            serverSide: true,
             dom:
                 '<"row mx-2"' +
                 '<"col-md-2"<"me-3"l>>' +
@@ -46,23 +48,34 @@ $(function () {
                     },
                 },
             ],
+            ajax: dt_selector.data('url'),
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'name', name: 'name' },
+                { data: 'status', name: 'status' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
         });
     }
 
     // Delete Record
-    $(".datatables-designations tbody").on(
+    $(".datatable"+main+" tbody").on(
         "click",
-        ".deleteDesignation",
+        ".delete"+main,
         function () {
-            dt_designation = dt_designation.row($(this).parents("tr"));
-
+            datatable = datatable.row($(this).parents("tr"));
             var url = $(this).attr("data-url");
             $.easyAjax({
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                buttonSelector: ".deleteDesignation",
-                datatable: dt_designation,
+                buttonSelector: ".delete"+main,
+                datatable: datatable,
             });
         }
     );
@@ -75,41 +88,41 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#addDesignationSubmit", function () {
+    $(document).on("click", "#add"+main+"Submit", function () {
         $.easyAjax({
-            container: "#addDesignationForm",
+            container: "#add"+main+"Form",
             type: "POST",
-            disableButton: true,
-            buttonSelector: "#addDesignationSubmit",
-            reload: true,
+            buttonSelector: "#add"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 
     // render edit data
-    $(document).on("click", ".editDesignation", function () {
+    $(document).on("click", ".edit"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#editDesignationContent",
-            showModal: "#editDesignationModal",
+            appendHtmlModal: "#edit"+main+"Content",
+            showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#editDesignationSubmit", function (event) {
+    $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#editDesignationForm",
-            type: "PATCH",
-            disableButton: true,
-            buttonSelector: "#editDesignationSubmit",
-            reload: true,
+            container: "#edit"+main+"Form",
+            type: "POST",
+            buttonSelector: "#edit"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 });

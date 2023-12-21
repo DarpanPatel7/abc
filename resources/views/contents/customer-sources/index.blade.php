@@ -23,37 +23,15 @@
     <!-- Customer Sources List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatables-customer-sources table border-top">
+            <table class="datatableCustomerSource table border-top" data-url="{{ route('customer-sources.getCustomerSources') }}">
                 <thead>
                     <tr>
-                        <!-- <th>No</th> -->
+                        <th>No</th>
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (!empty($customer_sources))
-                        @php $i=1; @endphp
-                        @foreach ($customer_sources as $customer_source)
-                            <tr>
-                                <!-- <td class="control">{{ $i++; }}</td> -->
-                                <td>
-                                    {{ $customer_source->name ?? '' }}
-                                </td>
-                                <td>
-                                    <span class="{{ $customer_source->badgeStatus ?? '' }}">{{ $customer_source->stringStatus ?? '' }}</span>
-                                </td>
-                                <td>
-                                    <div class="d-inline-block text-nowrap">
-                                        <button class="btn btn-sm btn-icon editCustomerSource" data-url="{{ url('customer-sources/'.Crypt::Encrypt($customer_source->id).'/edit') }}"><i class="bx bx-edit"></i></button>
-                                        <button class="btn btn-sm btn-icon deleteCustomerSource" data-url="{!! url('customer-sources/'.Crypt::Encrypt($customer_source->id)) !!}"><i class="bx bx-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
             </table>
         </div>
     </div>

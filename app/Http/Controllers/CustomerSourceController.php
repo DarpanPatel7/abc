@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerSource;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
@@ -20,10 +21,7 @@ class CustomerSourceController extends Controller
      */
     public function index()
     {
-        //get all designation by id desc
-        $customer_sources = CustomerSource::orderBy("id", "desc")->get();
-
-        return view('contents.customer-sources.index', compact('customer_sources'));
+        return view('contents.customer-sources.index');
     }
 
     /**
@@ -150,6 +148,39 @@ class CustomerSourceController extends Controller
             CustomerSource::where('id',$id)->delete();
 
             return Response::json(['success' => 'Customer Source deleted successfully!'], 202);
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCustomerSources(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $customer_sources = CustomerSource::select('id', 'name', 'status')->orderBy("id", "desc")->get();
+
+                return DataTables::of($customer_sources)
+                    ->addIndexColumn()
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        $editUrl = url('customer-sources/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url('customer-sources/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editCustomerSource" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteCustomerSource" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        return $actionHtml;
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            }
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

@@ -7,6 +7,7 @@
 // Datatable (jquery)
 $(function () {
     let borderColor, bodyBg, headingColor;
+    var main = 'CustomerSource';
 
     if (isDarkStyle) {
         borderColor = config.colors_dark.borderColor;
@@ -19,11 +20,13 @@ $(function () {
     }
 
     // Variable declaration for table
-    var dt_customer_source_table = $(".datatables-customer-sources");
+    var dt_selector = $(".datatable"+main);
 
     // Users datatable
-    if (dt_customer_source_table.length) {
-        var dt_customer_source = dt_customer_source_table.DataTable({
+    if (dt_selector.length) {
+        var datatable = dt_selector.DataTable({
+            processing: true,
+            serverSide: true,
             dom:
                 '<"row mx-2"' +
                 '<"col-md-2"<"me-3"l>>' +
@@ -45,24 +48,34 @@ $(function () {
                     },
                 },
             ],
+            ajax: dt_selector.data('url'),
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'name', name: 'name' },
+                { data: 'status', name: 'status' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
         });
     }
 
     // Delete Record
-    $(".datatables-customer-sources tbody").on(
+    $(".datatable"+main+" tbody").on(
         "click",
-        ".deleteCustomerSource",
+        ".delete"+main,
         function () {
-            dt_customer_source = dt_customer_source.row($(this).parents("tr"));
-
+            datatable = datatable.row($(this).parents("tr"));
             var url = $(this).attr("data-url");
             $.easyAjax({
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                deleteToast: true,
-                buttonSelector: ".deleteCustomerSource",
-                datatable: dt_customer_source,
+                buttonSelector: ".delete"+main,
+                datatable: datatable,
             });
         }
     );
@@ -75,41 +88,41 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#addCustomerSourceSubmit", function () {
+    $(document).on("click", "#add"+main+"Submit", function () {
         $.easyAjax({
-            container: "#addCustomerSourceForm",
+            container: "#add"+main+"Form",
             type: "POST",
-            disableButton: true,
-            buttonSelector: "#addCustomerSourceSubmit",
-            reload: true,
+            buttonSelector: "#add"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 
     // render edit data
-    $(document).on("click", ".editCustomerSource", function () {
+    $(document).on("click", ".edit"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#editCustomerSourceContent",
-            showModal: "#editCustomerSourceModal",
+            appendHtmlModal: "#edit"+main+"Content",
+            showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#editCustomerSourceSubmit", function (event) {
+    $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#editCustomerSourceForm",
-            type: "PATCH",
-            disableButton: true,
-            buttonSelector: "#editCustomerSourceSubmit",
-            reload: true,
+            container: "#edit"+main+"Form",
+            type: "POST",
+            buttonSelector: "#edit"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            datatable: datatable,
         });
     });
 });

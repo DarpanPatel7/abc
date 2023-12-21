@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use App\DataTables\DesignationDataTable;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Designation\StoreRequest;
 use App\Http\Requests\Designation\UpdateRequest;
-use Illuminate\Support\Facades\Validator;
 
 class DesignationController extends Controller
 {
@@ -21,10 +22,7 @@ class DesignationController extends Controller
      */
     public function index(Request $request)
     {
-        //get all designation by id desc
-        $designations = Designation::orderBy("id", "desc")->get();
-
-        return view('contents.designations.index', compact('designations'));
+        return view('contents.designations.index');
     }
 
     /**
@@ -51,7 +49,6 @@ class DesignationController extends Controller
             $designation->status = !empty($request['status']) ? 1 : 0;
             $designation->save();
 
-            Session::put('success','Designation created successfully!');
             return Response::json(['success' => 'Designation created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -122,7 +119,6 @@ class DesignationController extends Controller
             $designation->status = !empty($request['status']) ? 1 : 0;
             $designation->save();
 
-            Session::put('success','Designation updated successfully!');
             return Response::json(['success' => 'Designation updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -150,8 +146,40 @@ class DesignationController extends Controller
 
             Designation::where('id',$id)->delete();
 
-            Session::put('success','Designation deleted successfully!');
             return Response::json(['success' => 'Designation deleted successfully!'], 202);
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDesignations(Request $request)
+    {
+        try {
+            if ($request->ajax()) {
+                $designations = Designation::select('id', 'name', 'status')->orderBy("id", "desc")->get();
+
+                return DataTables::of($designations)
+                    ->addIndexColumn()
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        $editUrl = url('designations/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url('designations/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editDesignation" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteDesignation" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        return $actionHtml;
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            }
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

@@ -23,37 +23,15 @@
     <!-- Designations List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatables-designations table border-top">
+            <table class="datatableDesignation table border-top" data-url="{{ route('designations.getDesignations') }}">
                 <thead>
                     <tr>
-                        <!-- <th>No</th> -->
+                        <th>No</th>
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (!empty($designations))
-                        @php $i=1; @endphp
-                        @foreach ($designations as $designation)
-                            <tr>
-                                <!-- <td class="control">{{ $i++; }}</td> -->
-                                <td>
-                                    {{ $designation->name ?? '' }}
-                                </td>
-                                <td>
-                                    <span class="{{ $designation->badgeStatus ?? '' }}">{{ $designation->stringStatus ?? '' }}</span>
-                                </td>
-                                <td>
-                                    <div class="d-inline-block text-nowrap">
-                                        <button class="btn btn-sm btn-icon editDesignation" data-url="{{ url('designations/'.Crypt::Encrypt($designation->id).'/edit') }}"><i class="bx bx-edit"></i></button>
-                                        <button class="btn btn-sm btn-icon deleteDesignation" data-url="{!! url('designations/'.Crypt::Encrypt($designation->id)) !!}"><i class="bx bx-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
             </table>
         </div>
     </div>
