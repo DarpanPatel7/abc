@@ -98,6 +98,7 @@ $(function () {
             file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
             datatable: datatable,
         });
     });
@@ -124,6 +125,7 @@ $(function () {
             file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
             datatable: datatable,
         });
     });

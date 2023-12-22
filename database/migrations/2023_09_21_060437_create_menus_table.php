@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->text('json_menu')->nullable();
             $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
+            $table->softDeletesTz();
             $table->timestamps();
         });
     }

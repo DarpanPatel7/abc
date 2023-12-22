@@ -7,6 +7,7 @@
 // Datatable (jquery)
 $(function () {
     let borderColor, bodyBg, headingColor;
+    var main = 'CustomerBusiness';
 
     if (isDarkStyle) {
         borderColor = config.colors_dark.borderColor;
@@ -19,11 +20,13 @@ $(function () {
     }
 
     // Variable declaration for table
-    var dt_customer_business_table = $(".datatables-customer-businesses");
+    var dt_selector = $(".datatable"+main);
 
     // Users datatable
-    if (dt_customer_business_table.length) {
-        var dt_customer_business = dt_customer_business_table.DataTable({
+    if (dt_selector.length) {
+        var datatable = dt_selector.DataTable({
+            processing: true,
+            serverSide: true,
             dom:
                 '<"row mx-2"' +
                 '<"col-md-2"<"me-3"l>>' +
@@ -45,24 +48,34 @@ $(function () {
                     },
                 },
             ],
+            ajax: dt_selector.data('url'),
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'name', name: 'name' },
+                { data: 'status', name: 'status' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
         });
     }
 
     // Delete Record
-    $(".datatables-customer-businesses tbody").on(
+    $(".datatable"+main+" tbody").on(
         "click",
-        ".deleteCustomerBusiness",
+        ".delete"+main,
         function () {
-            dt_customer_business = dt_customer_business.row($(this).parents("tr"));
-
+            datatable = datatable.row($(this).parents("tr"));
             var url = $(this).attr("data-url");
             $.easyAjax({
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                deleteToast: true,
-                buttonSelector: ".deleteCustomerBusiness",
-                datatable: dt_customer_business,
+                buttonSelector: ".delete"+main,
+                datatable: datatable,
             });
         }
     );
@@ -75,39 +88,43 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#addCustomerBusinessSubmit", function () {
+    $(document).on("click", "#add"+main+"Submit", function () {
         $.easyAjax({
-            container: "#addCustomerBusinessForm",
+            container: "#add"+main+"Form",
             type: "POST",
-            buttonSelector: "#addCustomerBusinessSubmit",
-            reload: true,
+            buttonSelector: "#add"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
+            datatable: datatable,
         });
     });
 
     // render edit data
-    $(document).on("click", ".editCustomerBusiness", function () {
+    $(document).on("click", ".edit"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#editCustomerBusinessContent",
-            showModal: "#editCustomerBusinessModal",
+            appendHtmlModal: "#edit"+main+"Content",
+            showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#editCustomerBusinessSubmit", function (event) {
+    $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#editCustomerBusinessForm",
-            type: "PATCH",
-            buttonSelector: "#editCustomerBusinessSubmit",
-            reload: true,
+            container: "#edit"+main+"Form",
+            type: "POST",
+            buttonSelector: "#edit"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
+            datatable: datatable,
         });
     });
 });

@@ -41,7 +41,7 @@
     <!-- Users List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatableEmployee table border-top" data-url="{{ route('employees.getEmployees') }}">
+            <table class="datatableEmployee table border-top" data-url="{{ route('employees.index') }}">
                 <thead>
                     <tr>
                         <th>No</th>

@@ -6,8 +6,6 @@ use App\Models\Designation;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Session;
-use App\DataTables\DesignationDataTable;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Designation\StoreRequest;
@@ -22,7 +20,31 @@ class DesignationController extends Controller
      */
     public function index(Request $request)
     {
-        return view('contents.designations.index');
+        try {
+            if ($request->ajax()) {
+                $designations = Designation::select('id', 'name', 'status')->orderBy("id", "desc")->get();
+
+                return DataTables::of($designations)
+                    ->addIndexColumn()
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        $editUrl = url('designations/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url('designations/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editDesignation" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteDesignation" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        return $actionHtml;
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            }
+            return view('contents.designations.index');
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
     }
 
     /**
@@ -147,39 +169,6 @@ class DesignationController extends Controller
             Designation::where('id',$id)->delete();
 
             return Response::json(['success' => 'Designation deleted successfully!'], 202);
-        } catch (\Throwable $th) {
-            return Response::json(['error' => $th->getMessage()], 202);
-        }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getDesignations(Request $request)
-    {
-        try {
-            if ($request->ajax()) {
-                $designations = Designation::select('id', 'name', 'status')->orderBy("id", "desc")->get();
-
-                return DataTables::of($designations)
-                    ->addIndexColumn()
-                    ->editColumn('status', function ($status) {
-                        $badgeStatus = $status->badgeStatus ?? '';
-                        $stringStatus = $status->stringStatus ?? '';
-                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
-                        return $userHtml;
-                    })
-                    ->addColumn('action', function($action){
-                        $editUrl = url('designations/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url('designations/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editDesignation" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteDesignation" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
-                        return $actionHtml;
-                    })
-                    ->rawColumns(['status', 'action'])
-                    ->make(true);
-            }
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
@@ -22,16 +23,67 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::orderBy('id', 'desc')->get();
-        $permissions = Permission::orderBy('sort', 'asc')->get();
-        $module_permissions = [];
-        foreach ($permissions as $key => $value) {
-            $module_permissions[$value->flag][] = $value;
+        try {
+            if ($request->ajax()) {
+                $employees = User::select('id', 'name', 'profile_photo', 'status')->orderBy("id", "desc")->get();
+
+                return DataTables::of($employees)
+                    ->addIndexColumn()
+                    ->addColumn('user', function ($user) {
+                        $ProfilePhotoPath = $user->ProfilePhotoPath ?? '';
+                        $name = $user->name ?? '';
+                        $email = $user->email ?? '';
+                        $userHtml = '<div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="avatar-wrapper">
+                                <div class="avatar avatar-sm me-3">
+                                    <img src="'.$ProfilePhotoPath.'" alt="Avatar" class="rounded-circle">
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a href="#" class="text-body text-truncate"><span class="fw-semibold">'.$name.'</span></a>
+                                <small class="text-muted">'.$email.'</small>
+                            </div>
+                        </div>';
+                        return $userHtml;
+                    })
+                    ->addColumn('role', function ($role) {
+                        $roleHtml = '';
+                        if (!empty($role->getRoleNames())){
+                            foreach ($role->getRoleNames() as $v){
+                                $roleHtml .= '<span class="btn btn-info btn-sm">'.$v.'</span>';
+                            }
+                        }
+                        return $roleHtml ?? '';
+                    })
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        if (!$action->hasRole('Super Admin')){
+                            $editUrl = url('roles.getRole/' . Crypt::Encrypt($action->id));
+                            $actionHtml = '<button class="btn btn-sm btn-icon assignRole" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button>';
+                        }
+                        return $actionHtml ?? '';
+                    })
+                    ->rawColumns(['user', 'role', 'status', 'action'])
+                    ->make(true);
+            }
+            $roles = Role::orderBy('id', 'desc')->get();
+            $permissions = Permission::orderBy('sort', 'asc')->get();
+            $module_permissions = [];
+            foreach ($permissions as $key => $value) {
+                $module_permissions[$value->flag][] = $value;
+            }
+            $employees = User::orderBy("id", "desc")->get();
+            return view('contents.roles.index', compact('roles', 'permissions', 'module_permissions', 'employees'));
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
         }
-        $employees = User::orderBy("id", "desc")->get();
-        return view('contents.roles.index', compact('roles', 'permissions', 'module_permissions', 'employees'));
     }
 
     /**

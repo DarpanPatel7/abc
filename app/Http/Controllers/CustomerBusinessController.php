@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerBusiness;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CustomerBusiness\StoreRequest;
@@ -18,12 +18,33 @@ class CustomerBusinessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //get all designation by id desc
-        $customer_businesses = CustomerBusiness::orderBy("id", "desc")->get();
+        try {
+            if ($request->ajax()) {
+                $customer_businesses = CustomerBusiness::select('id', 'name', 'status')->orderBy("id", "desc")->get();
 
-        return view('contents.customer-businesses.index', compact('customer_businesses'));
+                return DataTables::of($customer_businesses)
+                    ->addIndexColumn()
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        $editUrl = url('customer-businesses/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url('customer-businesses/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editCustomerBusiness" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteCustomerBusiness" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        return $actionHtml;
+                    })
+                    ->rawColumns(['status', 'action'])
+                    ->make(true);
+            }
+            return view('contents.customer-businesses.index');
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
     }
 
     /**
@@ -50,7 +71,6 @@ class CustomerBusinessController extends Controller
             $customer_business->status = !empty($request['status']) ? 1 : 0;
             $customer_business->save();
 
-            Session::put('success','Customer Business created successfully!');
             return Response::json(['success' => 'Customer Business created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -121,7 +141,6 @@ class CustomerBusinessController extends Controller
             $customer_business->status = !empty($request['status']) ? 1 : 0;
             $customer_business->save();
 
-            Session::put('success','Customer Business updated successfully!');
             return Response::json(['success' => 'Customer Business updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);

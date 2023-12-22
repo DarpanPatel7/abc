@@ -10,8 +10,6 @@ use App\Http\Traits\FileTrait;
 use App\Http\Traits\ImageTrait;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Employee\StoreRequest;
@@ -26,12 +24,59 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //get all employees by id desc
-        $designations = Designation::Active()->get()->pluck('name', 'id');
+        try {
+            if ($request->ajax()) {
+                $employees = User::select('id', 'name', 'profile_photo', 'employee_no', 'designation_id', 'date_of_birth', 'status')->orderBy("id", "desc")->NoSuperAdminUser()->get();
 
-        return view('contents.employees.index', compact('designations'));
+                return DataTables::of($employees)
+                    ->addIndexColumn()
+                    ->addColumn('user', function ($user) {
+                        $ProfilePhotoPath = $user->ProfilePhotoPath ?? '';
+                        $name = $user->name ?? '';
+                        $email = $user->email ?? '';
+                        $userHtml = '<div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="avatar-wrapper">
+                                <div class="avatar avatar-sm me-3">
+                                    <img src="'.$ProfilePhotoPath.'" alt="Avatar" class="rounded-circle">
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <a href="#" class="text-body text-truncate"><span class="fw-semibold">'.$name.'</span></a>
+                                <small class="text-muted">'.$email.'</small>
+                            </div>
+                        </div>';
+                        return $userHtml;
+                    })
+                    ->addColumn('designation', function ($designation) {
+                        return $designation->Designation->name ?? '';
+                    })
+                    ->editColumn('date_of_birth', function ($date_of_birth) {
+                        return $date_of_birth->Dob ?? '';
+                    })
+                    ->editColumn('status', function ($status) {
+                        $badgeStatus = $status->badgeStatus ?? '';
+                        $stringStatus = $status->stringStatus ?? '';
+                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        return $userHtml;
+                    })
+                    ->addColumn('action', function($action){
+                        $editUrl = url('employees/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url('employees/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editEmployee" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteEmployee" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        return $actionHtml;
+                    })
+                    ->rawColumns(['user', 'designation', 'date_of_birth', 'status', 'action'])
+                    ->make(true);
+            }
+            //get all employees by id desc
+            $designations = Designation::Active()->get()->pluck('name', 'id');
+
+            return view('contents.employees.index', compact('designations'));
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
     }
 
     /**
@@ -210,58 +255,6 @@ class EmployeeController extends Controller
             return Response::json(['success' => 'Employee deleted successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
-        }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getEmployees(Request $request)
-    {
-        if ($request->ajax()) {
-            $employees = User::select('id', 'name', 'profile_photo', 'employee_no', 'designation_id', 'date_of_birth', 'status')->orderBy("id", "desc")->NoSuperAdminUser()->get();
-
-            return DataTables::of($employees)
-                ->addIndexColumn()
-                ->addColumn('user', function ($user) {
-                    $ProfilePhotoPath = $user->ProfilePhotoPath ?? '';
-                    $name = $user->name ?? '';
-                    $email = $user->email ?? '';
-                    $userHtml = '<div class="d-flex justify-content-start align-items-center user-name">
-                        <div class="avatar-wrapper">
-                            <div class="avatar avatar-sm me-3">
-                                <img src="'.$ProfilePhotoPath.'" alt="Avatar" class="rounded-circle">
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <a href="#" class="text-body text-truncate"><span class="fw-semibold">'.$name.'</span></a>
-                            <small class="text-muted">'.$email.'</small>
-                        </div>
-                    </div>';
-                    return $userHtml;
-                })
-                ->addColumn('designation', function ($designation) {
-                    return $designation->Designation->name ?? '';
-                })
-                ->editColumn('date_of_birth', function ($date_of_birth) {
-                    return $date_of_birth->Dob ?? '';
-                })
-                ->editColumn('status', function ($status) {
-                    $badgeStatus = $status->badgeStatus ?? '';
-                    $stringStatus = $status->stringStatus ?? '';
-                    $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
-                    return $userHtml;
-                })
-                ->addColumn('action', function($action){
-                    $editUrl = url('employees/' . Crypt::Encrypt($action->id) . '/edit');
-                    $deleteUrl = url('employees/' . Crypt::Encrypt($action->id));
-                    $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editEmployee" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteEmployee" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
-                    return $actionHtml;
-                })
-                ->rawColumns(['user', 'status', 'action'])
-                ->make(true);
         }
     }
 }

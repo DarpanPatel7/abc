@@ -28,8 +28,7 @@ return new class extends Migration
             $table->string('identity_proof', 2048)->nullable();
             $table->rememberToken();
             $table->boolean('status')->comment('0=Inactive, 1=Active, 2=Deleted')->default(0);
-            $table->unsignedBigInteger('deleted_by')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletesTz();
             $table->timestamps();
         });
     }

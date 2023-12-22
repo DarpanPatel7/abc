@@ -1,23 +1,32 @@
 /**
- * App user list
+ * App Role list
  */
 
 "use strict";
 
 // Datatable (jquery)
 $(function () {
-    var dtUserTable = $(".datatables-users"),
-        statusObj = {
-            1: { title: "Pending", class: "bg-label-warning" },
-            2: { title: "Active", class: "bg-label-success" },
-            3: { title: "Inactive", class: "bg-label-secondary" },
-        };
+    let borderColor, bodyBg, headingColor;
+    var main = 'Role';
 
-    var userView = baseUrl + "app/user/view/account";
+    if (isDarkStyle) {
+        borderColor = config.colors_dark.borderColor;
+        bodyBg = config.colors_dark.bodyBg;
+        headingColor = config.colors_dark.headingColor;
+    } else {
+        borderColor = config.colors.borderColor;
+        bodyBg = config.colors.bodyBg;
+        headingColor = config.colors.headingColor;
+    }
+
+    // Variable declaration for table
+    var dt_selector = $(".datatable"+main);
 
     // Users List datatable
-    if (dtUserTable.length) {
-        dtUserTable.DataTable({
+    if (dt_selector.length) {
+        var datatable = dt_selector.DataTable({
+            processing: true,
+            serverSide: true,
             dom:
                 '<"row mx-2"' +
                 '<"col-sm-12 col-md-4 col-lg-6" l>' +
@@ -27,51 +36,38 @@ $(function () {
                 '<"col-sm-12 col-md-6"i>' +
                 '<"col-sm-12 col-md-6"p>' +
                 ">",
-            language: {
-                sLengthMenu: "_MENU_",
-                search: "Search",
-                searchPlaceholder: "Search..",
-            },
-            /* initComplete: function () {
-                // Adding role filter once table initialized
-                this.api()
-                    .columns(1)
-                    .every(function () {
-                        var column = this;
-                        var select = $(
-                            '<select id="UserRole" class="form-select text-capitalize"><option value=""> Select Role </option></select>'
-                        )
-                            .appendTo(".user_role")
-                            .on("change", function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-                                column
-                                    .search(
-                                        val ? "^" + val + "$" : "",
-                                        true,
-                                        false
-                                    )
-                                    .draw();
-                            });
-
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append(
-                                    '<option value="' +
-                                        d +
-                                        '" class="text-capitalize">' +
-                                        d +
-                                        "</option>"
-                                );
-                            });
-                    });
-            }, */
+            ajax: dt_selector.data('url'),
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'user', name: 'user' },
+                { data: 'role', name: 'role' },
+                { data: 'status', name: 'status' },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
         });
     }
+
+    // Delete Record
+    $(".datatable"+main+" tbody").on(
+        "click",
+        ".delete"+main,
+        function () {
+            datatable = datatable.row($(this).parents("tr"));
+            var url = $(this).attr("data-url");
+            $.easyAjax({
+                url: url,
+                type: "DELETE",
+                disableButton: true,
+                buttonSelector: ".delete"+main,
+                datatable: datatable,
+            });
+        }
+    );
 
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
@@ -81,79 +77,69 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#addRoleSubmit", function () {
+    $(document).on("click", "#add"+main+"Submit", function () {
         $.easyAjax({
-            container: "#addRoleForm",
+            container: "#add"+main+"Form",
             type: "POST",
-            disableButton: true,
-            buttonSelector: "#addRoleSubmit",
-            reload: true,
+            buttonSelector: "#add"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
+            datatable: datatable,
         });
     });
 
     // render edit data
-    $(document).on("click", ".editRole", function () {
+    $(document).on("click", ".edit"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#editRoleContent",
-            showModal: "#editRoleModal",
+            appendHtmlModal: "#edit"+main+"Content",
+            showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#editRoleSubmit", function (event) {
+    $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#editRoleForm",
-            type: "PATCH",
-            disableButton: true,
-            buttonSelector: "#editRoleSubmit",
-            reload: true,
+            container: "#edit"+main+"Form",
+            type: "POST",
+            buttonSelector: "#edit"+main+"Submit",
+            file: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
+            datatable: datatable,
         });
     });
 
     // render assign role data
-    $(document).on("click", ".assignRole", function () {
+    $(document).on("click", ".assign"+main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#assignRoleContent",
-            showModal: "#assignRoleModal",
+            appendHtmlModal: "#assign"+main+"Content",
+            showModal: "#assign"+main+"Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // assign role
-    $("body").on("click", "#assignRoleSubmit", function (event) {
+    $("body").on("click", "#assign"+main+"Submit", function (event) {
         $.easyAjax({
-            container: "#assignRoleForm",
+            container: "#assign"+main+"Form",
             type: "PATCH",
             disableButton: true,
-            buttonSelector: "#assignRoleSubmit",
+            buttonSelector: "#assign"+main+"Submit",
             reload: true,
             blockUI: true,
             disableButton: true,
-        });
-    });
-
-    // delete role
-    $(document).on("click", ".deleteRole", function () {
-        var url = $(this).data("url");
-        $.easyAjax({
-            url: url,
-            type: "DELETE",
-            disableButton: true,
-            buttonSelector: ".deleteRole",
-            reload: true,
         });
     });
 

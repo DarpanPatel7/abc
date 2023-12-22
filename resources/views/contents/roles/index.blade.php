@@ -107,16 +107,17 @@
             <!-- Role Table -->
             <div class="card">
                 <div class="card-datatable table-responsive">
-                    <table class="datatables-users table border-top">
+                    <table class="datatableRole table border-top" data-url="{{ route('roles.index') }}">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>User</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Assign Role</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {{--  <tbody>
                             @foreach ($employees as $employee)
                                 <tr>
                                     <td>
@@ -156,6 +157,7 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        </tbody>  --}}
                     </table>
                 </div>
             </div>

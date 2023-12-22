@@ -23,36 +23,15 @@
     <!-- Customer Businesses List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatables-customer-businesses table border-top">
+            <table class="datatableCustomerBusiness table border-top" data-url="{{ route('customer-businesses.index') }}">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Name</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @if (!empty($customer_businesses))
-                        @php $i=1; @endphp
-                        @foreach ($customer_businesses as $customer_business)
-                            <tr>
-                                <!-- <td class="control">{{ $i++; }}</td> -->
-                                <td>
-                                    {{ $customer_business->name ?? '' }}
-                                </td>
-                                <td>
-                                    <span class="{{ $customer_business->badgeStatus ?? '' }}">{{ $customer_business->stringStatus ?? '' }}</span>
-                                </td>
-                                <td>
-                                    <div class="d-inline-block text-nowrap">
-                                        <button class="btn btn-sm btn-icon editCustomerBusiness" data-url="{{ url('customer-businesses/'.Crypt::Encrypt($customer_business->id).'/edit') }}"><i class="bx bx-edit"></i></button>
-                                        <button class="btn btn-sm btn-icon deleteCustomerBusiness" data-url="{!! url('customer-businesses/'.Crypt::Encrypt($customer_business->id)) !!}"><i class="bx bx-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
             </table>
         </div>
     </div>

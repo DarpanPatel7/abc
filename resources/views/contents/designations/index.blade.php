@@ -23,7 +23,7 @@
     <!-- Designations List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatableDesignation table border-top" data-url="{{ route('designations.getDesignations') }}">
+            <table class="datatableDesignation table border-top" data-url="{{ route('designations.index') }}">
                 <thead>
                     <tr>
                         <th>No</th>

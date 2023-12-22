@@ -23,7 +23,7 @@
     <!-- Customer Sources List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatableCustomerSource table border-top" data-url="{{ route('customer-sources.getCustomerSources') }}">
+            <table class="datatableCustomerSource table border-top" data-url="{{ route('customer-sources.index') }}">
                 <thead>
                     <tr>
                         <th>No</th>

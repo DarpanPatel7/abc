@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('status')->comment('0=Inactive, 1=Active, 2=Deleted')->default(0);
-            $table->unsignedBigInteger('deleted_by')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletesTz();
             $table->timestamps();
         });
     }
