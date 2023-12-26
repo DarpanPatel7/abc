@@ -30,8 +30,8 @@
                                             title="Allows a full access to the system"></i></td>
                                     <td>
                                         <div class="form-check">
-                                            {{ Form::checkbox('all_permissions', null, false, ['class' => 'form-check-input', 'id' => 'addall_permissions']) }}
-                                            <label class="form-check-label" for="addall_permissions">
+                                            {{ Form::checkbox('all_permissions', null, false, ['class' => 'form-check-input', 'id' => 'editall_permissions']) }}
+                                            <label class="form-check-label" for="editall_permissions">
                                                 Select All
                                             </label>
                                         </div>
@@ -44,7 +44,16 @@
 
                                         @endphp
                                         <tr>
-                                            <td class="text-nowrap">{{ $pkey }}</td>
+                                            <td>
+                                                <div class="d-flex flex-wrap">
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        {{ Form::checkbox('module_all_permissions', null, false, ['class' => 'form-check-input editmodule_all_permissions', 'data-key' => $sr_pkey, 'id' => 'editmodule_all_permissions' . $sr_pkey]) }}
+                                                        <label class="form-check-label" for="editmodule_all_permissions{{ $sr_pkey }}">
+                                                            {{ $pkey }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div class="d-flex flex-wrap">
                                                     @foreach ($pval as $key => $val)

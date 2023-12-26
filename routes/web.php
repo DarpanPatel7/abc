@@ -7,7 +7,6 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\CustomerSourceController;
@@ -49,7 +48,6 @@ require __DIR__.'/auth.php';
     Route::resource('roles', RoleController::class);
     Route::get('roles.getRole/{id}', [RoleController::class, 'getRole'])->name('roles.getRole');
     Route::patch('roles.updateRole/{id}', [RoleController::class, 'updateRole'])->name('roles.updateRole');
-    Route::resource('permissions', PermissionController::class);
 
     //Designations
     Route::resource('designations', DesignationController::class);

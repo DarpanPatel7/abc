@@ -8,27 +8,17 @@
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 @endsection
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
-    <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
     <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
-    <script src="{{ asset('assets/js/modules/roles.js') }}"></script>
     <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/roles.js') }}"></script>
 @endsection
 
 @section('content')
@@ -117,47 +107,6 @@
                                 <th>Assign Role</th>
                             </tr>
                         </thead>
-                        {{--  <tbody>
-                            @foreach ($employees as $employee)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex justify-content-start align-items-center user-name">
-                                            <div class="avatar-wrapper">
-                                                <div class="avatar avatar-sm me-3">
-                                                    <img src="{{ $employee->ProfilePhotoPath ?? '' }}" alt="Avatar"
-                                                        class="rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <a href="#" class="text-body text-truncate"><span
-                                                        class="fw-semibold">{{ $employee->name ?? '' }}</span></a>
-                                                <small class="text-muted">{{ $employee->email ?? '' }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @if (!empty($employee->getRoleNames()))
-                                            @foreach ($employee->getRoleNames() as $v)
-                                                <span class="btn btn-info btn-sm">{{ $v }}</span>
-                                            @endforeach
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="{{ $employee->badgeStatus ?? '' }}">{{ $employee->stringStatus ?? '' }}</span>
-                                    </td>
-                                    <td>
-                                        <div class="d-inline-block text-nowrap">
-                                            @if (!$employee->hasRole('Super Admin'))
-                                                <button class="btn btn-sm btn-icon assignRole"
-                                                    data-url="{{ url('roles.getRole/' . Crypt::Encrypt($employee->id)) }}"><i
-                                                        class="bx bx-edit"></i></button>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>  --}}
                     </table>
                 </div>
             </div>

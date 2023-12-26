@@ -44,10 +44,19 @@
                                             @foreach ($module_permissions as $pkey => $pval)
                                                 @php
                                                     $sr_pkey = str_replace(' ', '-', $pkey);
-
                                                 @endphp
                                                 <tr>
-                                                    <td class="text-nowrap">{{ $pkey }}</td>
+                                                    <td>
+                                                        <div class="d-flex flex-wrap">
+                                                            <div class="form-check me-3 me-lg-5">
+                                                                {{ Form::checkbox('module_all_permissions', null, false, ['class' => 'form-check-input addmodule_all_permissions', 'data-key' => $sr_pkey, 'id' => 'addmodule_all_permissions' . $sr_pkey]) }}
+                                                                <label class="form-check-label"
+                                                                    for="addmodule_all_permissions{{ $sr_pkey }}">
+                                                                    {{ $pkey }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td>
                                                         <div class="d-flex flex-wrap">
                                                             @foreach ($pval as $key => $val)

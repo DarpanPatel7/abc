@@ -101,6 +101,11 @@ $(function () {
             blockUI: true,
             disableButton: true,
         });
+        setTimeout( function(){
+            $.when( $.ready, $.get($(this).data("url")) ).done(function() {
+                checkedEditAllPermission();
+            })
+        },1000);
     });
 
     // update
@@ -143,32 +148,98 @@ $(function () {
         });
     });
 
-    // Handle click on "Select all" control for add
-    // $("body").on("click", "#addall_permissions", function (event) {
-    //     $(".addmodule_all_permissions").prop("checked", this.checked);
-    //     $("body .addmodule_all_permissions").each(function () {
-    //         $("input.addpermission[data-val=" + $(this).data("key") + "]").prop(
-    //             "checked",
-    //             this.checked
-    //         );
-    //     });
-    // });
-});
 
-(function () {
-    // On edit role click, update text
-    var roleEditList = document.querySelectorAll(".role-edit-modal"),
-        roleAdd = document.querySelector(".add-new-role"),
-        roleTitle = document.querySelector(".role-title");
-
-    roleAdd.onclick = function () {
-        roleTitle.innerHTML = "Add New Role"; // reset text
-    };
-    if (roleEditList) {
-        roleEditList.forEach(function (roleEditEl) {
-            roleEditEl.onclick = function () {
-                roleTitle.innerHTML = "Edit Role"; // reset text
-            };
+    function checkedEditAllPermission(){
+        $("body .editpermission").each(function () {
+            if ($("input.editpermission[data-val="+$(this).data("val")+"]:checked").length == $("input.editpermission[data-val="+$(this).data("val")+"]").length) {
+                $(".editmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',true);
+            }else{
+                $(".editmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',false);
+            }
         });
+
+        if ($('.editmodule_all_permissions:checked').length == $('.editmodule_all_permissions').length) {
+            $('#editall_permissions').prop('checked',true);
+        }else{
+            $('#editall_permissions').prop('checked',false);
+        }
     }
-})();
+
+    // Handle click on "Select all" control for edit
+    $('body').on('click', '#editall_permissions', function (event) {
+        $('.editmodule_all_permissions').prop('checked', this.checked);
+        $("body .editmodule_all_permissions").each(function () {
+            $("input.editpermission[data-val="+$(this).data("key")+"]").prop('checked', this.checked);
+        });
+    });
+    $('body').on('click', '.editmodule_all_permissions', function (event) {
+        $('.'+$(this).data('key')).prop('checked', this.checked);
+        checkedEditAllPermission();
+    });
+    $('body').on('click', '.editpermission', function (event) {
+        if ($("input.editpermission[data-val="+$(this).data("val")+"]:checked").length == $("input.editpermission[data-val="+$(this).data("val")+"]").length) {
+            $(".editmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',true);
+        }else{
+            $(".editmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',false);
+        }
+        if ($('.editpermission:checked').length == $('.editpermission').length) {
+            $('#editall_permissions').prop('checked',true);
+        }else{
+            $('#editall_permissions').prop('checked',false);
+        }
+
+        //  Select list permission if edit pr delete is checked
+        var p_type = $(this).data("type").split('-').pop();
+
+        if($("input.editpermission[data-type="+$(this).data("val").toLowerCase()+'-'+p_type+"]:checked") && (p_type == 'edit' || p_type == 'delete' || p_type == 'create')) {
+            $("input.editpermission[data-type="+$(this).data("val").toLowerCase()+"-list]").prop('checked',true);
+        }
+
+        if($("input.editpermission[data-type="+$(this).data("val").toLowerCase()+"-list]").is(':checked') == false && p_type == 'list') {
+            $("input.editpermission[data-type="+$(this).data("val").toLowerCase()+"-create]").prop('checked',false);
+            $("input.editpermission[data-type="+$(this).data("val").toLowerCase()+"-edit]").prop('checked',false);
+            $("input.editpermission[data-type="+$(this).data("val").toLowerCase()+"-delete]").prop('checked',false);
+        }
+    });
+
+    // Handle click on "Select all" control for add
+    $('body').on('click', '#addall_permissions', function (event) {
+        $('.addmodule_all_permissions').prop('checked', this.checked);
+        $("body .addmodule_all_permissions").each(function () {
+            $("input.addpermission[data-val="+$(this).data("key")+"]").prop('checked', this.checked);
+        });
+    });
+    $('body').on('click', '.addmodule_all_permissions', function (event) {
+        $('.'+$(this).data('key')).prop('checked', this.checked);
+        if ($('.addmodule_all_permissions:checked').length == $('.addmodule_all_permissions').length) {
+            $('#addall_permissions').prop('checked',true);
+        }else{
+            $('#addall_permissions').prop('checked',false);
+        }
+    });
+    $('body').on('click', '.addpermission', function (event) {
+        if ($("input.addpermission[data-val="+$(this).data("val")+"]:checked").length == $("input.addpermission[data-val="+$(this).data("val")+"]").length) {
+            $(".addmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',true);
+        }else{
+            $(".addmodule_all_permissions[data-key="+$(this).data("val")+"]").prop('checked',false);
+        }
+        if ($('.addmodule_all_permissions:checked').length == $('.addmodule_all_permissions').length) {
+            $('#addall_permissions').prop('checked',true);
+        }else{
+            $('#addall_permissions').prop('checked',false);
+        }
+
+        //  Select list permission if edit pr delete is checked
+        var p_type = $(this).data("type").split('-').pop();
+
+        if($("input.addpermission[data-type="+$(this).data("val").toLowerCase()+'-'+p_type+"]:checked") && (p_type == 'edit' || p_type == 'delete' || p_type == 'create')) {
+            $("input.addpermission[data-type="+$(this).data("val").toLowerCase()+"-list]").prop('checked',true);
+        }
+
+        if($("input.addpermission[data-type="+$(this).data("val").toLowerCase()+"-list]").is(':checked') == false && p_type == 'list') {
+            $("input.addpermission[data-type="+$(this).data("val").toLowerCase()+"-create]").prop('checked',false);
+            $("input.addpermission[data-type="+$(this).data("val").toLowerCase()+"-edit]").prop('checked',false);
+            $("input.addpermission[data-type="+$(this).data("val").toLowerCase()+"-delete]").prop('checked',false);
+        }
+    });
+});
