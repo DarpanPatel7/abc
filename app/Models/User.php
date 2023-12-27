@@ -54,8 +54,6 @@ class User extends Authenticatable
         'profile_photo',
         'identity_proof',
         'status',
-        'deleted_by',
-        'deleted_at',
     ];
 
     /**

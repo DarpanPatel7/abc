@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Role\StoreRequest;
 use Illuminate\Support\Facades\Response;
 use Spatie\Permission\Models\Permission;
@@ -52,7 +51,7 @@ class RoleController extends Controller
                         $roleHtml = '';
                         if (!empty($role->getRoleNames())){
                             foreach ($role->getRoleNames() as $v){
-                                $roleHtml .= '<span class="btn btn-info btn-sm">'.$v.'</span>';
+                                $roleHtml .= '<span class="btn btn-info btn-sm mx-2 my-1">'.$v.'</span>';
                             }
                         }
                         return $roleHtml ?? '';
@@ -110,7 +109,6 @@ class RoleController extends Controller
             $role = Role::create($input);
             $role->syncPermissions($request->input('permission'));
 
-            Session::put('success','Role created successfully!');
             return Response::json(['success' => 'Role created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -194,7 +192,6 @@ class RoleController extends Controller
 
             $role->syncPermissions($request->input('permission'));
 
-            Session::put('success','Role updated successfully!');
             return Response::json(['success' => 'Role updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -229,7 +226,6 @@ class RoleController extends Controller
             //can delete any other role
             Role::where('id',$id)->where('name','!=','Super Admin')->delete();
 
-            Session::put('success','Role Deleted successfully!');
             return Response::json(['success' => 'Role Deleted successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -295,7 +291,6 @@ class RoleController extends Controller
                 $employee->assignRole($role);
             }
 
-            Session::put('success','Assing role successfully!');
             return Response::json(['success' => 'Assign role successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);

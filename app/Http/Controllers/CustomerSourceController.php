@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\CustomerSource;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CustomerSource\StoreRequest;
@@ -72,7 +71,6 @@ class CustomerSourceController extends Controller
             $customer_source->status = !empty($request['status']) ? 1 : 0;
             $customer_source->save();
 
-            Session::put('success','Customer Source created successfully!');
             return Response::json(['success' => 'Customer Source created successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -143,7 +141,6 @@ class CustomerSourceController extends Controller
             $customer_source->status = !empty($request['status']) ? 1 : 0;
             $customer_source->save();
 
-            Session::put('success','Customer Source updated successfully!');
             return Response::json(['success' => 'Customer Source updated successfully!'], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);

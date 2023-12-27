@@ -81,9 +81,6 @@
                     if (typeof initDatePicker == "function") {
                         initDatePicker();
                     }
-                    if (typeof initAjaxDropdownMultiple == "function") {
-                        initAjaxDropdownMultiple();
-                    }
                 }
             };
         }

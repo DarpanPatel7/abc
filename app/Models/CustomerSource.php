@@ -29,8 +29,6 @@ class CustomerSource extends Model
     protected $fillable = [
         'name',
         'status',
-        'deleted_by',
-        'deleted_at',
     ];
 
     /**

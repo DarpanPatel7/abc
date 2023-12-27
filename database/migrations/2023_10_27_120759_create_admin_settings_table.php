@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('admin_settings', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('key');
-            $table->text('value')->nullable();
+            $table->longText('value')->nullable();
             $table->softDeletesTz();
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_settings');
+        Schema::dropIfExists('settings');
     }
 };

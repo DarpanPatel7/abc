@@ -13,11 +13,12 @@
                     <h3 class="role-title">Assign Role</h3>
                 </div>
                 <div class="col-12 mb-4 inp-group">
-                    <label class="form-label">Roles</label>
+                    <label for="assignRoleMultiple" class="form-label">Roles</label>
                     {!! Form::select('roles[]', $roles, $employeeRole, [
                         'class' => 'select2 form-select',
+                        'id' => 'assignRoleMultiple',
                         'multiple' => 'multiple',
-                        'data-placeholder' => 'Select Roles',
+                        'data-placeholder' => 'Select Roles'
                     ]) !!}
                 </div>
                 <div class="col-12 text-center">

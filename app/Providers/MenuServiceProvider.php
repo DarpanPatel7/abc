@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Menu;
+use App\Models\Setting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -23,15 +23,15 @@ class MenuServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $verticalMenuJson = $horizontalMenuJson = '';
-        //check if menus table exists if not then it will get menu json data from file otherwise menu json data comes from table.
+        //check if setting table exists if not then it will get menu json data from file from storage folder otherwise menu json data comes from table.
         //also seperately check vertical and horizontal menus json data from tables.
-        if (Schema::hasTable('menus')) {
-            $menu = new Menu;
-            $verticalMenu = $menu->where('type', 'vertical')->Active()->first();
+        if (Schema::hasTable('settings')) {
+            $menu = new Setting;
+            $verticalMenu = $menu->where('code', 'menu')->where('key', 'vertical_menu')->first();
             if(!empty($verticalMenu)){
                 //get vertical menu json data
                 if (!empty($verticalMenu)) {
-                    $verticalMenuJson = $verticalMenu->json_menu;
+                    $verticalMenuJson = $verticalMenu->value;
                 }
                 $verticalMenuData = json_decode($verticalMenuJson);
             }else{
@@ -39,11 +39,11 @@ class MenuServiceProvider extends ServiceProvider
                 $verticalMenuData = json_decode($verticalMenuJson);
             }
 
-            $horizontalMenu = $menu->where('type', 'horizontal')->Active()->first();
+            $horizontalMenu = $menu->where('code', 'menu')->where('key', 'horizontal_menu')->first();
             if(!empty($horizontalMenu)){
                 //get horizontal menu json data
                 if (!empty($horizontalMenu)) {
-                    $horizontalMenuJson = $horizontalMenu->json_menu;
+                    $horizontalMenuJson = $horizontalMenu->value;
                 }
                 $horizontalMenuData = json_decode($horizontalMenuJson);
             }else{

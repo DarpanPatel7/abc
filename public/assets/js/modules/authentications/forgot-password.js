@@ -9,8 +9,8 @@ $(function () {
     $(document).on("click", "#forgot-password", function () {
         $.easyAjax({
             type: "POST",
-            buttonSelector: "#forgot-password",
             data: $("#forgot-password-form").serialize(),
+            buttonSelector: "#forgot-password",
             blockUI: true,
             blockUIMessage: 'Please wait while sending e-mail...',
             disableButton: true,
