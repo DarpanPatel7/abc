@@ -82,7 +82,6 @@ $(function () {
             container: "#add"+main+"Form",
             type: "POST",
             buttonSelector: "#add"+main+"Submit",
-            file: true,
             blockUI: true,
             disableButton: true,
             formReset:true,
@@ -105,7 +104,7 @@ $(function () {
             $.when( $.ready, $.get($(this).data("url")) ).done(function() {
                 checkedEditAllPermission();
             })
-        },1000);
+        });
     });
 
     // update
@@ -114,7 +113,6 @@ $(function () {
             container: "#edit"+main+"Form",
             type: "POST",
             buttonSelector: "#edit"+main+"Submit",
-            file: true,
             blockUI: true,
             disableButton: true,
             formReset:true,
@@ -140,11 +138,11 @@ $(function () {
         $.easyAjax({
             container: "#assign"+main+"Form",
             type: "PATCH",
-            disableButton: true,
             buttonSelector: "#assign"+main+"Submit",
-            reload: true,
             blockUI: true,
             disableButton: true,
+            formReset:true,
+            datatable: datatable,
         });
     });
 

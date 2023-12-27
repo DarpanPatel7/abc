@@ -19,10 +19,10 @@ class SettingController extends Controller
     public function index()
     {
         //get all designation by id desc
-        $admin_setting = new Setting;
+        $setting = new Setting;
 
-        $vertical_menus = $admin_setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
-        $horizontal_menus = $admin_setting->where('code', 'menu')->where('key', 'horizontal_menu')->first();
+        $vertical_menus = $setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
+        $horizontal_menus = $setting->where('code', 'menu')->where('key', 'horizontal_menu')->first();
 
         return view('contents.settings.index', compact('vertical_menus', 'horizontal_menus'));
     }

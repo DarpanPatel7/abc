@@ -1,6 +1,6 @@
 @if(Route::is(['customer-sources.index']))
 <!-- add customer source -->
-<div class="modal fade" id="addCustomerSourceModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="addCustomerSourceModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             {!! Form::open(array('route' => 'customer-sources.store','method'=>'POST','id'=>'addCustomerSourceForm','class'=>'restrict-enter')) !!}
@@ -40,7 +40,7 @@
 </div>
 
 <!-- edit customer source -->
-<div class="modal fade" id="editCustomerSourceModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editCustomerSourceModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div id="editCustomerSourceContent"></div>

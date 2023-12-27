@@ -1,6 +1,6 @@
 @if (Route::is(['roles.index']))
     <!-- Add Role Modal -->
-    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
             <!-- Add role form -->
             {!! Form::open([
@@ -92,7 +92,7 @@
     <!--/ Add Role Modal -->
 
     <!-- Edit Role Modal -->
-    <div class="modal fade" id="editRoleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editRoleModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-new-role">
             <div id="editRoleContent" style="display: contents;"></div>
         </div>
@@ -100,7 +100,7 @@
     <!--/ Edit Role Modal -->
 
     <!-- Assign Role Modal -->
-    <div class="modal fade" id="assignRoleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="assignRoleModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-assign-new-role">
             <div id="assignRoleContent" style="display: contents;"></div>
         </div>

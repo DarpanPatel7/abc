@@ -1,6 +1,6 @@
 @if(Route::is(['customer-businesses.index']))
 <!-- add customer business -->
-<div class="modal fade" id="addCustomerBusinessModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="addCustomerBusinessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             {!! Form::open(array('route' => 'customer-businesses.store','method'=>'POST','id'=>'addCustomerBusinessForm','class'=>'restrict-enter')) !!}
@@ -40,7 +40,7 @@
 </div>
 
 <!-- edit customer business -->
-<div class="modal fade" id="editCustomerBusinessModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editCustomerBusinessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div id="editCustomerBusinessContent"></div>

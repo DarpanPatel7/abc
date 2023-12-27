@@ -1,6 +1,6 @@
 @if (Route::is(['employees.index']))
     <!-- add employee -->
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 {!! Form::open([
@@ -116,7 +116,7 @@
     </div>
 
     <!-- edit employee -->
-    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div id="editEmployeeContent"></div>
@@ -126,7 +126,7 @@
     <!-- edit employee -->
 
     <!-- profile photo -->
-    <div class="modal fade" id="cropImagePop" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="cropImagePop" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

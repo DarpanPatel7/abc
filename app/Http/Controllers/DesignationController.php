@@ -14,6 +14,18 @@ use App\Http\Requests\Designation\UpdateRequest;
 class DesignationController extends Controller
 {
     /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    /* public function __construct()
+    {
+        $this->middleware('permission:designation-list|designation-create|designation-edit|designation-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:designation-create', ['only' => ['create','store']]);
+        $this->middleware('permission:designation-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:designation-delete', ['only' => ['destroy']]);
+    } */
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

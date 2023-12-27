@@ -1,6 +1,6 @@
 @if(Route::is(['designations.index']))
 <!-- add designation -->
-<div class="modal fade" id="addDesignationModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="addDesignationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             {!! Form::open(array('route' => 'designations.store','method'=>'POST','id'=>'addDesignationForm','class'=>'restrict-enter')) !!}
@@ -40,7 +40,7 @@
 </div>
 
 <!-- edit designation -->
-<div class="modal fade" id="editDesignationModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editDesignationModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div id="editDesignationContent"></div>
