@@ -7,7 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesignationController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AdminSettingController;
+use App\Http\Controllers\AccountSettingController;
 use App\Http\Controllers\CustomerSourceController;
 use App\Http\Controllers\CustomerBusinessController;
 
@@ -57,12 +58,16 @@ require __DIR__.'/auth.php';
     //Customer
     Route::resource('customer-businesses', CustomerBusinessController::class);
 
-    //Settings
-    Route::get('settings', [SettingController::class, 'index'])->name('settings');
-    Route::get('settings.getVerticalMenu', [SettingController::class, 'getVerticalMenu'])->name('settings.getVerticalMenu');
-    Route::post('settings.saveVerticalMenu', [SettingController::class, 'saveVerticalMenu'])->name('settings.saveVerticalMenu');
-    Route::get('settings.getHorizontalMenu', [SettingController::class, 'getHorizontalMenu'])->name('settings.getHorizontalMenu');
-    Route::post('settings.saveHorizontalMenu', [SettingController::class, 'saveHorizontalMenu'])->name('settings.saveHorizontalMenu');
+    //admin-Settings
+    Route::get('admin-settings', [AdminSettingController::class, 'index'])->name('admin-settings');
+    Route::get('admin-settings.getVerticalMenu', [AdminSettingController::class, 'getVerticalMenu'])->name('admin-settings.getVerticalMenu');
+    Route::post('admin-settings.saveVerticalMenu', [AdminSettingController::class, 'saveVerticalMenu'])->name('admin-settings.saveVerticalMenu');
+    Route::get('admin-settings.getHorizontalMenu', [AdminSettingController::class, 'getHorizontalMenu'])->name('admin-settings.getHorizontalMenu');
+    Route::post('admin-settings.saveHorizontalMenu', [AdminSettingController::class, 'saveHorizontalMenu'])->name('admin-settings.saveHorizontalMenu');
+
+    Route::get('account-settings/account', [AccountSettingController::class, 'account'])->name('account-settings.account');
+    Route::get('account-settings/security', [AccountSettingController::class, 'security'])->name('account-settings.security');
+    // Route::get('account-settings', [AccountSettingController::class, 'index'])->name('account-settings');
 // });
 
 

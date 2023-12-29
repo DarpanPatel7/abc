@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
+use App\Models\AdminSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
-use App\Http\Requests\Setting\VerticalMenuRequest;
-use App\Http\Requests\Setting\HorizontalMenuRequest;
+use App\Http\Requests\AdminSetting\VerticalMenuRequest;
+use App\Http\Requests\AdminSetting\HorizontalMenuRequest;
 
-class SettingController extends Controller
+class AdminSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,12 +19,12 @@ class SettingController extends Controller
     public function index()
     {
         //get all designation by id desc
-        $setting = new Setting;
+        $admin_setting = new AdminSetting;
 
-        $vertical_menus = $setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
-        $horizontal_menus = $setting->where('code', 'menu')->where('key', 'horizontal_menu')->first();
+        $vertical_menus = $admin_setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
+        $horizontal_menus = $admin_setting->where('code', 'menu')->where('key', 'horizontal_menu')->first();
 
-        return view('contents.settings.index', compact('vertical_menus', 'horizontal_menus'));
+        return view('contents.admin-settings.index', compact('vertical_menus', 'horizontal_menus'));
     }
 
     /**
@@ -35,11 +35,11 @@ class SettingController extends Controller
      */
     public function saveVerticalMenu(VerticalMenuRequest $request)
     {
-        $settings = new Setting;
-        if($settings->where('code', 'menu')->where('key', 'vertical_menu')->exists()){
-            $settings->where('code', 'menu')->where('key', 'vertical_menu')->update(['value'=>$request->vertical_value]);
+        $admin_settings = new AdminSetting;
+        if($admin_settings->where('code', 'menu')->where('key', 'vertical_menu')->exists()){
+            $admin_settings->where('code', 'menu')->where('key', 'vertical_menu')->update(['value'=>$request->vertical_value]);
         }else{
-            $settings_input[] = [
+            $admin_settings_input[] = [
                 'code' => 'menu',
                 'key' => 'vertical_menu',
                 'value' => $request->vertical_value,
@@ -47,7 +47,7 @@ class SettingController extends Controller
                 'updated_at' => now()
             ];
         }
-        Setting::insert($settings_input ?? []);
+        AdminSetting::insert($admin_settings_input ?? []);
 
         Session::put('success','Vertical Menu saved successfully!');
         return Response::json(['success' => 'Vertical Menu saved successfully!'], 202);
@@ -61,11 +61,11 @@ class SettingController extends Controller
      */
     public function saveHorizontalMenu(HorizontalMenuRequest $request)
     {
-        $settings = new Setting;
-        if($settings->where('code', 'menu')->where('key', 'horizontal_menu')->exists()){
-            $settings->where('code', 'menu')->where('key', 'horizontal_menu')->update(['value'=>$request->horizontal_value]);
+        $admin_settings = new AdminSetting;
+        if($admin_settings->where('code', 'menu')->where('key', 'horizontal_menu')->exists()){
+            $admin_settings->where('code', 'menu')->where('key', 'horizontal_menu')->update(['value'=>$request->horizontal_value]);
         }else{
-            $settings_input[] = [
+            $admin_settings_input[] = [
                 'code' => 'menu',
                 'key' => 'horizontal_menu',
                 'value' => $request->horizontal_value,
@@ -73,7 +73,7 @@ class SettingController extends Controller
                 'updated_at' => now()
             ];
         }
-        Setting::insert($settings_input ?? []);
+        AdminSetting::insert($admin_settings_input ?? []);
 
         Session::put('success','Horizontal Menu saved successfully!');
         return Response::json(['success' => 'Horizontal Menu saved successfully!'], 202);

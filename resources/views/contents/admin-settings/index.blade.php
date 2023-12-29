@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Settings')
+@section('title', 'Admin Settings')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -18,7 +18,7 @@
 @endsection
 
 @section('content')
-    <h4 class="py-3 breadcrumb-wrapper mb-2">Settings</h4>
+    <h4 class="py-3 breadcrumb-wrapper mb-2">Admin Settings</h4>
 
     <!-- Basic Layout -->
     <div class="row">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open([
-                        'route' => 'settings.saveVerticalMenu',
+                        'route' => 'admin-settings.saveVerticalMenu',
                         'method' => 'POST',
                         'id' => 'saveVerticalMenuForm',
                         'class' => 'restrict-enter',
@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open([
-                        'route' => 'settings.saveHorizontalMenu',
+                        'route' => 'admin-settings.saveHorizontalMenu',
                         'method' => 'POST',
                         'id' => 'saveHorizontalMenuForm',
                         'class' => 'restrict-enter',

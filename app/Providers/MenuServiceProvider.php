@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Setting;
+use App\Models\AdminSetting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -25,8 +25,8 @@ class MenuServiceProvider extends ServiceProvider
         $verticalMenuJson = $horizontalMenuJson = '';
         //check if setting table exists if not then it will get menu json data from file from storage folder otherwise menu json data comes from table.
         //also seperately check vertical and horizontal menus json data from tables.
-        if (Schema::hasTable('settings')) {
-            $menu = new Setting;
+        if (Schema::hasTable('admin_settings')) {
+            $menu = new AdminSetting;
             $verticalMenu = $menu->where('code', 'menu')->where('key', 'vertical_menu')->first();
             if(!empty($verticalMenu)){
                 //get vertical menu json data
