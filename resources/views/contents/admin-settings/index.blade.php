@@ -14,7 +14,7 @@
 
 @section('page-script')
     <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
-    <script src="{{ asset('assets/js/modules/setting.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/admin-setting.js') }}"></script>
 @endsection
 
 @section('content')

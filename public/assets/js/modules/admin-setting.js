@@ -1,5 +1,5 @@
 /**
- * Page Setting
+ * Page Admin Setting
  */
 
 "use strict";

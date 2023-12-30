@@ -47,61 +47,64 @@
                             class="bx bx-user me-1"></i> Account</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('account-settings.security') }}"><i
                             class="bx bx-lock-alt me-1"></i> Security</a></li>
-                {{--  <li class="nav-item"><a class="nav-link" href="{{ route('account-settings.billing') }}"><i class="bx bx-detail me-1"></i> Billing & Plans</a></li>  --}}
-                {{--  <li class="nav-item"><a class="nav-link" href="{{ route('account-settings.notifications') }}"><i class="bx bx-bell me-1"></i> Notifications</a></li>  --}}
-                {{--  <li class="nav-item"><a class="nav-link" href="{{ route('account-settings.connections') }}"><i class="bx bx-link-alt me-1"></i> Connections</a></li>  --}}
             </ul>
             <div class="card mb-4">
                 <h5 class="card-header">Profile Details</h5>
                 <!-- Account -->
-                <div class="card-body">
-                    <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <div class="profile-img profile-avatar-xxl">
-                            <a href="javascript:;" id="profile_img"><img alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle preview-profile-image" height="100"></a>
-                        </div>
-                        <div class="button-wrapper">
-                            <button type="button" class="btn btn-sm btn-label-primary mb-3" id="select_image">
-                                Select Profile Photo
-                            </button>
-                            {{--  <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" id="select_image">
-                                <span class="d-none d-sm-block">Upload new photo</span>
-                                <i class="bx bx-upload d-block d-sm-none"></i>
-                                <input type="file" id="h_file" class="account-file-input" hidden accept="image/png, image/jpeg" />
-                                <input type="hidden" name="profile_photo" class="profile_photo">
-                            </label>  --}}
-                            <input type="file" id="h_file" class="item-img file center-block" accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
-                            <button type="button" class="btn btn-label-secondary account-image-reset mb-4" id="clear_image">
-                                <i class="bx bx-reset d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Reset</span>
-                            </button>
-                            <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                {!! Form::open([
+                    'route' => 'account-settings.saveAccount',
+                    'method' => 'POST',
+                    'id' => 'saveAccountForm',
+                    'class' => 'restrict-enter',
+                ]) !!}
+                    <div class="card-body">
+                        <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <div class="profile-img profile-avatar-xxl">
+                                <a href="javascript:;" id="profile_img"><img alt="Profile Picture"
+                                        src="{{ url('assets/img/default-pfp.png') }}"
+                                        class="avatar-img rounded-circle preview-profile-image" height="100"></a>
+                            </div>
+                            <div class="button-wrapper">
+                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" id="select_image">
+                                    <span class="d-none d-sm-block">Upload new photo</span>
+                                    <i class="bx bx-upload d-block d-sm-none"></i>
+                                    <input type="hidden" name="profile_photo" class="profile_photo">
+                                </label>
+                                <input type="file" id="h_file" class="item-img file center-block"
+                                    accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
+                                <button type="button" class="btn btn-label-secondary account-image-reset mb-4"
+                                    id="clear_image">
+                                    <i class="bx bx-reset d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Reset</span>
+                                </button>
+                                <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr class="my-0">
-                <div class="card-body">
-                    <form id="formAccountSettings" method="POST" onsubmit="return false">
+                    <hr class="my-0">
+                    <div class="card-body">
                         <div class="row">
-                            <div class="mb-3 col-md-6">
-                                <label for="firstName" class="form-label">First Name</label>
-                                <input class="form-control" type="text" id="firstName" name="firstName" value="John"
-                                    autofocus />
+                            <div class="mb-3 col-md-6 inp-group">
+                                <label class="form-label">Employee No</label>
+                                <input type="text" class="form-control" placeholder="Employee No" name="employee_no"
+                                    aria-label="Employee No" />
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="lastName" class="form-label">Last Name</label>
-                                <input class="form-control" type="text" id="lastName" name="lastName" value="Doe" />
+                            <div class="mb-3 col-md-6 inp-group">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Name" name="name"
+                                    aria-label="Name" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="email" class="form-label">E-mail</label>
                                 <input class="form-control" type="text" id="email" name="email"
                                     value="john.doe@example.com" placeholder="john.doe@example.com" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="organization" class="form-label">Organization</label>
                                 <input type="text" class="form-control" id="organization" name="organization"
                                     value="{{ config('variables.creatorName') }}" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label class="form-label" for="phone_number">Phone Number</label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">US (+1)</span>
@@ -109,22 +112,22 @@
                                         placeholder="202 555 0111" />
                                 </div>
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="address" class="form-label">Address</label>
                                 <input type="text" class="form-control" id="address" name="address"
                                     placeholder="Address" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="state" class="form-label">State</label>
                                 <input class="form-control" type="text" id="state" name="state"
                                     placeholder="California" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="zip_code" class="form-label">Zip Code</label>
                                 <input type="text" class="form-control" id="zip_code" name="zip_code"
                                     placeholder="231465" maxlength="6" />
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label class="form-label" for="country">Country</label>
                                 <select id="country" class="select2 form-select">
                                     <option value="">Select</option>
@@ -154,7 +157,7 @@
                                     <option value="United States">United States</option>
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="language" class="form-label">Language</label>
                                 <select id="language" class="select2 form-select">
                                     <option value="">Select Language</option>
@@ -164,7 +167,7 @@
                                     <option value="pt">Portuguese</option>
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="timeZones" class="form-label">Timezone</label>
                                 <select id="timeZones" class="select2 form-select">
                                     <option value="">Select Timezone</option>
@@ -188,7 +191,7 @@
                                     <option value="-4">(GMT-04:00) Caracas, La Paz</option>
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-6">
+                            <div class="mb-3 col-md-6 inp-group">
                                 <label for="currency" class="form-label">Currency</label>
                                 <select id="currency" class="select2 form-select">
                                     <option value="">Select Currency</option>
@@ -200,11 +203,10 @@
                             </div>
                         </div>
                         <div class="mt-2">
-                            <button type="submit" class="btn btn-primary me-2">Save changes</button>
-                            <button type="reset" class="btn btn-label-secondary">Cancel</button>
+                            <button type="button" class="btn btn-primary me-2" id="saveAccount">Save changes</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                {!! Form::close() !!}
                 <!-- /Account -->
             </div>
             <div class="card">
@@ -229,4 +231,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('modal')
+    @component('contents.account-settings.modal')
+    @endcomponent
 @endsection

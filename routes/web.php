@@ -66,6 +66,7 @@ require __DIR__.'/auth.php';
     Route::post('admin-settings.saveHorizontalMenu', [AdminSettingController::class, 'saveHorizontalMenu'])->name('admin-settings.saveHorizontalMenu');
 
     Route::get('account-settings/account', [AccountSettingController::class, 'account'])->name('account-settings.account');
+    Route::post('account-settings.saveAccount', [AccountSettingController::class, 'saveAccount'])->name('account-settings.saveAccount');
     Route::get('account-settings/security', [AccountSettingController::class, 'security'])->name('account-settings.security');
     // Route::get('account-settings', [AccountSettingController::class, 'index'])->name('account-settings');
 // });
