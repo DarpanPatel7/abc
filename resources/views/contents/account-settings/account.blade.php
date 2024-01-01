@@ -4,8 +4,7 @@
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/animate-css/animate.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
     <style>
@@ -19,18 +18,18 @@
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/cleavejs/cleave.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/cleavejs/cleave-phone.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js"></script>
+    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
+    <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
+    <script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
     <script type="text/javascript">
         var defaultImage = "{{ url('assets/img/default-pfp.png') }}";
+        var getStateByCountry_url = '{{ url("account-settings.getStateByCountry") }}';
     </script>
     <script src="{{ asset('assets/js/modules/account-settings-account.js') }}"></script>
 @endsection
@@ -57,155 +56,156 @@
                     'id' => 'saveAccountForm',
                     'class' => 'restrict-enter',
                 ]) !!}
-                    <div class="card-body">
-                        <div class="d-flex align-items-start align-items-sm-center gap-4">
-                            <div class="profile-img profile-avatar-xxl">
-                                <a href="javascript:;" id="profile_img"><img alt="Profile Picture"
-                                        src="{{ url('assets/img/default-pfp.png') }}"
-                                        class="avatar-img rounded-circle preview-profile-image" height="100"></a>
-                            </div>
-                            <div class="button-wrapper">
-                                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" id="select_image">
-                                    <span class="d-none d-sm-block">Upload new photo</span>
-                                    <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input type="hidden" name="profile_photo" class="profile_photo">
-                                </label>
-                                <input type="file" id="h_file" class="item-img file center-block"
-                                    accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
-                                <button type="button" class="btn btn-label-secondary account-image-reset mb-4"
-                                    id="clear_image">
-                                    <i class="bx bx-reset d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Reset</span>
-                                </button>
-                                <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                            </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-start align-items-sm-center gap-4">
+                        <div class="profile-img profile-avatar-xxl">
+                            <a href="javascript:;" id="profile_img"><img alt="Profile Picture"
+                                    src="{{ $user->ProfilePhotoPath ?? '' }}"
+                                    class="avatar-img rounded-circle preview-profile-image" height="100"></a>
+                        </div>
+                        <div class="button-wrapper">
+                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0" id="select_image">
+                                <span class="d-none d-sm-block">Upload new photo</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                <input type="hidden" name="profile_photo" class="profile_photo">
+                            </label>
+                            <input type="file" id="h_file" class="item-img file center-block"
+                                accept="image/png, image/jpg, image/jpeg, image/svg" style="display: none;" />
+                            <button type="button" class="btn btn-label-secondary account-image-reset mb-4"
+                                id="clear_image">
+                                <i class="bx bx-reset d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Reset</span>
+                            </button>
+                            <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                         </div>
                     </div>
-                    <hr class="my-0">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label class="form-label">Employee No</label>
-                                <input type="text" class="form-control" placeholder="Employee No" name="employee_no"
-                                    aria-label="Employee No" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" name="name"
-                                    aria-label="Name" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="email" class="form-label">E-mail</label>
-                                <input class="form-control" type="text" id="email" name="email"
-                                    value="john.doe@example.com" placeholder="john.doe@example.com" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="organization" class="form-label">Organization</label>
-                                <input type="text" class="form-control" id="organization" name="organization"
-                                    value="{{ config('variables.creatorName') }}" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label class="form-label" for="phone_number">Phone Number</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text">US (+1)</span>
-                                    <input type="text" id="phone_number" name="phone_number" class="form-control"
-                                        placeholder="202 555 0111" />
-                                </div>
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" name="address"
-                                    placeholder="Address" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="state" class="form-label">State</label>
-                                <input class="form-control" type="text" id="state" name="state"
-                                    placeholder="California" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="zip_code" class="form-label">Zip Code</label>
-                                <input type="text" class="form-control" id="zip_code" name="zip_code"
-                                    placeholder="231465" maxlength="6" />
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label class="form-label" for="country">Country</label>
-                                <select id="country" class="select2 form-select">
-                                    <option value="">Select</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Belarus">Belarus</option>
-                                    <option value="Brazil">Brazil</option>
-                                    <option value="Canada">Canada</option>
-                                    <option value="China">China</option>
-                                    <option value="France">France</option>
-                                    <option value="Germany">Germany</option>
-                                    <option value="India">India</option>
-                                    <option value="Indonesia">Indonesia</option>
-                                    <option value="Israel">Israel</option>
-                                    <option value="Italy">Italy</option>
-                                    <option value="Japan">Japan</option>
-                                    <option value="Korea">Korea, Republic of</option>
-                                    <option value="Mexico">Mexico</option>
-                                    <option value="Philippines">Philippines</option>
-                                    <option value="Russia">Russian Federation</option>
-                                    <option value="South Africa">South Africa</option>
-                                    <option value="Thailand">Thailand</option>
-                                    <option value="Turkey">Turkey</option>
-                                    <option value="Ukraine">Ukraine</option>
-                                    <option value="United Arab Emirates">United Arab Emirates</option>
-                                    <option value="United Kingdom">United Kingdom</option>
-                                    <option value="United States">United States</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="language" class="form-label">Language</label>
-                                <select id="language" class="select2 form-select">
-                                    <option value="">Select Language</option>
-                                    <option value="en">English</option>
-                                    <option value="fr">French</option>
-                                    <option value="de">German</option>
-                                    <option value="pt">Portuguese</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="timeZones" class="form-label">Timezone</label>
-                                <select id="timeZones" class="select2 form-select">
-                                    <option value="">Select Timezone</option>
-                                    <option value="-12">(GMT-12:00) International Date Line West</option>
-                                    <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
-                                    <option value="-10">(GMT-10:00) Hawaii</option>
-                                    <option value="-9">(GMT-09:00) Alaska</option>
-                                    <option value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
-                                    <option value="-8">(GMT-08:00) Tijuana, Baja California</option>
-                                    <option value="-7">(GMT-07:00) Arizona</option>
-                                    <option value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
-                                    <option value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
-                                    <option value="-6">(GMT-06:00) Central America</option>
-                                    <option value="-6">(GMT-06:00) Central Time (US & Canada)</option>
-                                    <option value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
-                                    <option value="-6">(GMT-06:00) Saskatchewan</option>
-                                    <option value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
-                                    <option value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
-                                    <option value="-5">(GMT-05:00) Indiana (East)</option>
-                                    <option value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
-                                    <option value="-4">(GMT-04:00) Caracas, La Paz</option>
-                                </select>
-                            </div>
-                            <div class="mb-3 col-md-6 inp-group">
-                                <label for="currency" class="form-label">Currency</label>
-                                <select id="currency" class="select2 form-select">
-                                    <option value="">Select Currency</option>
-                                    <option value="usd">USD</option>
-                                    <option value="euro">Euro</option>
-                                    <option value="pound">Pound</option>
-                                    <option value="bitcoin">Bitcoin</option>
-                                </select>
+                </div>
+                <hr class="my-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label">Employee No</label>
+                            <input type="text" class="form-control" placeholder="Employee No" name="employee_no" aria-label="Employee No" value="{{ old('employee_no', $user->employee_no) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" value="{{ old('name', $user->name) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input class="form-control" type="text" id="email"
+                                value="{{ old('email', $user->email) }}" placeholder="email@example.com" disabled/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="organization" class="form-label">Organization</label>
+                            <input type="text" class="form-control" id="organization" name="organization"
+                                value="{{ old('organization', $user->organization) }}" />
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="text" name="date_of_birth" placeholder="{{ config('global.datepicker_date_placeholder') }}" class="form-control bs-datepicker" data-autoclose="true" data-format="{{ config('global.datepicker_date_format') }}" value="{{ old('date_of_birth', $user->Dob) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label">Joining Date</label>
+                            <input type="text" name="joining_date" placeholder="{{ config('global.datepicker_date_placeholder') }}" class="form-control bs-datepicker" data-autoclose="true" data-format="{{ config('global.datepicker_date_format') }}" value="{{ old('joining_date', $user->Jd) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label" for="phone_number">Phone Number</label>
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text">US (+1)</span>
+                                <input type="text" id="phone_number" name="phone_number" class="form-control"
+                                    placeholder="202 555 0111" value="{{ old('phone_number', $user->phone_number) }}"/>
                             </div>
                         </div>
-                        <div class="mt-2">
-                            <button type="button" class="btn btn-primary me-2" id="saveAccount">Save changes</button>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label class="form-label" for="country">Country</label>
+                            {!! Form::select(
+                                'country',
+                                $countries,
+                                $user->country_id ?? [],
+                                [
+                                    'class' => 'select2 form-select form-select-lg',
+                                    'id' => 'country',
+                                    'placeholder' => 'Select Country',
+                                    'data-allow-clear' => 'true',
+                                ],
+                            ) !!}
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="state" class="form-label">State</label>
+                            <div id="state_content">
+                                {!! Form::select(
+                                    'state',
+                                    [],
+                                    $user->state_id ?? [],
+                                    [
+                                        'class' => 'select2 form-select form-select-lg',
+                                        'id' => 'state',
+                                        'placeholder' => 'Select State',
+                                        'data-allow-clear' => 'true',
+                                    ],
+                                ) !!}
+                            </div>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" name="address"
+                                placeholder="Address" value="{{ old('address', $user->address) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="zipcode" class="form-label">Zip Code</label>
+                            <input type="text" class="form-control" id="zipcode" name="zipcode"
+                                placeholder="231465" maxlength="6" value="{{ old('zipcode', $user->address) }}"/>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="language" class="form-label">Language</label>
+                            <select id="language" class="select2 form-select">
+                                <option value="">Select Language</option>
+                                <option value="en">English</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="pt">Portuguese</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="timeZones" class="form-label">Timezone</label>
+                            <select id="timeZones" class="select2 form-select">
+                                <option value="">Select Timezone</option>
+                                <option value="-12">(GMT-12:00) International Date Line West</option>
+                                <option value="-11">(GMT-11:00) Midway Island, Samoa</option>
+                                <option value="-10">(GMT-10:00) Hawaii</option>
+                                <option value="-9">(GMT-09:00) Alaska</option>
+                                <option value="-8">(GMT-08:00) Pacific Time (US & Canada)</option>
+                                <option value="-8">(GMT-08:00) Tijuana, Baja California</option>
+                                <option value="-7">(GMT-07:00) Arizona</option>
+                                <option value="-7">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                                <option value="-7">(GMT-07:00) Mountain Time (US & Canada)</option>
+                                <option value="-6">(GMT-06:00) Central America</option>
+                                <option value="-6">(GMT-06:00) Central Time (US & Canada)</option>
+                                <option value="-6">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                                <option value="-6">(GMT-06:00) Saskatchewan</option>
+                                <option value="-5">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                                <option value="-5">(GMT-05:00) Eastern Time (US & Canada)</option>
+                                <option value="-5">(GMT-05:00) Indiana (East)</option>
+                                <option value="-4">(GMT-04:00) Atlantic Time (Canada)</option>
+                                <option value="-4">(GMT-04:00) Caracas, La Paz</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 col-md-6 inp-group">
+                            <label for="currency" class="form-label">Currency</label>
+                            <select id="currency" class="select2 form-select">
+                                <option value="">Select Currency</option>
+                                <option value="usd">USD</option>
+                                <option value="euro">Euro</option>
+                                <option value="pound">Pound</option>
+                                <option value="bitcoin">Bitcoin</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-primary me-2" id="saveAccount">Save changes</button>
+                    </div>
+                </div>
                 {!! Form::close() !!}
                 <!-- /Account -->
             </div>

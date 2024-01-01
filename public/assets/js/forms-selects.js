@@ -54,11 +54,11 @@ $(function () {
 
 //init select2
 function initSelect2(id) {
-    if ($('.select2').length) {
-        $('.select2').each(function () {
+    if ($('select.select2').length) {
+        $('select.select2').each(function () {
             var $this = $(this),
                 r = {
-                    dropdownParent: $("#" + id + " .modal-body"),
+                    dropdownParent: $(id),
                     AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
                     placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
                 };
@@ -67,10 +67,10 @@ function initSelect2(id) {
     }
 }
 
-//init select2 inside ajax call
-function initAjaxDropdown(id) {
-    if ($('.select2').length) {
-        $('.select2').each(function () {
+//init select2 inside modal on ajax call
+function initAjaxDropdownModal(id) {
+    if ($('select.select2').length) {
+        $('select.select2').each(function () {
             var $this = $(this),
                 r = {
                     dropdownParent: $(id + " .modal-content"),

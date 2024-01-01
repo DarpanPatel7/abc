@@ -82,7 +82,7 @@
                                     'class' => 'select2 form-select form-select-lg',
                                     'placeholder' => 'Select Designation',
                                     'data-allow-clear' => 'true',
-                                    'id' => 'select212sfsdf'
+                                    'id' => 'designation'
                                 ],
                             ) !!}
                         </div>

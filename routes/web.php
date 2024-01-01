@@ -68,6 +68,7 @@ require __DIR__.'/auth.php';
     Route::get('account-settings/account', [AccountSettingController::class, 'account'])->name('account-settings.account');
     Route::post('account-settings.saveAccount', [AccountSettingController::class, 'saveAccount'])->name('account-settings.saveAccount');
     Route::get('account-settings/security', [AccountSettingController::class, 'security'])->name('account-settings.security');
+    Route::post('account-settings.getStateByCountry', [AccountSettingController::class, 'getStateByCountry'])->name('account-settings.getStateByCountry');
     // Route::get('account-settings', [AccountSettingController::class, 'index'])->name('account-settings');
 // });
 

@@ -18,7 +18,7 @@
             formReset: false,
             async: true,
             historyPush: false,
-            appendHtmlModal: false,
+            appendHtml: false,
             showModal: false,
             hideModal: true,
             sweetAlert: false,
@@ -75,12 +75,16 @@
                 }
 
                 if (opt.showModal) {
-                    if (typeof initAjaxDropdown == "function") {
-                        initAjaxDropdown(opt.showModal);
+                    if (typeof initAjaxDropdownModal == "function") {
+                        initAjaxDropdownModal(opt.showModal);
                     }
                     if (typeof initDatePicker == "function") {
                         initDatePicker();
                     }
+                }
+
+                if (typeof initSelect2 == "function") {
+                    initSelect2(opt.container);
                 }
             };
         }
@@ -236,7 +240,7 @@
         function loadAjax() {
             //set post data based on file object //if file upload is set to true then it will set to formdata format
             var post_data = {};
-            if (typeof opt.data !== "undefined" && opt.data.length > 0) {
+            if (typeof opt.data !== "undefined" && Object.keys(opt.data).length > 0) {
                 post_data = opt.data;
             } else {
                 if (opt.file == true) {
@@ -287,8 +291,8 @@
                                     }
                                 }
                                 if (response.data) {
-                                    if (opt.appendHtmlModal) {
-                                        $(opt.appendHtmlModal).html(
+                                    if (opt.appendHtml) {
+                                        $(opt.appendHtml).html(
                                             response.data
                                         );
                                     }

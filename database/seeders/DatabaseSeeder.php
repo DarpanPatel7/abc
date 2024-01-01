@@ -18,7 +18,12 @@ class DatabaseSeeder extends Seeder
     {
         $user = User::where('email',Config::get('global.super_user'))->count();
         if($user == 0){
-            User::factory(1)->create();
+            $user = new User();
+            $userFactory = $user->factory(1)->create();
+            $userFactory[0]->email = Config::get('global.super_user');
+            $userFactory[0]->password = Config::get('global.super_pass');
+            $userFactory[0]->status = 1;
+            $userFactory[0]->save();
         }
 
         $this->call([

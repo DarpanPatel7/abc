@@ -25,13 +25,16 @@ class User extends Authenticatable
 
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE = 1;
+    const STATUS_DEACTIVATED = 2;
 
     const STATUS_INACTIVE_TEXT = 'Inactive';
     const STATUS_ACTIVE_TEXT = 'Active';
+    const STATUS_DEACTIVATED_TEXT = 'Active';
 
     const CORE_STATUS_ARRAY = [
         self::STATUS_INACTIVE => self::STATUS_INACTIVE_TEXT,
         self::STATUS_ACTIVE => self::STATUS_ACTIVE_TEXT,
+        self::STATUS_DEACTIVATED => self::STATUS_DEACTIVATED_TEXT,
     ];
 
     /**
@@ -115,6 +118,8 @@ class User extends Authenticatable
     public function getbadgeStatusAttribute()
     {
         switch ($this->status) {
+            case self::STATUS_DEACTIVATED:
+                return 'badge bg-label-info';
             case self::STATUS_INACTIVE:
                 return 'badge bg-label-danger';
             case self::STATUS_ACTIVE:

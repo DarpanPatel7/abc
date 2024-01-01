@@ -95,7 +95,7 @@ $(function () {
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#edit"+main+"Content",
+            appendHtml: "#edit"+main+"Content",
             showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
@@ -126,7 +126,7 @@ $(function () {
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#assign"+main+"Content",
+            appendHtml: "#assign"+main+"Content",
             showModal: "#assign"+main+"Modal",
             blockUI: true,
             disableButton: true,

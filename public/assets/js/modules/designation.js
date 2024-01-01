@@ -107,7 +107,7 @@ $(function () {
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtmlModal: "#edit"+main+"Content",
+            appendHtml: "#edit"+main+"Content",
             showModal: "#edit"+main+"Modal",
             blockUI: true,
             disableButton: true,
