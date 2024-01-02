@@ -8,11 +8,11 @@ use App\Models\State;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\AccountSetting\AccountRequest;
-use App\Http\Requests\AccountSetting\StateByCountryRequest;
+use App\Models\Currency;
+use App\Models\Language;
+use App\Models\Timezone;
 
 class AccountSettingController extends Controller
 {
@@ -25,8 +25,11 @@ class AccountSettingController extends Controller
     {
         $user = Auth::user();
         $countries = Country::Active()->get()->pluck('name', 'id');
+        $languages = Language::Active()->get()->pluck('name', 'id');
+        $timezones = Timezone::Active()->get()->pluck('name', 'id');
+        $currencies = Currency::Active()->get()->pluck('name', 'id');
 
-        return view('contents.account-settings.account', compact('user', 'countries'));
+        return view('contents.account-settings.account', compact('user', 'countries', 'languages', 'timezones', 'currencies'));
     }
 
     /**
@@ -90,10 +93,10 @@ class AccountSettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getStateByCountry(StateByCountryRequest $request)
+    public function getStateByCountry(Request $request)
     {
         try {
-            $states = State::where('country_id', $request->id)->get()->pluck('name', 'id');
+            $states = State::where('country_id', $request->id ?? '')->get()->pluck('name', 'id');
 
             $returnHTML = view('contents.account-settings.state-dropdown')->with(compact('states'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);

@@ -58,6 +58,9 @@ require __DIR__.'/auth.php';
     //Customer
     Route::resource('customer-businesses', CustomerBusinessController::class);
 
+    //Currency
+    Route::resource('currencies', CurrencyController::class);
+
     //admin-Settings
     Route::get('admin-settings', [AdminSettingController::class, 'index'])->name('admin-settings');
     Route::get('admin-settings.getVerticalMenu', [AdminSettingController::class, 'getVerticalMenu'])->name('admin-settings.getVerticalMenu');
@@ -65,11 +68,12 @@ require __DIR__.'/auth.php';
     Route::get('admin-settings.getHorizontalMenu', [AdminSettingController::class, 'getHorizontalMenu'])->name('admin-settings.getHorizontalMenu');
     Route::post('admin-settings.saveHorizontalMenu', [AdminSettingController::class, 'saveHorizontalMenu'])->name('admin-settings.saveHorizontalMenu');
 
+    //account-Settings
+    //account
     Route::get('account-settings/account', [AccountSettingController::class, 'account'])->name('account-settings.account');
     Route::post('account-settings.saveAccount', [AccountSettingController::class, 'saveAccount'])->name('account-settings.saveAccount');
     Route::get('account-settings/security', [AccountSettingController::class, 'security'])->name('account-settings.security');
     Route::post('account-settings.getStateByCountry', [AccountSettingController::class, 'getStateByCountry'])->name('account-settings.getStateByCountry');
-    // Route::get('account-settings', [AccountSettingController::class, 'index'])->name('account-settings');
 // });
 
 
