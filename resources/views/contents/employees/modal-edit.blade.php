@@ -83,7 +83,7 @@
             </div>
             <div class="row">
                 <div class="col mb-0">
-                    <label class="form-label">Status</label>
+                    <label class="form-label" for="editstatus">Status</label>
                     <div>
                         <label class="switch switch-primary">
                             {{ Form::checkbox('status', 1, ($employee->status == 1) ? true : false, array('class' => 'switch-input','id' => 'editstatus')) }}

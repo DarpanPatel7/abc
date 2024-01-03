@@ -17,10 +17,10 @@
                     </div>
                     <div class="row">
                         <div class="col mb-0">
-                            <label class="form-label" for="designation_status">Status</label>
+                            <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, array('class' => 'switch-input')) }}
+                                    {{ Form::checkbox('status', 1, true, array('class' => 'switch-input', 'id' => 'addstatus')) }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>

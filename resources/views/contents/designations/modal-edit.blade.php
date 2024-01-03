@@ -8,12 +8,12 @@
             <div class="row">
                 <div class="col mb-3 inp-group">
                     <label class="form-label" for="designation_name">Designation Name</label>
-                    <input type="text" class="form-control" placeholder="Designation Name" name="designation_name" value="{{ old('name', $designation->name) }}" aria-label="Designation Name" />
+                    <input type="text" class="form-control" placeholder="Designation Name" name="designation_name" value="{{ old('designation_name', $designation->name) }}" aria-label="Designation Name" />
                 </div>
             </div>
             <div class="row">
                 <div class="col mb-0">
-                    <label class="form-label" for="designation_name">Status</label>
+                    <label class="form-label" for="editstatus">Status</label>
                     <div>
                         <label class="switch switch-primary">
                             {{ Form::checkbox('status', 1, ($designation->status == 1) ? true : false, array('class' => 'switch-input','id' => 'editstatus')) }}

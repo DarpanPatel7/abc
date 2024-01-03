@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\AdminSettingController;
@@ -52,14 +54,17 @@ require __DIR__.'/auth.php';
     //Designations
     Route::resource('designations', DesignationController::class);
 
-    //Customer
+    //Customer Sources
     Route::resource('customer-sources', CustomerSourceController::class);
 
-    //Customer
+    //Customer Businesses
     Route::resource('customer-businesses', CustomerBusinessController::class);
 
-    //Currency
+    //Currencies
     Route::resource('currencies', CurrencyController::class);
+
+    //Languages
+    Route::resource('languages', LanguageController::class);
 
     //admin-Settings
     Route::get('admin-settings', [AdminSettingController::class, 'index'])->name('admin-settings');

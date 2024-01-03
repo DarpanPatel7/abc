@@ -24,7 +24,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'currency_name' => ['required', 'max:255', 'not_regex:/<\/?[^>]*>/'],
+            'currency_code' => ['required', 'max:255', 'alpha', 'unique:currencies,code' ,'not_regex:/<\/?[^>]*>/'],
+            'currency_rate' => ['required', 'max:255', 'numeric', 'regex:/^-?\d+(\.\d{1,2})?$/', 'not_regex:/<\/?[^>]*>/'],
         ];
     }
 }

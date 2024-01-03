@@ -3,8 +3,6 @@
 namespace App\Http\Requests\Designation;
 
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest

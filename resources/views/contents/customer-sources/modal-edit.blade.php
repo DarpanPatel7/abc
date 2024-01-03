@@ -8,12 +8,12 @@
             <div class="row">
                 <div class="col mb-3 inp-group">
                     <label class="form-label" for="customer_source_name">Customer Source Name</label>
-                    <input type="text" class="form-control" placeholder="Customer Source Name" name="customer_source_name" value="{{ old('name', $customer_source->name) }}" aria-label="Customer Source Name" />
+                    <input type="text" class="form-control" placeholder="Customer Source Name" name="customer_source_name" value="{{ old('customer_source_name', $customer_source->name) }}" aria-label="Customer Source Name" />
                 </div>
             </div>
             <div class="row">
                 <div class="col mb-0">
-                    <label class="form-label" for="customer_source_status">Status</label>
+                    <label class="form-label" for="editstatus">Status</label>
                     <div>
                         <label class="switch switch-primary">
                             {{ Form::checkbox('status', 1, ($customer_source->status == 1) ? true : false, array('class' => 'switch-input','id' => 'editstatus')) }}

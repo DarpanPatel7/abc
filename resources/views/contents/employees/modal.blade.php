@@ -17,7 +17,9 @@
                     <div class="row mb-3">
                         <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                             <div class="profile-img profile-avatar-xxl">
-                                <a href="javascript:;" id="profile_img"><img alt="Profile Picture" src="{{ url('assets/img/default-pfp.png') }}" class="avatar-img rounded-circle preview-profile-image" height="100"></a>
+                                <a href="javascript:;" id="profile_img"><img alt="Profile Picture"
+                                        src="{{ url('assets/img/default-pfp.png') }}"
+                                        class="avatar-img rounded-circle preview-profile-image" height="100"></a>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group mt-3">
@@ -82,21 +84,22 @@
                                     'class' => 'select2 form-select form-select-lg',
                                     'placeholder' => 'Select Designation',
                                     'data-allow-clear' => 'true',
-                                    'id' => 'designation'
+                                    'id' => 'designation',
                                 ],
                             ) !!}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Identity Proof</label>
-                            <input class="form-control" type="file" name="identity_proof" accept="application/pdf,image/*">
+                            <input class="form-control" type="file" name="identity_proof"
+                                accept="application/pdf,image/*">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-0">
-                            <label class="form-label">Status</label>
+                            <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input']) }}
+                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addstatus']) }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
