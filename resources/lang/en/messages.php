@@ -12,6 +12,10 @@ return [
     | of "email". This simply helps us make our message more expressive.
     |
     */
-    'success_store' => 'Enter blah.',
+    'success_store' => ':attribute created successfully!',
     'success_update' => ':attribute updated successfully!',
+    'success_delete' => ':attribute deleted successfully!',
+    'success' => ':attribute successfully!',
+    'cnt_del_sup_usr' => 'You cannot delete super admin role!',
+    'cnt_upd_sup_usr' => 'You cannot update super admin role!',
 ];

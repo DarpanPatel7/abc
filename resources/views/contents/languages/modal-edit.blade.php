@@ -1,26 +1,20 @@
 @if (!empty($data))
-    {!! Form::model($data, ['method' => 'PATCH','route' => ['currencies.update', Crypt::Encrypt($data->id)], 'id'=>'editCurrencyForm']) !!}
+    {!! Form::model($data, ['method' => 'PATCH','route' => ['languages.update', Crypt::Encrypt($data->id)], 'id'=>'editLanguageForm']) !!}
         <div class="modal-header">
-            <h5 class="modal-title" id="editCurrencyModalLabel">Edit Currency</h5>
+            <h5 class="modal-title" id="editLanguageModalLabel">Edit Language</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col mb-3 inp-group">
-                    <label class="form-label" for="currency_name">Currency Name</label>
-                    <input type="text" class="form-control" placeholder="Currency Name" name="currency_name" value="{{ old('currency_name', $data->name) }}" aria-label="Currency Name" />
+                    <label class="form-label" for="language_name">Language Name</label>
+                    <input type="text" class="form-control" placeholder="Language Name" name="language_name" value="{{ old('language_name', $data->name) }}" aria-label="Language Name" />
                 </div>
             </div>
             <div class="row">
                 <div class="col mb-3 inp-group">
-                    <label class="form-label" for="currency_code">Currency Code</label>
-                    <input type="text" class="form-control" placeholder="Currency Code" name="currency_code" value="{{ old('currency_code', $data->code) }}" aria-label="Currency Code" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-3 inp-group">
-                    <label class="form-label" for="currency_rate">Currency Rate</label>
-                    <input type="text" class="form-control" placeholder="Currency Rate" name="currency_rate" value="{{ old('currency_rate', $data->rate) }}" aria-label="Currency Rate" />
+                    <label class="form-label" for="language_shortcode">Language Short Code</label>
+                    <input type="text" class="form-control" placeholder="Language Short Code" name="language_shortcode" value="{{ old('language_shortcode', $data->shortcode) }}" aria-label="Language Short Code" />
                 </div>
             </div>
             <div class="row">
@@ -40,7 +34,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="editCurrencySubmit">Save changes</button>
+            <button type="button" class="btn btn-primary" id="editLanguageSubmit">Save changes</button>
         </div>
     {!! Form::close() !!}
 @endif

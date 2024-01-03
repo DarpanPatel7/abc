@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Currencies')
+@section('title', 'Timezone')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -14,22 +14,21 @@
 
 @section('page-script')
     <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
-    <script src="{{ asset('assets/js/modules/currencies.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/timezones.js') }}"></script>
 @endsection
 
 @section('content')
-    <h4 class="py-3 breadcrumb-wrapper mb-2">Currency List</h4>
+    <h4 class="py-3 breadcrumb-wrapper mb-2">Timezone List</h4>
 
-    <!-- Currencies List Table -->
+    <!-- Timezone List Table -->
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table class="datatableCurrency table border-top" data-url="{{ route('currencies.index') }}">
+            <table class="datatableTimezone table border-top" data-url="{{ route('timezones.index') }}">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Name</th>
-                        <th>Code</th>
-                        <th>Rate</th>
+                        <th>UTC Offset</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -40,6 +39,6 @@
 @endsection
 
 @section('modal')
-    @component('contents.currencies.modal')
+    @component('contents.timezones.modal')
     @endcomponent
 @endsection

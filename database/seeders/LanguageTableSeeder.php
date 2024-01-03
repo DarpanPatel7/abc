@@ -16,10 +16,10 @@ class LanguageTableSeeder extends Seeder
     {
         Language::truncate();
      	$languages = [
-   		    ['name' => 'English', 'sortcode' => 'EN', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
-   		    ['name' => 'French', 'sortcode' => 'FR', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
-   		    ['name' => 'German', 'sortcode' => 'DE', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
-   		    ['name' => 'Portuguese', 'sortcode' => 'PT', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
+   		    ['name' => 'English', 'shortcode' => 'EN', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
+   		    ['name' => 'French', 'shortcode' => 'FR', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
+   		    ['name' => 'German', 'shortcode' => 'DE', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
+   		    ['name' => 'Portuguese', 'shortcode' => 'PT', 'status' => 1, 'deleted_at' => null, 'created_at' => now(), 'updated_at' => now()],
 		];
         Language::insert($languages);
     }

@@ -8,22 +8,25 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Language\StoreRequest;
+use App\Http\Requests\Language\UpdateRequest;
 
 class LanguageController extends Controller
 {
-    private $table = 'languages';
+    private $Model, $Table = 'languages', $Folder = 'languages', $Slug = 'Language', $UrlSlug = 'languages', $PermissionSlug = 'language';
 
     /**
      *
      * @return \Illuminate\Http\Response
      */
-    /* public function __construct()
+    public function __construct()
     {
-        $this->middleware('permission:language-list|language-create|language-edit|language-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:language-create', ['only' => ['create','store']]);
-        $this->middleware('permission:language-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:language-delete', ['only' => ['destroy']]);
-    } */
+        // $this->middleware('permission:'.$this->PermissionSlug.'-list|'.$this->PermissionSlug.'-create|'.$this->PermissionSlug.'-edit|'.$this->PermissionSlug.'-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
+        $this->Model = new Language;
+    }
 
     /**
      * Display a listing of the resource.
@@ -34,9 +37,9 @@ class LanguageController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $languages = Language::select('id', 'name', 'code', 'rate', 'status')->orderBy("id", "desc")->get();
+                $records = $this->Model->select('id', 'name', 'shortcode', 'status')->orderBy("id", "desc")->get();
 
-                return DataTables::of($languages)
+                return DataTables::of($records)
                     ->addIndexColumn()
                     ->editColumn('status', function ($status) {
                         $badgeStatus = $status->badgeStatus ?? '';
@@ -45,15 +48,15 @@ class LanguageController extends Controller
                         return $userHtml;
                     })
                     ->addColumn('action', function($action){
-                        $editUrl = url('languages/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url('languages/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editLanguage" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteLanguage" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['status', 'action'])
                     ->make(true);
             }
-            return view('contents.languages.index');
+            return view('contents.'.$this->Folder.'.index');
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -75,17 +78,15 @@ class LanguageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         try {
-            $model = new Language();
-            $model->name = $request['language_name'] ?? '';
-            $model->code = $request['language_code'] ?? '';
-            $model->rate = $request['language_rate'] ?? '';
-            $model->status = !empty($request['status']) ? 1 : 0;
-            $model->save();
+            $this->Model->name = $request['language_name'] ?? '';
+            $this->Model->shortcode = $request['language_shortcode'] ?? '';
+            $this->Model->status = !empty($request['status']) ? 1 : 0;
+            $this->Model->save();
 
-            return Response::json(['success' => 'Language created successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -114,15 +115,15 @@ class LanguageController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:languages,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $language = Language::where('id', $id)->first();
-            $returnHTML = view('contents.languages.modal-edit')->with(compact('currency'))->render();
+            $data = $this->Model->where('id', $id)->first();
+            $returnHTML = view('contents.'.$this->Folder.'.modal-edit')->with(compact('data'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
 
         } catch (\Throwable $th) {
@@ -137,27 +138,26 @@ class LanguageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         try {
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:languages,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $model = Language::where('id', $id)->first();
-            $model->name = $request['language_name'] ?? '';
-            $model->code = $request['language_code'] ?? '';
-            $model->rate = $request['language_rate'] ?? '';
-            $model->status = !empty($request['status']) ? 1 : 0;
-            $model->save();
+            $update = $this->Model->where('id', $id)->first();
+            $update->name = $request['language_name'] ?? '';
+            $update->shortcode = $request['language_shortcode'] ?? '';
+            $update->status = !empty($request['status']) ? 1 : 0;
+            $update->save();
 
-            return Response::json(['success' => 'Language updated successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -175,16 +175,16 @@ class LanguageController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:languages,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            Language::where('id',$id)->delete();
+            $this->Model->where('id',$id)->delete();
 
-            return Response::json(['success' => 'Language deleted successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

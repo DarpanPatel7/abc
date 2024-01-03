@@ -13,6 +13,21 @@ use App\Http\Requests\CustomerBusiness\UpdateRequest;
 
 class CustomerBusinessController extends Controller
 {
+    private $Model, $Table = 'customer_businesses', $Folder = 'customer-businesses', $Slug = 'CustomerBusiness', $MsgSlug = 'Customer Business', $UrlSlug = 'customer-businesses', $PermissionSlug = 'customer-business';
+
+    /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct()
+    {
+        // $this->middleware('permission:'.$this->PermissionSlug.'-list|'.$this->PermissionSlug.'-create|'.$this->PermissionSlug.'-edit|'.$this->PermissionSlug.'-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
+        $this->Model = new CustomerBusiness;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +37,9 @@ class CustomerBusinessController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $customer_businesses = CustomerBusiness::select('id', 'name', 'status')->orderBy("id", "desc")->get();
+                $records = $this->Model->select('id', 'name', 'status')->orderBy("id", "desc")->get();
 
-                return DataTables::of($customer_businesses)
+                return DataTables::of($records)
                     ->addIndexColumn()
                     ->editColumn('status', function ($status) {
                         $badgeStatus = $status->badgeStatus ?? '';
@@ -33,15 +48,15 @@ class CustomerBusinessController extends Controller
                         return $userHtml;
                     })
                     ->addColumn('action', function($action){
-                        $editUrl = url('customer-businesses/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url('customer-businesses/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editCustomerBusiness" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteCustomerBusiness" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['status', 'action'])
                     ->make(true);
             }
-            return view('contents.customer-businesses.index');
+            return view('contents.'.$this->Folder.'.index');
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -66,12 +81,11 @@ class CustomerBusinessController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            $customer_business = new CustomerBusiness();
-            $customer_business->name = $request['customer_business_name'] ?? '';
-            $customer_business->status = !empty($request['status']) ? 1 : 0;
-            $customer_business->save();
+            $this->Model->name = $request['customer_business_name'] ?? '';
+            $this->Model->status = !empty($request['status']) ? 1 : 0;
+            $this->Model->save();
 
-            return Response::json(['success' => 'Customer Business created successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->MsgSlug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -100,15 +114,15 @@ class CustomerBusinessController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:customer_businesses,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $customer_business = CustomerBusiness::where('id', $id)->first();
-            $returnHTML = view('contents.customer-businesses.modal-edit')->with(compact('customer_business'))->render();
+            $data = $this->Model->where('id', $id)->first();
+            $returnHTML = view('contents.'.$this->Folder.'.modal-edit')->with(compact('data'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
 
         } catch (\Throwable $th) {
@@ -129,19 +143,19 @@ class CustomerBusinessController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:customer_businesses,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $customer_business = CustomerBusiness::where('id', $id)->first();
-            $customer_business->name = $request['customer_business_name'] ?? '';
-            $customer_business->status = !empty($request['status']) ? 1 : 0;
-            $customer_business->save();
+            $update = $this->Model->where('id', $id)->first();
+            $update->name = $request['customer_business_name'] ?? '';
+            $update->status = !empty($request['status']) ? 1 : 0;
+            $update->save();
 
-            return Response::json(['success' => 'Customer Business updated successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->MsgSlug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -159,16 +173,16 @@ class CustomerBusinessController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:customer_businesses,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            CustomerBusiness::where('id',$id)->delete();
+            $this->Model->where('id',$id)->delete();
 
-            return Response::json(['success' => 'Customer Business deleted successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->MsgSlug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

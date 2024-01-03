@@ -66,7 +66,8 @@
                                             Role</small></a>
                                 </div>
                                 @if ($role->name != 'Super Admin')
-                                    <a href="javascript:void(0);" class="text-muted deleteRole" data-url="{!! url('roles/' . Crypt::Encrypt($role->id)) !!}"><i class="bx bx-trash"></i></a>
+                                    {{--  <a href="javascript:void(0);" class="text-muted deleteRole" data-url="{!! url('roles/' . Crypt::Encrypt($role->id)) !!}"><i class="bx bx-trash"></i></a>  --}}
+                                    <a href="javascript:;" class="text-muted deleteRole" data-url="{{ url('roles/' . Crypt::Encrypt($role->id)) }}"><i class="bx bx-trash"></i></a>
                                 @endif
                             </div>
                         </div>

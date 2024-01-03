@@ -28,7 +28,7 @@ class Language extends Model
      */
     protected $fillable = [
         'name',
-        'sortcode',
+        'shortcode',
         'status',
     ];
 

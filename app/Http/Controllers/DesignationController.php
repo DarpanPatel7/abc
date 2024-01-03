@@ -13,17 +13,20 @@ use App\Http\Requests\Designation\UpdateRequest;
 
 class DesignationController extends Controller
 {
+    private $Model, $Table = 'designations', $Folder = 'designations', $Slug = 'Designation', $UrlSlug = 'designations', $PermissionSlug = 'designation';
+
     /**
      *
      * @return \Illuminate\Http\Response
      */
-    /* public function __construct()
+    public function __construct()
     {
-        $this->middleware('permission:designation-list|designation-create|designation-edit|designation-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:designation-create', ['only' => ['create','store']]);
-        $this->middleware('permission:designation-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:designation-delete', ['only' => ['destroy']]);
-    } */
+        // $this->middleware('permission:'.$this->PermissionSlug.'-list|'.$this->PermissionSlug.'-create|'.$this->PermissionSlug.'-edit|'.$this->PermissionSlug.'-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
+        $this->Model = new Designation;
+    }
 
     /**
      * Display a listing of the resource.
@@ -34,9 +37,9 @@ class DesignationController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $designations = Designation::select('id', 'name', 'status')->orderBy("id", "desc")->get();
+                $records = $this->Model->select('id', 'name', 'status')->orderBy("id", "desc")->get();
 
-                return DataTables::of($designations)
+                return DataTables::of($records)
                     ->addIndexColumn()
                     ->editColumn('status', function ($status) {
                         $badgeStatus = $status->badgeStatus ?? '';
@@ -45,15 +48,15 @@ class DesignationController extends Controller
                         return $userHtml;
                     })
                     ->addColumn('action', function($action){
-                        $editUrl = url('designations/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url('designations/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editDesignation" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteDesignation" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['status', 'action'])
                     ->make(true);
             }
-            return view('contents.designations.index');
+            return view('contents.'.$this->Folder.'.index');
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -78,12 +81,11 @@ class DesignationController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            $designation = new Designation();
-            $designation->name = $request['designation_name'] ?? '';
-            $designation->status = !empty($request['status']) ? 1 : 0;
-            $designation->save();
+            $this->Model->name = $request['designation_name'] ?? '';
+            $this->Model->status = !empty($request['status']) ? 1 : 0;
+            $this->Model->save();
 
-            return Response::json(['success' => 'Designation created successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -112,15 +114,15 @@ class DesignationController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:designations,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $designation = Designation::where('id', $id)->first();
-            $returnHTML = view('contents.designations.modal-edit')->with(compact('designation'))->render();
+            $data = $this->Model->where('id', $id)->first();
+            $returnHTML = view('contents.'.$this->Folder.'.modal-edit')->with(compact('data'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
 
         } catch (\Throwable $th) {
@@ -141,19 +143,19 @@ class DesignationController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:designations,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $designation = Designation::where('id', $id)->first();
-            $designation->name = $request['designation_name'] ?? '';
-            $designation->status = !empty($request['status']) ? 1 : 0;
-            $designation->save();
+            $update = $this->Model->where('id', $id)->first();
+            $update->name = $request['designation_name'] ?? '';
+            $update->status = !empty($request['status']) ? 1 : 0;
+            $update->save();
 
-            return Response::json(['success' => 'Designation updated successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -171,16 +173,16 @@ class DesignationController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:designations,id'
+                'id' => 'required|exists:'.$this->Table.',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            Designation::where('id',$id)->delete();
+            $this->Model->where('id',$id)->delete();
 
-            return Response::json(['success' => 'Designation deleted successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

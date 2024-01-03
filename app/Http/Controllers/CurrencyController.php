@@ -13,7 +13,7 @@ use App\Http\Requests\Currency\UpdateRequest;
 
 class CurrencyController extends Controller
 {
-    private $Model, $Table = 'currencies', $Folder = 'currencies', $Slug = '', $UrlSlug = 'currencies';
+    private $Model, $Table = 'currencies', $Folder = 'currencies', $Slug = 'Currency', $UrlSlug = 'currencies', $PermissionSlug = 'currency';
 
     /**
      *
@@ -21,12 +21,11 @@ class CurrencyController extends Controller
      */
     public function __construct()
     {
-        /* $this->middleware('permission:currency-list|currency-create|currency-edit|currency-delete', ['only' => ['index','store']]);
-        $this->middleware('permission:currency-create', ['only' => ['create','store']]);
-        $this->middleware('permission:currency-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:currency-delete', ['only' => ['destroy']]); */
-
-        $this->Model = new Currency();
+        // $this->middleware('permission:'.$this->PermissionSlug.'-list|'.$this->PermissionSlug.'-create|'.$this->PermissionSlug.'-edit|'.$this->PermissionSlug.'-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
+        $this->Model = new Currency;
     }
 
     /**
@@ -51,7 +50,7 @@ class CurrencyController extends Controller
                     ->addColumn('action', function($action){
                         $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
                         $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon editCurrency" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon deleteCurrency" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['status', 'action'])
@@ -88,7 +87,7 @@ class CurrencyController extends Controller
             $this->Model->status = !empty($request['status']) ? 1 : 0;
             $this->Model->save();
 
-            return Response::json(['success' => 'Currency created successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -160,7 +159,7 @@ class CurrencyController extends Controller
             $update->status = !empty($request['status']) ? 1 : 0;
             $update->save();
 
-            return Response::json(['success' => trans('messages.success_update', ['attribute' => 'Currency'])], 202);
+            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -187,7 +186,7 @@ class CurrencyController extends Controller
 
             $this->Model->where('id',$id)->delete();
 
-            return Response::json(['success' => 'Currency deleted successfully!'], 202);
+            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

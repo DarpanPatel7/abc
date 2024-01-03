@@ -69,6 +69,27 @@ $(function () {
         }
     );
 
+    $(document).on("click", ".deleteRole", function () {
+        var url = $(this).attr("data-url");
+        $.easyAjax({
+            url: url,
+            type: "DELETE",
+            disableButton: true,
+            buttonSelector: ".delete"+main,
+            datatable: datatable,
+        });
+
+        // $.easyAjax({
+        //     container: "#add"+main+"Form",
+        //     type: "POST",
+        //     buttonSelector: "#add"+main+"Submit",
+        //     blockUI: true,
+        //     disableButton: true,
+        //     formReset:true,
+        //     datatable: datatable,
+        // });
+    });
+
     // Filter form control to default size
     // ? setTimeout used for multilingual table initialization
     setTimeout(() => {

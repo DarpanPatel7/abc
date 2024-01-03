@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('sortcode')->nullable();
+            $table->string('shortcode')->nullable();
             $table->boolean('status')->default(1);
             $table->softDeletesTz();
             $table->timestamps();

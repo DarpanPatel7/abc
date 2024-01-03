@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Timezone;
 use Illuminate\Http\Request;
-use App\Models\CustomerSource;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\CustomerSource\StoreRequest;
-use App\Http\Requests\CustomerSource\UpdateRequest;
+use App\Http\Requests\Timezone\StoreRequest;
+use App\Http\Requests\Timezone\UpdateRequest;
 
-class CustomerSourceController extends Controller
+class TimezoneController extends Controller
 {
-    private $Model, $Table = 'customer_sources', $Folder = 'customer-sources', $Slug = 'CustomerSource', $MsgSlug = 'Customer Source', $UrlSlug = 'customer-sources', $PermissionSlug = 'customer-source';
+    private $Model, $Table = 'timezones', $Folder = 'timezones', $Slug = 'Timezone', $UrlSlug = 'timezones', $PermissionSlug = 'timezone';
 
     /**
      *
@@ -25,7 +25,7 @@ class CustomerSourceController extends Controller
         // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
         // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
         // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
-        $this->Model = new CustomerSource;
+        $this->Model = new Timezone;
     }
 
     /**
@@ -37,7 +37,7 @@ class CustomerSourceController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $records = $this->Model->select('id', 'name', 'status')->orderBy("id", "desc")->get();
+                $records = $this->Model->select('id', 'name', 'utc_offset', 'status')->orderBy("id", "desc")->get();
 
                 return DataTables::of($records)
                     ->addIndexColumn()
@@ -81,11 +81,12 @@ class CustomerSourceController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            $this->Model->name = $request['customer_source_name'] ?? '';
+            $this->Model->name = $request['timezone_name'] ?? '';
+            $this->Model->utc_offset = $request['timezone_utc_offset'] ?? '';
             $this->Model->status = !empty($request['status']) ? 1 : 0;
             $this->Model->save();
 
-            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->MsgSlug])], 202);
+            return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -151,11 +152,12 @@ class CustomerSourceController extends Controller
             }
 
             $update = $this->Model->where('id', $id)->first();
-            $update->name = $request['customer_source_name'] ?? '';
+            $update->name = $request['timezone_name'] ?? '';
+            $update->utc_offset = $request['timezone_utc_offset'] ?? '';
             $update->status = !empty($request['status']) ? 1 : 0;
             $update->save();
 
-            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->MsgSlug])], 202);
+            return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -182,7 +184,7 @@ class CustomerSourceController extends Controller
 
             $this->Model->where('id',$id)->delete();
 
-            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->MsgSlug])], 202);
+            return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
