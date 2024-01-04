@@ -199,6 +199,27 @@
                                 ],
                             ) !!}
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                                <label class="form-label">Designation</label>
+                                {!! Form::select(
+                                    'designation',
+                                    $designations,
+                                    [],
+                                    [
+                                        'class' => 'select2 form-select form-select-lg',
+                                        'placeholder' => 'Select Designation',
+                                        'data-allow-clear' => 'true',
+                                        'id' => 'designation',
+                                    ],
+                                ) !!}
+                            </div>
+                            <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                                <label class="form-label">Identity Proof</label>
+                                <input class="form-control" type="file" name="identity_proof"
+                                    accept="application/pdf,image/*">
+                            </div>
+                        </div>
                     </div>
                     <div class="mt-2">
                         <button type="button" class="btn btn-primary me-2" id="saveAccount">Save changes</button>

@@ -16,7 +16,6 @@ $(function () {
             blockUI: true,
             blockUIMessage: 'Submitting the form please wait...',
             disableButton: true,
-            isSuccessToast: true,
             reload:true,
         });
     });
@@ -32,7 +31,6 @@ $(function () {
             blockUI: true,
             blockUIMessage: 'Submitting the form please wait...',
             disableButton: true,
-            isSuccessToast: true,
             reload:true,
         });
     });

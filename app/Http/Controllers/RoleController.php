@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Role\StoreRequest;
 use Illuminate\Support\Facades\Response;
 use Spatie\Permission\Models\Permission;
@@ -17,7 +19,8 @@ use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
-    private $MainModel, $UserModel, $PermissionModel, $Table = 'roles', $userTable = 'user', $Folder = 'roles', $Slug = 'Role', $UrlSlug = 'roles', $PermissionSlug = 'role';
+    private $Model, $UserModel, $PermissionModel, $ArtisanModel;
+    private $Table = 'roles', $userTable = 'users', $Folder = 'roles', $Slug = 'Role', $UrlSlug = 'roles', $PermissionSlug = 'role';
 
     /**
      *
@@ -29,9 +32,10 @@ class RoleController extends Controller
         // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
         // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
         // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
-        $this->MainModel = new Role;
+        $this->Model = new Role;
         $this->UserModel = new User;
         $this->PermissionModel = new Permission;
+        $this->ArtisanModel = new Artisan;
     }
 
     /**
@@ -89,7 +93,7 @@ class RoleController extends Controller
                     ->rawColumns(['user', 'role', 'status', 'action'])
                     ->make(true);
             }
-            $roles = $this->MainModel->orderBy('id', 'desc')->get();
+            $roles = $this->Model->orderBy('id', 'desc')->get();
             $permissions = $this->PermissionModel->orderBy('sort', 'asc')->get();
             $module_permissions = [];
             foreach ($permissions as $key => $value) {
@@ -123,9 +127,10 @@ class RoleController extends Controller
         try {
             $input['name'] = $request->input('role_name');
 
-            $role = $this->MainModel->create($input);
+            $role = $this->Model->create($input);
             $role->syncPermissions($request->input('permission'));
 
+            Session::put('success', trans('messages.success_store', ['attribute' => $this->Slug]));
             return Response::json(['success' => trans('messages.success_store', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -162,7 +167,7 @@ class RoleController extends Controller
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $role = $this->MainModel->where('id', $id)->first();
+            $role = $this->Model->where('id', $id)->first();
             $permissions = $this->PermissionModel->orderBy('sort', 'asc')->get();
             $module_permissions = [];
             foreach ($permissions as $key => $value) {
@@ -197,17 +202,18 @@ class RoleController extends Controller
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $checksuperadmin = $this->MainModel->where('id', $id)->where('name', 'Super Admin')->count();
+            $checksuperadmin = $this->Model->where('id', $id)->where('name', 'Super Admin')->count();
             if ($checksuperadmin > 0) {
                 return Response::json(['error' => trans('messages.cnt_upd_sup_usr')], 202);
             }
 
-            $role = $this->MainModel->where('id', $id)->first();
+            $role = $this->Model->where('id', $id)->first();
             $role->name = $request->input('role_name');
             $role->save();
 
             $role->syncPermissions($request->input('permission'));
 
+            Session::put('success', trans('messages.success_update', ['attribute' => $this->Slug]));
             return Response::json(['success' => trans('messages.success_update', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -233,15 +239,16 @@ class RoleController extends Controller
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $checksuperadmin = $this->MainModel->where('id', $id)->where('name', 'Super Admin')->count();
+            $checksuperadmin = $this->Model->where('id', $id)->where('name', 'Super Admin')->count();
             if ($checksuperadmin > 0) {
                 return Response::json(['error' => trans('messages.cnt_del_sup_usr')], 202);
             }
 
             //do not delete super admin role
             //can delete any other role
-            $this->MainModel->where('id', $id)->where('name', '!=', 'Super Admin')->delete();
+            $this->Model->where('id', $id)->where('name', '!=', 'Super Admin')->delete();
 
+            Session::put('success', trans('messages.success_delete', ['attribute' => $this->Slug]));
             return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -260,7 +267,7 @@ class RoleController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:'.$this->userTable.',id'
+                'id' => 'required|exists:' . $this->userTable . ',id'
             ]);
 
             if ($validator->fails()) {
@@ -268,10 +275,10 @@ class RoleController extends Controller
             }
 
             $employee = $this->UserModel->where('id', $id)->first();
-            $roles = $this->MainModel->where('name', '!=', 'Super Admin')->pluck('name', 'name')->all();
+            $roles = $this->Model->where('name', '!=', 'Super Admin')->pluck('name', 'name')->all();
             $employeeRole = $employee->roles->pluck('name', 'name')->all();
 
-            $returnHTML = view('contents.roles.modal-assign')->with(compact('employee', 'roles', 'employeeRole'))->render();
+            $returnHTML = view('contents.' . $this->Folder . '.modal-assign')->with(compact('employee', 'roles', 'employeeRole'))->render();
             return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -291,7 +298,7 @@ class RoleController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:'.$this->userTable.',id'
+                'id' => 'required|exists:' . $this->userTable . ',id'
             ]);
 
             if ($validator->fails()) {
@@ -302,11 +309,34 @@ class RoleController extends Controller
             $employee = $this->UserModel->where('id', $id)->first();
             DB::table('model_has_roles')->where('model_id', $id)->delete();
             if (!empty($request->input('roles'))) {
-                $role = $this->MainModel->wherein('name', $request->input('roles'))->get();
+                $role = $this->Model->wherein('name', $request->input('roles'))->get();
                 $employee->assignRole($role);
             }
 
             return Response::json(['success' => trans('messages.success', ['attribute' => 'Assign role'])], 202);
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Sync roles & permissions
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function syncRolePermission(Request $request)
+    {
+        try {
+            // Use the Artisan facade to call the seeder command
+            $this->ArtisanModel->call('db:seed', ['--class' => 'PermissionTableSeeder']);
+
+            // Get the output of the command (optional)
+            $output = $this->ArtisanModel->output();
+
+            // You can return the output or perform other actions as needed
+            return Response::json(['success' => trans('messages.success', ['attribute' => 'Sync'])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

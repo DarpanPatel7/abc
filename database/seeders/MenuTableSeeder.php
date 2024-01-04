@@ -18,16 +18,12 @@ class MenuTableSeeder extends Seeder
         $json = '{
             "menu": [
                 {
-                    "icon": "menu-icon tf-icons bx bx-grid-alt",
-                    "url": "dashboard",
-                    "name": "Dashboard",
-                    "slug": "dashboard.index"
-                },
-                {
                     "menuHeader": "Apps & Pages",
-                    "permission": [
+                    "headerpermission": [
                         "employee-list",
-                        "role-list"
+                        "role-list",
+                        "account-setting-account",
+                        "account-setting-security"
                     ]
                 },
                 {
@@ -51,7 +47,7 @@ class MenuTableSeeder extends Seeder
                 {
                     "name": "Roles & Permissions",
                     "icon": "menu-icon tf-icons bx bx-check-shield",
-                    "slug": "role",
+                    "slug": "roles",
                     "permission": [
                         "role-list"
                     ],
@@ -67,14 +63,50 @@ class MenuTableSeeder extends Seeder
                     ]
                 },
                 {
-                    "menuHeader": "Masters",
+                    "name": "Account Settings",
+                    "slug": "account-settings",
+                    "icon": "menu-icon tf-icons bx bx-cube",
                     "permission": [
+                        "account-setting-account",
+                        "account-setting-security"
+                    ],
+                    "submenu": [
+                      {
+                        "url": "account-settings/account",
+                        "name": "Account",
+                        "slug": "account-settings.account",
+                        "permission": [
+                            "account-setting-account"
+                        ]
+                      },
+                      {
+                        "url": "account-settings/security",
+                        "name": "Security",
+                        "slug": "account-settings.security",
+                        "permission": [
+                            "account-setting-security"
+                        ]
+                      }
+                    ]
+                },
+                {
+                    "url": "admin-settings",
+                    "name": "Admin Settings",
+                    "icon": "menu-icon tf-icons bx bx-loader bx-spin-hover",
+                    "slug": "admin-settings",
+                    "permission": [
+                        "admin-setting"
+                    ]
+                },
+                {
+                    "menuHeader": "Masters",
+                    "headerpermission": [
                         "designation-list",
-                        "customer-sources-list",
-                        "customer-businesses-list",
-                        "currencies-list",
-                        "languages-list",
-                        "timezones-list"
+                        "customer-source-list",
+                        "customer-business-list",
+                        "currency-list",
+                        "language-list",
+                        "timezone-list"
                     ]
                 },
                 {
@@ -89,19 +121,19 @@ class MenuTableSeeder extends Seeder
                 {
                     "url": "customer-sources",
                     "name": "Customer Sources",
-                    "icon": "menu-icon tf-icons bx bxs-user-badge",
+                    "icon": "menu-icon tf-icons bx bx-data",
                     "slug": "customer-sources.index",
                     "permission": [
-                        "customer-sources-list"
+                        "customer-source-list"
                     ]
                 },
                 {
                     "url": "customer-businesses",
                     "name": "Customer Business",
-                    "icon": "menu-icon tf-icons bx bxs-user-badge",
+                    "icon": "menu-icon tf-icons bx bxs-business",
                     "slug": "customer-businesses.index",
                     "permission": [
-                        "customer-businesses-list"
+                        "customer-business-list"
                     ]
                 },
                 {
@@ -110,7 +142,7 @@ class MenuTableSeeder extends Seeder
                     "icon": "menu-icon tf-icons bx bx-money",
                     "slug": "currencies.index",
                     "permission": [
-                        "currencies-list"
+                        "currency-list"
                     ]
                 },
                 {
@@ -119,7 +151,7 @@ class MenuTableSeeder extends Seeder
                     "icon": "menu-icon tf-icons bx bx-flag",
                     "slug": "languages.index",
                     "permission": [
-                        "languages-list"
+                        "language-list"
                     ]
                 },
                 {
@@ -128,7 +160,7 @@ class MenuTableSeeder extends Seeder
                     "icon": "menu-icon tf-icons bx bxs-timer",
                     "slug": "timezones.index",
                     "permission": [
-                        "timezones-list"
+                        "timezone-list"
                     ]
                 }
             ]

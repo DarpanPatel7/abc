@@ -49,31 +49,109 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Current Address</label>
-                            <textarea class="form-control" name="current_address" rows="3"></textarea>
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="text" class="form-control" placeholder="email@example.com" name="email"
+                                aria-label="Email" />
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Permanent Address</label>
-                            <textarea class="form-control" name="permanent_address" rows="3"></textarea>
+                            <label for="organization" class="form-label">Organization</label>
+                            <input type="text" class="form-control" placeholder="Organization" name="organization"
+                                aria-label="Organization" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Date of Birth</label>
-                            <input type="text" name="date_of_birth"
-                                placeholder="{{ config('global.datepicker_date_placeholder') }}"
-                                class="form-control bs-datepicker" data-autoclose="true"
-                                data-format="{{ config('global.datepicker_date_format') }}" />
+                            <input type="text" class="form-control bs-datepicker"
+                                placeholder="{{ config('global.datepicker_date_placeholder') }}" name="date_of_birth"
+                                data-autoclose="true" data-format="{{ config('global.datepicker_date_format') }}" />
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Joining Date</label>
-                            <input type="text" name="joining_date"
-                                placeholder="{{ config('global.datepicker_date_placeholder') }}"
-                                class="form-control bs-datepicker" data-autoclose="true"
-                                data-format="{{ config('global.datepicker_date_format') }}" />
+                            <input type="text" class="form-control bs-datepicker"
+                                placeholder="{{ config('global.datepicker_date_placeholder') }}" name="joining_date"
+                                data-autoclose="true" data-format="{{ config('global.datepicker_date_format') }}" />
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label class="form-label" for="country">Country</label>
+                            {!! Form::select(
+                                'country',
+                                $countries,
+                                [],
+                                [
+                                    'class' => 'select2 form-select form-select-lg',
+                                    'id' => 'country',
+                                    'placeholder' => 'Select Country',
+                                    'data-allow-clear' => 'true',
+                                ],
+                            ) !!}
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="state" class="form-label">State</label>
+                            <div id="state_content">
+                                {!! Form::select(
+                                    'state',
+                                    [],
+                                    [],
+                                    [
+                                        'class' => 'select2 form-select form-select-lg',
+                                        'id' => 'state',
+                                        'placeholder' => 'Select State',
+                                        'data-allow-clear' => 'true',
+                                    ],
+                                ) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" placeholder="Address" name="address"
+                                aria-label="Address" />
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="zipcode" class="form-label">Zip Code</label>
+                            <input type="text" class="form-control" placeholder="231465" name="zipcode"
+                                maxlength="6" aria-label="Zip Code" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="language" class="form-label">Language</label>
+                            {!! Form::select('language', $languages, $user->language_id ?? [], [
+                                'class' => 'select2 form-select form-select-lg',
+                                'id' => 'language',
+                                'placeholder' => 'Select Language',
+                                'data-allow-clear' => 'true',
+                            ]) !!}
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="timezone" class="form-label">Timezone</label>
+                            {!! Form::select('timezone', $timezones, $user->timezone_id ?? [], [
+                                'class' => 'select2 form-select form-select-lg',
+                                'id' => 'timezone',
+                                'placeholder' => 'Select Timezone',
+                                'data-allow-clear' => 'true',
+                            ]) !!}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="currency" class="form-label">Currency</label>
+                            {!! Form::select(
+                                'currency',
+                                $currencies,
+                                [],
+                                [
+                                    'class' => 'select2 form-select form-select-lg',
+                                    'id' => 'currency',
+                                    'placeholder' => 'Select Currency',
+                                    'data-allow-clear' => 'true',
+                                ],
+                            ) !!}
+                        </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Designation</label>
                             {!! Form::select(
@@ -88,13 +166,13 @@
                                 ],
                             ) !!}
                         </div>
-                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Identity Proof</label>
-                            <input class="form-control" type="file" name="identity_proof"
-                                accept="application/pdf,image/*">
-                        </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label class="form-label">Identity Proof</label>
+                            <input type="file" class="form-control" name="identity_proof"
+                                accept="application/pdf,image/*">
+                        </div>
                         <div class="col mb-0">
                             <label class="form-label" for="addstatus">Status</label>
                             <div>

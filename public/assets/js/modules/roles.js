@@ -53,41 +53,15 @@ $(function () {
     }
 
     // Delete Record
-    $(".datatable"+main+" tbody").on(
-        "click",
-        ".delete"+main,
-        function () {
-            datatable = datatable.row($(this).parents("tr"));
-            var url = $(this).attr("data-url");
-            $.easyAjax({
-                url: url,
-                type: "DELETE",
-                disableButton: true,
-                buttonSelector: ".delete"+main,
-                datatable: datatable,
-            });
-        }
-    );
-
-    $(document).on("click", ".deleteRole", function () {
+    $(document).on("click", ".delete"+main, function () {
         var url = $(this).attr("data-url");
         $.easyAjax({
             url: url,
             type: "DELETE",
             disableButton: true,
             buttonSelector: ".delete"+main,
-            datatable: datatable,
+            reload:true,
         });
-
-        // $.easyAjax({
-        //     container: "#add"+main+"Form",
-        //     type: "POST",
-        //     buttonSelector: "#add"+main+"Submit",
-        //     blockUI: true,
-        //     disableButton: true,
-        //     formReset:true,
-        //     datatable: datatable,
-        // });
     });
 
     // Filter form control to default size
@@ -106,7 +80,7 @@ $(function () {
             blockUI: true,
             disableButton: true,
             formReset:true,
-            datatable: datatable,
+            reload:true,
         });
     });
 
@@ -125,7 +99,7 @@ $(function () {
             $.when( $.ready, $.get($(this).data("url")) ).done(function() {
                 checkedEditAllPermission();
             })
-        });
+        }, 100);
     });
 
     // update
@@ -137,7 +111,7 @@ $(function () {
             blockUI: true,
             disableButton: true,
             formReset:true,
-            datatable: datatable,
+            reload:true,
         });
     });
 
@@ -167,6 +141,18 @@ $(function () {
         });
     });
 
+    // assign role
+    $("body").on("click", "#syncRolePermission", function (event) {
+        var url = $(this).data('url');
+        $.easyAjax({
+            url: url,
+            type: "POST",
+            buttonSelector: $(this),
+            blockUI: true,
+            disableButton: true,
+            datatable: datatable,
+        });
+    });
 
     function checkedEditAllPermission(){
         $("body .editpermission").each(function () {

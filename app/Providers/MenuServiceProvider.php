@@ -57,6 +57,16 @@ class MenuServiceProvider extends ServiceProvider
             $horizontalMenuData = json_decode($horizontalMenuJson);
         }
 
+        // dd($verticalMenuData);
+        /* foreach($verticalMenuData as $val){
+            foreach($val as $v){
+                if(!empty($v->permission)){
+                    echo "<pre>";
+                    print_r($v->permission);
+                }
+            }
+        }
+        exit; */
         // Share all menuData to all the views
         View::share('menuData', [$verticalMenuData, $horizontalMenuData]);
     }

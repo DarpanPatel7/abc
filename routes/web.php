@@ -45,11 +45,13 @@ require __DIR__.'/auth.php';
 
     //Employees
     Route::resource('employees', EmployeeController::class);
+    Route::post('employees.getStateByCountry', [EmployeeController::class, 'getStateByCountry'])->name('employees.getStateByCountry');
 
     //Role & Permissions
     Route::resource('roles', RoleController::class);
     Route::get('roles.getRole/{id}', [RoleController::class, 'getRole'])->name('roles.getRole');
     Route::patch('roles.updateRole/{id}', [RoleController::class, 'updateRole'])->name('roles.updateRole');
+    Route::post('roles.syncRolePermission', [RoleController::class, 'syncRolePermission'])->name('roles.syncRolePermission');
 
     //Designations
     Route::resource('designations', DesignationController::class);

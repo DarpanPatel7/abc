@@ -20,7 +20,7 @@ $(function () {
     }
 
     // Variable declaration for table
-    var dt_selector = $(".datatable"+main);
+    var dt_selector = $(".datatable" + main);
 
     // Users datatable
     if (dt_selector.length) {
@@ -39,11 +39,11 @@ $(function () {
             // Buttons with Dropdown
             buttons: [
                 {
-                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Add '+main+'</span>',
+                    text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Add ' + main + '</span>',
                     className: "add-new btn btn-primary mx-3",
                     attr: {
                         "data-bs-toggle": "modal",
-                        "data-bs-target": "#add"+main+"Modal",
+                        "data-bs-target": "#add" + main + "Modal",
                     },
                 },
             ],
@@ -66,9 +66,9 @@ $(function () {
     }
 
     // Delete Record
-    $(".datatable"+main+" tbody").on(
+    $(".datatable" + main + " tbody").on(
         "click",
-        ".delete"+main,
+        ".delete" + main,
         function () {
             datatable = datatable.row($(this).parents("tr"));
             var url = $(this).attr("data-url");
@@ -76,7 +76,7 @@ $(function () {
                 url: url,
                 type: "DELETE",
                 disableButton: true,
-                buttonSelector: ".delete"+main,
+                buttonSelector: ".delete" + main,
                 datatable: datatable,
             });
         }
@@ -90,51 +90,74 @@ $(function () {
     }, 300);
 
     // add
-    $(document).on("click", "#add"+main+"Submit", function () {
+    $(document).on("click", "#add" + main + "Submit", function () {
         $.easyAjax({
-            container: "#add"+main+"Form",
+            container: "#add" + main + "Form",
             type: "POST",
-            buttonSelector: "#add"+main+"Submit",
+            buttonSelector: "#add" + main + "Submit",
             file: true,
             blockUI: true,
             disableButton: true,
-            formReset:true,
+            formReset: true,
             datatable: datatable,
         });
     });
 
     // render edit data
-    $(document).on("click", ".edit"+main, function () {
+    $(document).on("click", ".edit" + main, function () {
         var url = $(this).data("url");
         $.easyAjax({
             url: url,
             type: "GET",
-            appendHtml: "#edit"+main+"Content",
-            showModal: "#edit"+main+"Modal",
+            appendHtml: "#edit" + main + "Content",
+            showModal: "#edit" + main + "Modal",
             blockUI: true,
             disableButton: true,
         });
     });
 
     // update
-    $("body").on("click", "#edit"+main+"Submit", function (event) {
+    $("body").on("click", "#edit" + main + "Submit", function (event) {
         $.easyAjax({
-            container: "#edit"+main+"Form",
+            container: "#edit" + main + "Form",
             type: "POST",
-            buttonSelector: "#edit"+main+"Submit",
+            buttonSelector: "#edit" + main + "Submit",
             file: true,
             blockUI: true,
             disableButton: true,
-            formReset:true,
+            formReset: true,
             datatable: datatable,
         });
     });
 
+    $('body').on('change', '#country', function (event) {
+        var id = $(this).val();
+        $.easyAjax({
+            url: getStateByCountry_url,
+            container: '#add' + main + 'Modal',
+            data: { 'id': id },
+            type: "POST",
+            appendHtml: "#state_content",
+        });
+    });
+
+    $(document).ready(function () {
+        var id = $('#country').val();
+        if (id) {
+            $.easyAjax({
+                url: getStateByCountry_url,
+                data: { 'id': id },
+                type: "POST",
+                appendHtml: "#state_content",
+            });
+        }
+    });
+
     // Start upload,crop,preview image - croppie plugin
     var $uploadCrop,
-    tempFilename,
-    rawImg,
-    imageId;
+        tempFilename,
+        rawImg,
+        imageId;
     function readFile(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -161,21 +184,23 @@ $(function () {
         enableExif: true
     });
 
-    $('#cropImagePop').on('shown.bs.modal', function(){
+    $('#cropImagePop').on('shown.bs.modal', function () {
         $uploadCrop.croppie('bind', {
             url: rawImg
-        }).then(function(){
+        }).then(function () {
             console.log('jQuery bind complete');
         });
     });
 
-    $('.item-img').on('change', function () { imageId = $(this).data('id'); tempFilename = $(this).val();
-    $('#cancelCropBtn').data('id', imageId); readFile(this); });
+    $('.item-img').on('change', function () {
+        imageId = $(this).data('id'); tempFilename = $(this).val();
+        $('#cancelCropBtn').data('id', imageId); readFile(this);
+    });
     $('#cropImageBtn').on('click', function (ev) {
         $uploadCrop.croppie('result', {
             type: 'base64',
             format: 'png',
-            size: {width: 105, height: 105}
+            size: { width: 105, height: 105 }
         }).then(function (resp) {
             $('.preview-profile-image').attr('src', resp);
             $('.profile_photo').val(resp);

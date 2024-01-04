@@ -21,104 +21,179 @@ class PermissionTableSeeder extends Seeder
     {
         $permissions = [
             [
-                'name'=>'role-list',
-                'flag'=>'Role',
-                'sort'=> 1
-            ],
-            [
-                'name'=>'role-create',
-                'flag'=>'Role',
-                'sort'=> 1
-            ],
-            [
-                'name'=>'role-edit',
-                'flag'=>'Role',
-                'sort'=> 1
-            ],
-            [
-                'name'=>'role-delete',
-                'flag'=>'Role',
-                'sort'=> 1
-            ],
-            [
                 'name'=>'employee-list',
                 'flag'=>'Employee',
-                'sort'=> 2
+                'sort'=> 1
             ],
             [
                 'name'=>'employee-create',
                 'flag'=>'Employee',
-                'sort'=> 2
+                'sort'=> 1
             ],
             [
                 'name'=>'employee-edit',
                 'flag'=>'Employee',
-                'sort'=> 2
+                'sort'=> 1
             ],
             [
                 'name'=>'employee-delete',
                 'flag'=>'Employee',
+                'sort'=> 1
+            ],
+            [
+                'name'=>'role-list',
+                'flag'=>'Role',
                 'sort'=> 2
+            ],
+            [
+                'name'=>'role-create',
+                'flag'=>'Role',
+                'sort'=> 2
+            ],
+            [
+                'name'=>'role-edit',
+                'flag'=>'Role',
+                'sort'=> 2
+            ],
+            [
+                'name'=>'role-delete',
+                'flag'=>'Role',
+                'sort'=> 2
+            ],
+            [
+                'name'=>'account-setting-account',
+                'flag'=>'Account Setting',
+                'sort'=> 3
+            ],
+            [
+                'name'=>'account-setting-security',
+                'flag'=>'Account Setting',
+                'sort'=> 3
+            ],
+            [
+                'name'=>'admin-setting',
+                'flag'=>'Admin Setting',
+                'sort'=> 4
             ],
             [
                 'name'=>'designation-list',
                 'flag'=>'Designation',
-                'sort'=> 3
+                'sort'=> 5
             ],
             [
                 'name'=>'designation-create',
                 'flag'=>'Designation',
-                'sort'=> 3
+                'sort'=> 5
             ],
             [
                 'name'=>'designation-edit',
                 'flag'=>'Designation',
-                'sort'=> 3
+                'sort'=> 5
             ],
             [
                 'name'=>'designation-delete',
                 'flag'=>'Designation',
-                'sort'=> 3
+                'sort'=> 5
             ],
             [
                 'name'=>'customer-source-list',
                 'flag'=>'Customer Source',
-                'sort'=> 4
+                'sort'=> 6
             ],
             [
                 'name'=>'customer-source-create',
                 'flag'=>'Customer Source',
-                'sort'=> 4
+                'sort'=> 6
             ],
             [
                 'name'=>'customer-source-edit',
                 'flag'=>'Customer Source',
-                'sort'=> 4
+                'sort'=> 6
             ],
             [
                 'name'=>'customer-source-delete',
                 'flag'=>'Customer Source',
-                'sort'=> 4
+                'sort'=> 6
             ],
             [
                 'name'=>'customer-business-list',
                 'flag'=>'Customer Business',
-                'sort'=> 5
+                'sort'=> 7
             ],
             [
                 'name'=>'customer-business-create',
                 'flag'=>'Customer Business',
-                'sort'=> 5
+                'sort'=> 7
             ],
             [
                 'name'=>'customer-business-edit',
                 'flag'=>'Customer Business',
-                'sort'=> 5
+                'sort'=> 7
             ],
             [
                 'name'=>'customer-business-delete',
                 'flag'=>'Customer Business',
-                'sort'=> 5
+                'sort'=> 7
+            ],
+            [
+                'name'=>'currency-list',
+                'flag'=>'Currency',
+                'sort'=> 8
+            ],
+            [
+                'name'=>'currency-create',
+                'flag'=>'Currency',
+                'sort'=> 8
+            ],
+            [
+                'name'=>'currency-edit',
+                'flag'=>'Currency',
+                'sort'=> 8
+            ],
+            [
+                'name'=>'currency-delete',
+                'flag'=>'Currency',
+                'sort'=> 8
+            ],
+            [
+                'name'=>'language-list',
+                'flag'=>'Language',
+                'sort'=> 9
+            ],
+            [
+                'name'=>'language-create',
+                'flag'=>'Language',
+                'sort'=> 9
+            ],
+            [
+                'name'=>'language-edit',
+                'flag'=>'Language',
+                'sort'=> 9
+            ],
+            [
+                'name'=>'language-delete',
+                'flag'=>'Language',
+                'sort'=> 9
+            ],
+            [
+                'name'=>'timezone-list',
+                'flag'=>'Timezone',
+                'sort'=> 10
+            ],
+            [
+                'name'=>'timezone-create',
+                'flag'=>'Timezone',
+                'sort'=> 10
+            ],
+            [
+                'name'=>'timezone-edit',
+                'flag'=>'Timezone',
+                'sort'=> 10
+            ],
+            [
+                'name'=>'timezone-delete',
+                'flag'=>'Timezone',
+                'sort'=> 10
             ],
         ];
 

@@ -26,9 +26,15 @@
 
 @section('content')
     <h4 class="py-3 breadcrumb-wrapper mb-2">Role List</h4>
-
-    <p>A role provided access to predefined menus and features so that depending on <br> assigned role an administrator can
-        have access to what user needs.</p>
+    <div class="d-flex justify-content-between">
+        <div>
+            <p>A role provided access to predefined menus and features so that depending on <br> assigned role an administrator can
+                have access to what user needs.</p>
+        </div>
+        <div>
+            <button class="btn btn-primary mb-3 text-nowrap" id="syncRolePermission" data-url="{{ route('roles.syncRolePermission') }}">Sync Roles & Permissions</button>
+        </div>
+    </div>
     <!-- Role cards -->
     <div class="row g-4">
 
@@ -66,7 +72,6 @@
                                             Role</small></a>
                                 </div>
                                 @if ($role->name != 'Super Admin')
-                                    {{--  <a href="javascript:void(0);" class="text-muted deleteRole" data-url="{!! url('roles/' . Crypt::Encrypt($role->id)) !!}"><i class="bx bx-trash"></i></a>  --}}
                                     <a href="javascript:;" class="text-muted deleteRole" data-url="{{ url('roles/' . Crypt::Encrypt($role->id)) }}"><i class="bx bx-trash"></i></a>
                                 @endif
                             </div>

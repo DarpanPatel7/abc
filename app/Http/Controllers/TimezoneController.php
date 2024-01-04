@@ -44,19 +44,19 @@ class TimezoneController extends Controller
                     ->editColumn('status', function ($status) {
                         $badgeStatus = $status->badgeStatus ?? '';
                         $stringStatus = $status->stringStatus ?? '';
-                        $userHtml = '<span class="'.$badgeStatus.'">'.$stringStatus.'</span>';
+                        $userHtml = '<span class="' . $badgeStatus . '">' . $stringStatus . '</span>';
                         return $userHtml;
                     })
-                    ->addColumn('action', function($action){
-                        $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="'.$editUrl.'"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="'.$deleteUrl.'"><i class="bx bx-trash"></i></button> </div>';
+                    ->addColumn('action', function ($action) {
+                        $editUrl = url($this->UrlSlug . '/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url($this->UrlSlug . '/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit' . $this->Slug . '" data-url="' . $editUrl . '"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete' . $this->Slug . '" data-url="' . $deleteUrl . '"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['status', 'action'])
                     ->make(true);
             }
-            return view('contents.'.$this->Folder.'.index');
+            return view('contents.' . $this->Folder . '.index');
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -115,7 +115,7 @@ class TimezoneController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:'.$this->Table.',id'
+                'id' => 'required|exists:' . $this->Table . ',id'
             ]);
 
             if ($validator->fails()) {
@@ -123,9 +123,8 @@ class TimezoneController extends Controller
             }
 
             $data = $this->Model->where('id', $id)->first();
-            $returnHTML = view('contents.'.$this->Folder.'.modal-edit')->with(compact('data'))->render();
-            return Response::json(['success' => 'success.','data' => $returnHTML], 202);
-
+            $returnHTML = view('contents.' . $this->Folder . '.modal-edit')->with(compact('data'))->render();
+            return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -144,7 +143,7 @@ class TimezoneController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:'.$this->Table.',id'
+                'id' => 'required|exists:' . $this->Table . ',id'
             ]);
 
             if ($validator->fails()) {
@@ -175,14 +174,14 @@ class TimezoneController extends Controller
             $id = Crypt::decrypt($id);
 
             $validator = Validator::make(['id' => $id], [
-                'id' => 'required|exists:'.$this->Table.',id'
+                'id' => 'required|exists:' . $this->Table . ',id'
             ]);
 
             if ($validator->fails()) {
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
-            $this->Model->where('id',$id)->delete();
+            $this->Model->where('id', $id)->delete();
 
             return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->Slug])], 202);
         } catch (\Throwable $th) {

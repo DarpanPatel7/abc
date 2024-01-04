@@ -6,13 +6,14 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\State;
 use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Language;
+use App\Models\Timezone;
+use App\Models\Designation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AccountSetting\AccountRequest;
-use App\Models\Currency;
-use App\Models\Language;
-use App\Models\Timezone;
 
 class AccountSettingController extends Controller
 {
@@ -24,12 +25,13 @@ class AccountSettingController extends Controller
     public function account()
     {
         $user = Auth::user();
+        $designations = Designation::Active()->get()->pluck('name', 'id');
         $countries = Country::Active()->get()->pluck('name', 'id');
         $languages = Language::Active()->get()->pluck('name', 'id');
         $timezones = Timezone::Active()->get()->pluck('name', 'id');
         $currencies = Currency::Active()->get()->pluck('name', 'id');
 
-        return view('contents.account-settings.account', compact('user', 'countries', 'languages', 'timezones', 'currencies'));
+        return view('contents.account-settings.account', compact('user', 'countries', 'languages', 'timezones', 'currencies', 'designations'));
     }
 
     /**
@@ -88,7 +90,6 @@ class AccountSettingController extends Controller
 
     /**
      * Display the specified resource.
-     * by Darpan, 01 Apr 2022
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

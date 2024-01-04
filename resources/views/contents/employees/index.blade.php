@@ -31,6 +31,7 @@
     <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
     <script type="text/javascript">
         var defaultImage = "{{ url('assets/img/default-pfp.png') }}";
+        var getStateByCountry_url = '{{ url("employees.getStateByCountry") }}';
     </script>
     <script src="{{ asset('assets/js/modules/employee.js') }}"></script>
 @endsection
@@ -59,6 +60,6 @@
 @endsection
 
 @section('modal')
-    @component('contents.employees.modal', ['designations' => $designations ?? []])
+    @component('contents.employees.modal', ['designations' => $designations ?? [], 'countries' => $countries ?? [], 'languages' => $languages ?? [], 'timezones' => $timezones ?? [], 'currencies' => $currencies ?? []])
     @endcomponent
 @endsection

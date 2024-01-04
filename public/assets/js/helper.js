@@ -81,11 +81,12 @@
                     if (typeof initDatePicker == "function") {
                         initDatePicker();
                     }
+                }else{
+                    if (typeof initSelect2 == "function") {
+                        initSelect2(opt.container);
+                    }
                 }
 
-                if (typeof initSelect2 == "function") {
-                    initSelect2(opt.container);
-                }
             };
         }
 
