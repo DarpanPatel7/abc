@@ -28,6 +28,14 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PermissionTableSeeder::class,
+
+            //temp
+            MenuTableSeeder::class,
+            CountryTableSeeder::class,
+            StateTableSeeder::class,
+            CurrencyTableSeeder::class,
+            LanguageTableSeeder::class,
+            TimezoneTableSeeder::class,
         ]);
     }
 }

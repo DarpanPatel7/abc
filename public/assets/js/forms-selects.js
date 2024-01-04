@@ -58,11 +58,11 @@ function initSelect2(id) {
         $('select.select2').each(function () {
             var $this = $(this),
                 r = {
-                    dropdownParent: $(id),
+                    dropdownParent: $(id + " .modal-content"),
                     AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
                     placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
                 };
-            $this.wrap('<div class="position-relative"></div>').select2(r);
+            $this.select2(r);
         });
     }
 }
@@ -77,7 +77,7 @@ function initAjaxDropdownModal(id) {
                     AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
                     placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
                 };
-            $this.wrap('<div class="position-relative"></div>').select2(r);
+            $this.select2(r);
         });
     }
 }

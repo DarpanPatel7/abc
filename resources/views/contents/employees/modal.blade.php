@@ -7,7 +7,7 @@
                     'route' => 'employees.store',
                     'method' => 'POST',
                     'id' => 'addEmployeeForm',
-                    'class' => 'restrict-enter',
+                    'class' => 'restrict-enter drop-parent',
                 ]) !!}
                 <div class="modal-header">
                     <h5 class="modal-title">Add Employee</h5>
@@ -54,9 +54,9 @@
                                 aria-label="Email" />
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="organization" class="form-label">Organization</label>
-                            <input type="text" class="form-control" placeholder="Organization" name="organization"
-                                aria-label="Organization" />
+                            <label class="form-label" for="phone_number">Phone Number</label>
+                            <input type="text" class="form-control" placeholder="202 555 0111" name="phone_number"
+                                aria-label="Phone Number" />
                         </div>
                     </div>
                     <div class="row">
@@ -89,7 +89,7 @@
                             ) !!}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="state" class="form-label">State</label>
+                            <label class="form-label" for="state">State</label>
                             <div id="state_content">
                                 {!! Form::select(
                                     'state',
@@ -120,7 +120,7 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="language" class="form-label">Language</label>
-                            {!! Form::select('language', $languages, $user->language_id ?? [], [
+                            {!! Form::select('language', $languages, [], [
                                 'class' => 'select2 form-select form-select-lg',
                                 'id' => 'language',
                                 'placeholder' => 'Select Language',
@@ -129,7 +129,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="timezone" class="form-label">Timezone</label>
-                            {!! Form::select('timezone', $timezones, $user->timezone_id ?? [], [
+                            {!! Form::select('timezone', $timezones, [], [
                                 'class' => 'select2 form-select form-select-lg',
                                 'id' => 'timezone',
                                 'placeholder' => 'Select Timezone',
@@ -169,10 +169,17 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                            <label for="organization" class="form-label">Organization</label>
+                            <input type="text" class="form-control" placeholder="Organization" name="organization"
+                                aria-label="Organization" />
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label">Identity Proof</label>
                             <input type="file" class="form-control" name="identity_proof"
                                 accept="application/pdf,image/*">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col mb-0">
                             <label class="form-label" for="addstatus">Status</label>
                             <div>

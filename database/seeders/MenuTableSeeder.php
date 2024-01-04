@@ -165,7 +165,7 @@ class MenuTableSeeder extends Seeder
                 }
             ]
         }';
-        $update = $model->where('code', 'menu')->where('key', 'vertical_menu')->first();
+        $update = $model->firstOrCreate(['code' => 'menu', 'key' => 'vertical_menu']);
         $update->value = $json ?? '';
         $update->save();
     }

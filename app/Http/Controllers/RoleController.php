@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+//use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Role\StoreRequest;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
-    private $Model, $UserModel, $PermissionModel, $ArtisanModel;
+    private $Model, $UserModel, $PermissionModel;
     private $Table = 'roles', $userTable = 'users', $Folder = 'roles', $Slug = 'Role', $UrlSlug = 'roles', $PermissionSlug = 'role';
 
     /**
@@ -35,7 +36,6 @@ class RoleController extends Controller
         $this->Model = new Role;
         $this->UserModel = new User;
         $this->PermissionModel = new Permission;
-        $this->ArtisanModel = new Artisan;
     }
 
     /**
@@ -330,10 +330,10 @@ class RoleController extends Controller
     {
         try {
             // Use the Artisan facade to call the seeder command
-            $this->ArtisanModel->call('db:seed', ['--class' => 'PermissionTableSeeder']);
+            Artisan::call('db:seed', ['--class' => 'PermissionTableSeeder']);
 
             // Get the output of the command (optional)
-            $output = $this->ArtisanModel->output();
+            Artisan::output();
 
             // You can return the output or perform other actions as needed
             return Response::json(['success' => trans('messages.success', ['attribute' => 'Sync'])], 202);

@@ -27,21 +27,23 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label class="form-label">Employee No</label>
-                    <input type="text" class="form-control" placeholder="Employee No" name="employee_no" aria-label="Employee No" value="{{ old('employee_no', $data->employee_no) }}"/>
+                    <input type="text" class="form-control" placeholder="Employee No" name="employee_no" aria-label="Employee No" value="{{ old('employee_no', $data->employee_no) }}" />
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label class="form-label">Name</label>
-                    <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" value="{{ old('name', $data->name) }}"/>
+                    <input type="text" class="form-control" placeholder="Name" name="name" aria-label="Name" value="{{ old('name', $data->name) }}" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label class="form-label">Current Address</label>
-                    <textarea class="form-control" name="current_address" rows="3">{{ old('name', $data->current_address) }}</textarea>
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="text" class="form-control" placeholder="email@example.com" name="email"
+                        aria-label="Email" value="{{ old('email', $data->email) }}" />
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label class="form-label">Permanent Address</label>
-                    <textarea class="form-control" name="permanent_address" rows="3">{{ old('name', $data->permanent_address) }}</textarea>
+                    <label class="form-label" for="phone_number">Phone Number</label>
+                    <input type="text" class="form-control" placeholder="202 555 0111" name="phone_number"
+                        aria-label="Phone Number" value="{{ old('phone_number', $data->phone_number) }}" />
                 </div>
             </div>
             <div class="row">
@@ -56,6 +58,84 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label class="form-label" for="country">Country</label>
+                    {!! Form::select(
+                        'country',
+                        $countries,
+                        $data->country_id ?? [],
+                        [
+                            'class' => 'select2 form-select form-select-lg',
+                            'id' => 'country',
+                            'placeholder' => 'Select Country',
+                            'data-allow-clear' => 'true',
+                        ],
+                    ) !!}
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="state" class="form-label">State</label>
+                    <div id="state_content">
+                        {!! Form::select(
+                            'state',
+                            $statesbycountry,
+                            $data->state_id ?? [],
+                            [
+                                'class' => 'select2 form-select form-select-lg',
+                                'id' => 'state',
+                                'placeholder' => 'Select State',
+                                'data-allow-clear' => 'true',
+                            ],
+                        ) !!}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" placeholder="Address" name="address"
+                        aria-label="Address" value="{{ old('address', $data->address) }}" />
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="zipcode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control" placeholder="231465" name="zipcode"
+                        maxlength="6" aria-label="Zip Code" value="{{ old('zipcode', $data->zipcode) }}" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="language" class="form-label">Language</label>
+                    {!! Form::select('language', $languages, $data->langauge_id ?? [], [
+                        'class' => 'select2 form-select form-select-lg',
+                        'id' => 'language',
+                        'placeholder' => 'Select Language',
+                        'data-allow-clear' => 'true',
+                    ]) !!}
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="timezone" class="form-label">Timezone</label>
+                    {!! Form::select('timezone', $timezones, $data->timezone_id ?? [], [
+                        'class' => 'select2 form-select form-select-lg',
+                        'id' => 'timezone',
+                        'placeholder' => 'Select Timezone',
+                        'data-allow-clear' => 'true',
+                    ]) !!}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="currency" class="form-label">Currency</label>
+                    {!! Form::select(
+                        'currency',
+                        $currencies,
+                        $data->currency_id ?? [],
+                        [
+                            'class' => 'select2 form-select form-select-lg',
+                            'id' => 'currency',
+                            'placeholder' => 'Select Currency',
+                            'data-allow-clear' => 'true',
+                        ],
+                    ) !!}
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label class="form-label">Designation</label>
                     {!! Form::select(
                         'designation',
@@ -67,6 +147,13 @@
                             'data-allow-clear' => 'true',
                         ],
                     ) !!}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-3 inp-group">
+                    <label for="organization" class="form-label">Organization</label>
+                    <input type="text" class="form-control" placeholder="Organization" name="organization"
+                        aria-label="Organization" value="{{ old('organization', $data->organization) }}"/>
                 </div>
             </div>
             <div class="row">

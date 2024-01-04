@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('current_team_id')->nullable();
             $table->foreignId('designation_id')->nullable();
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->unsignedBigInteger('state_id')->nullable();
+            $table->unsignedBigInteger('langauge_id')->nullable();
+            $table->unsignedBigInteger('timezone_id')->nullable();
+            $table->unsignedBigInteger('currency_id')->nullable();
             $table->string('employee_no')->nullable();
             $table->string('name');
             $table->string('email')->unique()->nullable();
@@ -23,12 +28,7 @@ return new class extends Migration
             $table->string('organization')->nullable();
             $table->string('phone_number')->nullable();
             $table->text('address')->nullable();
-            $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('state_id')->nullable();
             $table->string('zipcode')->nullable();
-            $table->unsignedBigInteger('langauge_id')->nullable();
-            $table->unsignedBigInteger('timezone_id')->nullable();
-            $table->unsignedBigInteger('currency_id')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->date('joining_date')->nullable();
             $table->string('profile_photo', 2048)->nullable();

@@ -143,19 +143,19 @@ class EmployeeController extends Controller
             }
             $this->Model->employee_no = $request['employee_no'] ?? '';
             $this->Model->name = $request['name'] ?? '';
-            $this->Model->name = $request['email'] ?? '';
-            $this->Model->name = $request['organization'] ?? '';
+            $this->Model->email = $request['email'] ?? '';
+            $this->Model->phone_number = $request['phone_number'] ?? '';
             $this->Model->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
             $this->Model->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
-            $this->Model->name = $request['country'] ?? '';
-            $this->Model->name = $request['state'] ?? '';
-            $this->Model->name = $request['address'] ?? '';
-            $this->Model->name = $request['zipcode'] ?? '';
-            $this->Model->name = $request['language'] ?? '';
-            $this->Model->name = $request['timezone'] ?? '';
-            $this->Model->name = $request['currency'] ?? '';
-            $this->Model->name = $request['designation'] ?? '';
+            $this->Model->country_id = $request['country'] ?? '';
+            $this->Model->state_id = $request['state'] ?? '';
+            $this->Model->address = $request['address'] ?? '';
+            $this->Model->zipcode = $request['zipcode'] ?? '';
+            $this->Model->langauge_id = $request['language'] ?? '';
+            $this->Model->timezone_id = $request['timezone'] ?? '';
+            $this->Model->currency_id = $request['currency'] ?? '';
             $this->Model->designation_id = $request['designation'] ?? '';
+            $this->Model->organization = $request['organization'] ?? '';
             if (!empty($request->file('identity_proof'))) {
                 $file = $this->UploadFile('employee', $request->file('identity_proof'));
                 $this->Model->identity_proof = $file ?? '';
@@ -201,7 +201,12 @@ class EmployeeController extends Controller
 
             $data = $this->Model->where('id', $id)->first();
             $designations = $this->DesignationModel->Active()->get()->pluck('name', 'id');
-            $returnHTML = view('contents.' . $this->Folder . '.modal-edit')->with(compact('data', 'designations'))->render();
+            $countries = $this->CountryModel::Active()->get()->pluck('name', 'id');
+            $statesbycountry = $this->StateModel::Active()->where('country_id', $data->country_id ?? '')->get()->pluck('name', 'id');
+            $languages = $this->LanguageModel::Active()->get()->pluck('name', 'id');
+            $timezones = $this->TimezoneModel::Active()->get()->pluck('name', 'id');
+            $currencies = $this->CurrencyModel::Active()->get()->pluck('name', 'id');
+            $returnHTML = view('contents.' . $this->Folder . '.modal-edit')->with(compact('data', 'designations', 'countries', 'statesbycountry', 'languages', 'timezones', 'currencies'))->render();
             return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -230,12 +235,6 @@ class EmployeeController extends Controller
 
             $update = $this->Model->where('id', $id)->first();
 
-            $update->employee_no = $request['employee_no'] ?? '';
-            $update->name = $request['name'] ?? '';
-            $update->current_address = $request['current_address'] ?? '';
-            $update->permanent_address = $request['permanent_address'] ?? '';
-            $update->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
-            $update->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
             //add or replace profile photo
             $user = $this->Model->where('id', $id)->first();
             if (!empty($request->profile_photo)) {
@@ -244,7 +243,21 @@ class EmployeeController extends Controller
                     $this->DeleteImage($user->profile_photo);
                 }
             }
-
+            $update->employee_no = $request['employee_no'] ?? '';
+            $update->name = $request['name'] ?? '';
+            $update->email = $request['email'] ?? '';
+            $update->phone_number = $request['phone_number'] ?? '';
+            $update->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
+            $update->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
+            $update->country_id = $request['country'] ?? '';
+            $update->state_id = $request['state'] ?? '';
+            $update->address = $request['address'] ?? '';
+            $update->zipcode = $request['zipcode'] ?? '';
+            $update->langauge_id = $request['language'] ?? '';
+            $update->timezone_id = $request['timezone'] ?? '';
+            $update->currency_id = $request['currency'] ?? '';
+            $update->organization = $request['organization'] ?? '';
+            $update->designation_id = $request['designation'] ?? '';
             if (!empty($request->file('identity_proof'))) {
                 $file = $this->UploadFile('employee', $request->file('identity_proof'));
                 $update->identity_proof = $file ?? '';
@@ -252,7 +265,6 @@ class EmployeeController extends Controller
                     $this->DeleteImage($user->identity_proof);
                 }
             }
-            $update->designation_id = $request['designation'] ?? '';
             $update->status = !empty($request['status']) ? 1 : 0;
             $update->save();
 
