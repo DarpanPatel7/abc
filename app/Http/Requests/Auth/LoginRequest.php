@@ -41,7 +41,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        // Check if the user's status is deactivated (status = 2)
+        $credentials = $this->only('email', 'password');
+        $credentials['status'] = 2;
+        if (Auth::validate($credentials)) {
+            throw ValidationException::withMessages([
+                'email' => trans('auth.deactivated'),
+            ]);
+        }
+
+        // if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt(array_merge( $this->only('email', 'password'), ['status' => 1]), $this->filled('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

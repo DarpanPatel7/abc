@@ -17,14 +17,6 @@ Route::group(['middleware' => ['guest']], function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    // Route::get('register', function(){
-    //     abort(404);
-    // });
-
-    // Route::post('register', function(){
-    //     abort(404);
-    // });
-
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 

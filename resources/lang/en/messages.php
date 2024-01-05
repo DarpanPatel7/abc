@@ -20,4 +20,5 @@ return [
     'success' => ':attribute successfully!',
     'cnt_del_sup_usr' => 'You cannot delete super admin role!',
     'cnt_upd_sup_usr' => 'You cannot update super admin role!',
+    'cnt_dct_sup_usr' => 'You cannot deactive super admin user!',
 ];

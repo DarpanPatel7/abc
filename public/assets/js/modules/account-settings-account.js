@@ -33,15 +33,16 @@ $(function () {
     });
 
     $(document).on("click", "#deactivate"+main, function () {
-        var url = $('#deactive'+main+'Form').attr('action');
+        var url = $('#deactivate'+main+'Form').attr('action');
         $.easyAjax({
-            container: "#deactive"+main+"Form",
+            url: url,
             type: "POST",
-            buttonSelector: "#deactive"+main,
+            data: $('#deactivate'+main+'Form').serialize(),
+            buttonSelector: "#deactivate"+main,
+            sweetAlert: true,
             blockUI: true,
             blockUIMessage: 'Please wait...',
             disableButton: true,
-            reload:true,
         });
     });
 

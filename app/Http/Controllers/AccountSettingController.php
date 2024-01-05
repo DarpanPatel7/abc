@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AccountSetting\AccountRequest;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Requests\AccountSetting\DeactivateAccountRequest;
 
 class AccountSettingController extends Controller
 {
@@ -145,6 +147,35 @@ class AccountSettingController extends Controller
 
             $returnHTML = view('contents.'.$this->Folder.'.state-dropdown')->with(compact('states'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
+
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivateAccount(DeactivateAccountRequest $request)
+    {
+        try {
+            if(Auth::user()->hasRole('Super Admin')){
+                return Response::json(['error' => trans('messages.cnt_dct_sup_usr')], 202);
+            }
+            $user = Auth::user();
+            $user->status = 2;
+            $user->save();
+
+            // Create an instance of the controller
+            $controllerInstance = new AuthenticatedSessionController();
+            // Call the destroy method on the instance
+            $controllerInstance->destroy($request);
+
+            Session::put('success', trans('messages.success', ['attribute' => 'Deactivated']));
+            return Response::json(['success' => trans('messages.success', ['attribute' => 'Deactivated']), 'redirect_url' => route('login')], 202);
 
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);

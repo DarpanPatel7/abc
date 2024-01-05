@@ -77,7 +77,7 @@
                                 <i class="bx bx-reset d-block d-sm-none"></i>
                                 <span class="d-none d-sm-block">Reset</span>
                             </button>
-                            <p class="mb-0">Allowed JPG, GIF or PNG.</p>
+                            <p class="mb-0">Allowed JPG, JPEG or PNG.</p>
                         </div>
                     </div>
                 </div>
@@ -224,12 +224,11 @@
                         </div>
                     </div>
                     {!! Form::open([
-                        'route' => 'account-settings.deactiveAccount',
+                        'route' => 'account-settings.deactivateAccount',
                         'method' => 'POST',
-                        'id' => 'deactiveAccountForm',
+                        'id' => 'deactivateAccountForm',
                         'class' => 'restrict-enter',
                     ]) !!}
-                    <form id="formAccountDeactivation" onsubmit="return false">
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="accountDeactivation"
                                 id="accountDeactivation" />
@@ -237,7 +236,7 @@
                                 deactivation</label>
                         </div>
                         <button type="button" class="btn btn-danger" id="deactivateAccount">Deactivate Account</button>
-                    </form>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
