@@ -30,7 +30,8 @@
     <script src="{{ asset('assets/js/forms-pickers.js') }}"></script>
     <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
     <script type="text/javascript">
-        var defaultImage = "{{ url('assets/img/default-pfp.png') }}";
+        var defaultImage = "{{ config('global.default_pfp') }}";
+        var defaultImageBase64 = "{{ config('global.default_pfp_base64') }}";
         var getStateByCountry_url = '{{ url("employees.getStateByCountry") }}';
     </script>
     <script src="{{ asset('assets/js/modules/employee.js') }}"></script>

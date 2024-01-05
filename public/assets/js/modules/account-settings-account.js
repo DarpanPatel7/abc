@@ -5,18 +5,42 @@
 "use strict";
 
 $(function () {
+    let borderColor, bodyBg, headingColor;
+    var main = 'Account';
+
+    if (isDarkStyle) {
+        borderColor = config.colors_dark.borderColor;
+        bodyBg = config.colors_dark.bodyBg;
+        headingColor = config.colors_dark.headingColor;
+    } else {
+        borderColor = config.colors.borderColor;
+        bodyBg = config.colors.bodyBg;
+        headingColor = config.colors.headingColor;
+    }
     // save Account Setting
-    $(document).on("click", "#saveAccount", function () {
-        var url = $('#saveAccountForm').attr('action');
+    $(document).on("click", "#save"+main, function () {
+        var url = $('#save'+main+'Form').attr('action');
         $.easyAjax({
-            url: url,
+            container: "#save"+main+"Form",
             type: "POST",
-            data: $("#saveAccountForm").serialize(),
-            buttonSelector: "#saveAccount",
+            buttonSelector: "#save"+main,
+            file: true,
             blockUI: true,
             blockUIMessage: 'Submitting the form please wait...',
             disableButton: true,
-            isSuccessToast: true,
+            reload:true,
+        });
+    });
+
+    $(document).on("click", "#deactivate"+main, function () {
+        var url = $('#deactive'+main+'Form').attr('action');
+        $.easyAjax({
+            container: "#deactive"+main+"Form",
+            type: "POST",
+            buttonSelector: "#deactive"+main,
+            blockUI: true,
+            blockUIMessage: 'Please wait...',
+            disableButton: true,
             reload:true,
         });
     });
@@ -25,59 +49,11 @@ $(function () {
         var id = $(this).val();
         $.easyAjax({
             url: getStateByCountry_url,
-            data: {'id':id},
+            data: { 'id': id },
             type: "POST",
-            appendHtml: "#state_content",
+            appendHtml: "#stateContent",
+            initSelect2: '#save'+main+'Form',
         });
-        // initSelect2('#saveAccountForm');
-        /* $.ajax({
-            url: getStateByCountry_url,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {'id':id},
-            success : function(data) {
-                if(data.success){
-                    $('#state_content').html(data.data);
-                    // $(".select").select2();
-                }else if(data.error){
-                    toastr.error(data.error);
-                }else if(data.info){
-                    toastr.info(data.info);
-                }
-            }
-        }); */
-    });
-
-    $( document ).ready(function() {
-        var id = $('#country').val();
-        if(id){
-            $.easyAjax({
-                url: getStateByCountry_url,
-                data: {'id':id},
-                type: "POST",
-                appendHtml: "#state_content",
-            });
-        }
-        /* $.ajax({
-            url: getStateByCountry_url,
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {'id':id},
-            success : function(data) {
-                if(data.success){
-                    $('#state_content').html(data.data);
-                    // $(".select").select2();
-                }else if(data.error){
-                    toastr.error(data.error);
-                }else if(data.info){
-                    toastr.info(data.info);
-                }
-            }
-        }); */
     });
 
     // Start upload,crop,preview image - croppie plugin
@@ -144,6 +120,6 @@ $(function () {
     $(document).on("click", "#clear_image", function (ev) {
         ev.preventDefault();
         $('.preview-profile-image').attr('src', defaultImage);
-        $('.profile_photo').val('');
+        $('.profile_photo').val(defaultImageBase64);
     });
 });

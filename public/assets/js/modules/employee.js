@@ -113,6 +113,7 @@ $(function () {
             showModal: "#edit" + main + "Modal",
             blockUI: true,
             disableButton: true,
+            initSelect2: "#edit" + main + "Modal",
         });
     });
 
@@ -130,27 +131,28 @@ $(function () {
         });
     });
 
-    $('body').on('change', '#country', function (event) {
+    $('body').on('change', '#addCountry', function (event) {
         var id = $(this).val();
         $.easyAjax({
             url: getStateByCountry_url,
             container: '#add' + main + 'Modal',
-            data: { 'id': id },
+            data: { 'id': id, 'slug': 'add' },
             type: "POST",
-            appendHtml: "#state_content",
+            appendHtml: "#addStateContent",
+            initSelect2: '#add' + main + 'Modal',
         });
     });
 
-    $(document).ready(function () {
-        var id = $('#country').val();
-        if (id) {
-            $.easyAjax({
-                url: getStateByCountry_url,
-                data: { 'id': id },
-                type: "POST",
-                appendHtml: "#state_content",
-            });
-        }
+    $('body').on('change', '#editCountry', function (event) {
+        var id = $(this).val();
+        $.easyAjax({
+            url: getStateByCountry_url,
+            container: '#edit' + main + 'Modal',
+            data: { 'id': id, 'slug': 'edit' },
+            type: "POST",
+            appendHtml: "#editStateContent",
+            initSelect2: '#edit' + main + 'Modal',
+        });
     });
 
     // Start upload,crop,preview image - croppie plugin
@@ -219,6 +221,6 @@ $(function () {
     $(document).on("click", "#clear_image", function (ev) {
         ev.preventDefault();
         $('.preview-profile-image').attr('src', defaultImage);
-        $('.profile_photo').val('');
+        $('.profile_photo').val(defaultImageBase64);
     });
 });

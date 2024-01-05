@@ -11,12 +11,41 @@ use App\Models\Language;
 use App\Models\Timezone;
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use App\Http\Traits\FileTrait;
+use App\Http\Traits\ImageTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AccountSetting\AccountRequest;
 
 class AccountSettingController extends Controller
 {
+    use ImageTrait;
+    use FileTrait;
+
+    private $Model, $AuthModel, $DesignationModel, $CountryModel, $LanguageModel, $TimezoneModel, $CurrencyModel, $StateModel;
+    private $Folder = 'account-settings', $PermissionSlug = 'currency';
+
+    /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct()
+    {
+        // $this->middleware('permission:'.$this->PermissionSlug.'-list|'.$this->PermissionSlug.'-create|'.$this->PermissionSlug.'-edit|'.$this->PermissionSlug.'-delete', ['only' => ['index','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-create', ['only' => ['create','store']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
+        // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
+        $this->Model = new User;
+        $this->AuthModel = new Auth;
+        $this->DesignationModel = new Designation;
+        $this->CountryModel = new Country;
+        $this->LanguageModel = new Language;
+        $this->TimezoneModel = new Timezone;
+        $this->CurrencyModel = new Currency;
+        $this->StateModel = new State;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,14 +53,15 @@ class AccountSettingController extends Controller
      */
     public function account()
     {
-        $user = Auth::user();
-        $designations = Designation::Active()->get()->pluck('name', 'id');
-        $countries = Country::Active()->get()->pluck('name', 'id');
-        $languages = Language::Active()->get()->pluck('name', 'id');
-        $timezones = Timezone::Active()->get()->pluck('name', 'id');
-        $currencies = Currency::Active()->get()->pluck('name', 'id');
+        $user = $this->AuthModel::user();
+        $designations = $this->DesignationModel->Active()->get()->pluck('name', 'id');
+        $countries = $this->CountryModel->Active()->get()->pluck('name', 'id');
+        $languages = $this->LanguageModel->Active()->get()->pluck('name', 'id');
+        $timezones = $this->TimezoneModel->Active()->get()->pluck('name', 'id');
+        $currencies = $this->CurrencyModel->Active()->get()->pluck('name', 'id');
+        $statesbycountry = $this->StateModel::Active()->where('country_id', $user->country_id ?? '')->get()->pluck('name', 'id');
 
-        return view('contents.account-settings.account', compact('user', 'countries', 'languages', 'timezones', 'currencies', 'designations'));
+        return view('contents.'.$this->Folder.'.account', compact('user', 'countries', 'statesbycountry', 'languages', 'timezones', 'currencies', 'designations'));
     }
 
     /**
@@ -41,7 +71,7 @@ class AccountSettingController extends Controller
      */
     public function security()
     {
-        return view('contents.account-settings.security');
+        return view('contents.'.$this->Folder.'.security');
     }
 
     /**
@@ -53,36 +83,50 @@ class AccountSettingController extends Controller
     public function saveAccount(AccountRequest $request)
     {
         try {
-
-            $employee = User::where('id', Auth::User()->id ?? '')->first();
-
-            $employee->employee_no = $request['employee_no'] ?? '';
-            $employee->name = $request['name'] ?? '';
-            $employee->current_address = $request['current_address'] ?? '';
-            $employee->permanent_address = $request['permanent_address'] ?? '';
-            $employee->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
-            $employee->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
-            //add or replace profile photo
-            $user = User::where('id', Auth::User()->id ?? '')->first();
+            //validate and upload base 64 image
             if (!empty($request->profile_photo)) {
-                $employee->profile_photo = $this->UploadBase64Image('employee', $request->profile_photo);
-                if(!empty($user->profile_photo)){
+                $ValidateBase64 = $this->ValidateBase64Image($request->profile_photo);
+                if (!$ValidateBase64) {
+                    return Response::json(['error' => 'The photo must be a file of type: jpeg, png, jpg, svg.'], 202);
+                }
+            }
+
+            $update = $this->Model->where('id', Auth::User()->id ?? '')->first();
+
+            //add or replace profile photo
+            $user = $this->Model->where('id', Auth::User()->id ?? '')->first();
+            if (!empty($request->profile_photo)) {
+                $update->profile_photo = $this->UploadBase64Image('employee', $request->profile_photo);
+                if (!empty($user->profile_photo)) {
                     $this->DeleteImage($user->profile_photo);
                 }
             }
-
+            $update->employee_no = $request['employee_no'] ?? '';
+            $update->name = $request['name'] ?? '';
+            $update->email = $request['email'] ?? '';
+            $update->phone_number = $request['phone_number'] ?? '';
+            $update->date_of_birth = Carbon::createFromFormat(Config('global.date_format'), $request['date_of_birth'])->format(Config('global.db_date_format'));
+            $update->joining_date = Carbon::createFromFormat(Config('global.date_format'), $request['joining_date'])->format(Config('global.db_date_format'));
+            $update->country_id = $request['country'] ?? '';
+            $update->state_id = $request['state'] ?? '';
+            $update->address = $request['address'] ?? '';
+            $update->zipcode = $request['zipcode'] ?? '';
+            $update->langauge_id = $request['language'] ?? '';
+            $update->timezone_id = $request['timezone'] ?? '';
+            $update->currency_id = $request['currency'] ?? '';
+            $update->organization = $request['organization'] ?? '';
+            $update->designation_id = $request['designation'] ?? '';
             if (!empty($request->file('identity_proof'))) {
                 $file = $this->UploadFile('employee', $request->file('identity_proof'));
-                $employee->identity_proof = $file ?? '';
-                if(!empty($user->identity_proof)){
+                $update->identity_proof = $file ?? '';
+                if (!empty($user->identity_proof)) {
                     $this->DeleteImage($user->identity_proof);
                 }
             }
-            $employee->designation_id = $request['designation'] ?? '';
-            $employee->status = !empty($request['status']) ? 1 : 0;
-            $employee->save();
+            $update->save();
 
-            return Response::json(['success' => 'Employee updated successfully!'], 202);
+            Session::put('success', trans('messages.success_save', ['attribute' => 'Account']));
+            return Response::json(['success' => trans('messages.success_save', ['attribute' => 'Account'])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -97,9 +141,9 @@ class AccountSettingController extends Controller
     public function getStateByCountry(Request $request)
     {
         try {
-            $states = State::where('country_id', $request->id ?? '')->get()->pluck('name', 'id');
+            $states = $this->StateModel->where('country_id', $request->id ?? '')->get()->pluck('name', 'id');
 
-            $returnHTML = view('contents.account-settings.state-dropdown')->with(compact('states'))->render();
+            $returnHTML = view('contents.'.$this->Folder.'.state-dropdown')->with(compact('states'))->render();
             return Response::json(['success' => 'success.','data' => $returnHTML], 202);
 
         } catch (\Throwable $th) {

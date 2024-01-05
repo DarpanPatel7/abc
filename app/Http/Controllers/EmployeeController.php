@@ -90,9 +90,9 @@ class EmployeeController extends Controller
                         return $userHtml;
                     })
                     ->addColumn('action', function ($action) {
-                        $editUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id) . '/edit');
-                        $deleteUrl = url($this->UrlSlug.'/' . Crypt::Encrypt($action->id));
-                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit'.$this->Slug.'" data-url="' . $editUrl . '"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete'.$this->Slug.'" data-url="' . $deleteUrl . '"><i class="bx bx-trash"></i></button> </div>';
+                        $editUrl = url($this->UrlSlug . '/' . Crypt::Encrypt($action->id) . '/edit');
+                        $deleteUrl = url($this->UrlSlug . '/' . Crypt::Encrypt($action->id));
+                        $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit' . $this->Slug . '" data-url="' . $editUrl . '"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete' . $this->Slug . '" data-url="' . $deleteUrl . '"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
                     ->rawColumns(['user', 'designation', 'date_of_birth', 'status', 'action'])
@@ -233,6 +233,14 @@ class EmployeeController extends Controller
                 return Response::json(['error' => $validator->errors()->first()], 202);
             }
 
+            //validate and upload base 64 image
+            if (!empty($request->profile_photo)) {
+                $ValidateBase64 = $this->ValidateBase64Image($request->profile_photo);
+                if (!$ValidateBase64) {
+                    return Response::json(['error' => 'The photo must be a file of type: jpeg, png, jpg, svg.'], 202);
+                }
+            }
+
             $update = $this->Model->where('id', $id)->first();
 
             //add or replace profile photo
@@ -318,10 +326,9 @@ class EmployeeController extends Controller
     {
         try {
             $states = $this->StateModel->where('country_id', $request->id ?? '')->get()->pluck('name', 'id');
-
-            $returnHTML = view('contents.'.$this->Folder.'.state-dropdown')->with(compact('states'))->render();
-            return Response::json(['success' => 'success.','data' => $returnHTML], 202);
-
+            $slug = $request->slug ?? '';
+            $returnHTML = view('contents.' . $this->Folder . '.state-dropdown')->with(compact('states', 'slug'))->render();
+            return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

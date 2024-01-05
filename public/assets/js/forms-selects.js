@@ -54,30 +54,30 @@ $(function () {
 
 //init select2
 function initSelect2(id) {
-    if ($('select.select2').length) {
-        $('select.select2').each(function () {
+    if ($(id + ' select.select2').length) {
+        $(id + ' select.select2').each(function () {
             var $this = $(this),
                 r = {
-                    dropdownParent: $(id + " .modal-content"),
+                    dropdownParent: $(id + " .dropdownParent"),
                     AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
                     placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
                 };
-            $this.select2(r);
+            $this.wrap().select2(r);
         });
     }
 }
 
 //init select2 inside modal on ajax call
 function initAjaxDropdownModal(id) {
-    if ($('select.select2').length) {
-        $('select.select2').each(function () {
+    if ($(id + ' select.select2').length) {
+        $(id + ' select.select2').each(function () {
             var $this = $(this),
                 r = {
                     dropdownParent: $(id + " .modal-content"),
                     AllowClear: $this.data("data-allow-clear") ? $this.data("data-allow-clear") : false,
                     placeholder: $this.data("placeholder") ? $this.data("placeholder") : false,
                 };
-            $this.select2(r);
+            $this.wrap().select2(r);
         });
     }
 }

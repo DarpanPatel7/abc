@@ -26,6 +26,7 @@
             blockUIMessage:"",
             datatable: false,
             isSuccessToast: false,
+            initSelect2: false,
         };
 
         var opt = defaults;
@@ -74,16 +75,15 @@
                     );
                 }
 
-                if (opt.showModal) {
-                    if (typeof initAjaxDropdownModal == "function") {
-                        initAjaxDropdownModal(opt.showModal);
+                if (opt.initSelect2) {
+                    if (typeof initSelect2 == "function") {
+                        initSelect2(opt.initSelect2);
                     }
+                }
+
+                if (opt.showModal) {
                     if (typeof initDatePicker == "function") {
                         initDatePicker();
-                    }
-                }else{
-                    if (typeof initSelect2 == "function") {
-                        initSelect2(opt.container);
                     }
                 }
 

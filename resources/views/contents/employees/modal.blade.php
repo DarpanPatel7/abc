@@ -2,7 +2,7 @@
     <!-- add employee -->
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content dropdownParent">
                 {!! Form::open([
                     'route' => 'employees.store',
                     'method' => 'POST',
@@ -18,7 +18,7 @@
                         <div class="profile-img-wrap col-lg-3 col-md-2 text-center">
                             <div class="profile-img profile-avatar-xxl">
                                 <a href="javascript:;" id="profile_img"><img alt="Profile Picture"
-                                        src="{{ url('assets/img/default-pfp.png') }}"
+                                        src="{{ config('global.default_pfp') }}"
                                         class="avatar-img rounded-circle preview-profile-image" height="100"></a>
                             </div>
                         </div>
@@ -49,12 +49,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="email" class="form-label">E-mail</label>
+                            <label class="form-label">E-mail</label>
                             <input type="text" class="form-control" placeholder="email@example.com" name="email"
                                 aria-label="Email" />
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label" for="phone_number">Phone Number</label>
+                            <label class="form-label">Phone Number</label>
                             <input type="text" class="form-control" placeholder="202 555 0111" name="phone_number"
                                 aria-label="Phone Number" />
                         </div>
@@ -75,29 +75,29 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label" for="country">Country</label>
+                            <label class="form-label" for="addCountry">Country</label>
                             {!! Form::select(
                                 'country',
                                 $countries,
                                 [],
                                 [
                                     'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'country',
+                                    'id' => 'addCountry',
                                     'placeholder' => 'Select Country',
                                     'data-allow-clear' => 'true',
                                 ],
                             ) !!}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label" for="state">State</label>
-                            <div id="state_content">
+                            <label class="form-label" for="addState">State</label>
+                            <div id="addStateContent">
                                 {!! Form::select(
                                     'state',
                                     [],
                                     [],
                                     [
                                         'class' => 'select2 form-select form-select-lg',
-                                        'id' => 'state',
+                                        'id' => 'addState',
                                         'placeholder' => 'Select State',
                                         'data-allow-clear' => 'true',
                                     ],
@@ -107,31 +107,31 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="address" class="form-label">Address</label>
+                            <label class="form-label">Address</label>
                             <input type="text" class="form-control" placeholder="Address" name="address"
                                 aria-label="Address" />
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="zipcode" class="form-label">Zip Code</label>
+                            <label class="form-label">Zip Code</label>
                             <input type="text" class="form-control" placeholder="231465" name="zipcode"
                                 maxlength="6" aria-label="Zip Code" />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="language" class="form-label">Language</label>
+                            <label for="addLanguage" class="form-label">Language</label>
                             {!! Form::select('language', $languages, [], [
                                 'class' => 'select2 form-select form-select-lg',
-                                'id' => 'language',
+                                'id' => 'addLanguage',
                                 'placeholder' => 'Select Language',
                                 'data-allow-clear' => 'true',
                             ]) !!}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="timezone" class="form-label">Timezone</label>
+                            <label for="addTimezone" class="form-label">Timezone</label>
                             {!! Form::select('timezone', $timezones, [], [
                                 'class' => 'select2 form-select form-select-lg',
-                                'id' => 'timezone',
+                                'id' => 'addTimezone',
                                 'placeholder' => 'Select Timezone',
                                 'data-allow-clear' => 'true',
                             ]) !!}
@@ -139,21 +139,21 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="currency" class="form-label">Currency</label>
+                            <label for="addCurrency" class="form-label">Currency</label>
                             {!! Form::select(
                                 'currency',
                                 $currencies,
                                 [],
                                 [
                                     'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'currency',
+                                    'id' => 'addCurrency',
                                     'placeholder' => 'Select Currency',
                                     'data-allow-clear' => 'true',
                                 ],
                             ) !!}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label class="form-label">Designation</label>
+                            <label for="addDesignation" class="form-label">Designation</label>
                             {!! Form::select(
                                 'designation',
                                 $designations,
@@ -162,14 +162,14 @@
                                     'class' => 'select2 form-select form-select-lg',
                                     'placeholder' => 'Select Designation',
                                     'data-allow-clear' => 'true',
-                                    'id' => 'designation',
+                                    'id' => 'addDesignation',
                                 ],
                             ) !!}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                            <label for="organization" class="form-label">Organization</label>
+                            <label class="form-label">Organization</label>
                             <input type="text" class="form-control" placeholder="Organization" name="organization"
                                 aria-label="Organization" />
                         </div>
@@ -181,10 +181,10 @@
                     </div>
                     <div class="row">
                         <div class="col mb-0">
-                            <label class="form-label" for="addstatus">Status</label>
+                            <label class="form-label" for="addStatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addstatus']) }}
+                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addStatus']) }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -206,7 +206,7 @@
     <!-- edit employee -->
     <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+            <div class="modal-content dropdownParent">
                 <div id="editEmployeeContent"></div>
             </div>
         </div>

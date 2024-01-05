@@ -58,29 +58,29 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label class="form-label" for="country">Country</label>
+                    <label class="form-label" for="editCountry">Country</label>
                     {!! Form::select(
                         'country',
                         $countries,
                         $data->country_id ?? [],
                         [
                             'class' => 'select2 form-select form-select-lg',
-                            'id' => 'country',
+                            'id' => 'editCountry',
                             'placeholder' => 'Select Country',
                             'data-allow-clear' => 'true',
                         ],
                     ) !!}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label for="state" class="form-label">State</label>
-                    <div id="state_content">
+                    <label for="editState" class="form-label">State</label>
+                    <div id="editStateContent">
                         {!! Form::select(
                             'state',
                             $statesbycountry,
                             $data->state_id ?? [],
                             [
                                 'class' => 'select2 form-select form-select-lg',
-                                'id' => 'state',
+                                'id' => 'editState',
                                 'placeholder' => 'Select State',
                                 'data-allow-clear' => 'true',
                             ],
@@ -102,19 +102,19 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label for="language" class="form-label">Language</label>
+                    <label for="editLanguage" class="form-label">Language</label>
                     {!! Form::select('language', $languages, $data->langauge_id ?? [], [
                         'class' => 'select2 form-select form-select-lg',
-                        'id' => 'language',
+                        'id' => 'editLanguage',
                         'placeholder' => 'Select Language',
                         'data-allow-clear' => 'true',
                     ]) !!}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label for="timezone" class="form-label">Timezone</label>
+                    <label for="editTimezone" class="form-label">Timezone</label>
                     {!! Form::select('timezone', $timezones, $data->timezone_id ?? [], [
                         'class' => 'select2 form-select form-select-lg',
-                        'id' => 'timezone',
+                        'id' => 'editTimezone',
                         'placeholder' => 'Select Timezone',
                         'data-allow-clear' => 'true',
                     ]) !!}
@@ -122,21 +122,21 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label for="currency" class="form-label">Currency</label>
+                    <label for="editCurrency" class="form-label">Currency</label>
                     {!! Form::select(
                         'currency',
                         $currencies,
                         $data->currency_id ?? [],
                         [
                             'class' => 'select2 form-select form-select-lg',
-                            'id' => 'currency',
+                            'id' => 'editCurrency',
                             'placeholder' => 'Select Currency',
                             'data-allow-clear' => 'true',
                         ],
                     ) !!}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
-                    <label class="form-label">Designation</label>
+                    <label for="editDesignation" class="form-label">Designation</label>
                     {!! Form::select(
                         'designation',
                         $designations,
@@ -145,6 +145,7 @@
                             'class' => 'select2 form-select form-select-lg',
                             'placeholder' => 'Select Designation',
                             'data-allow-clear' => 'true',
+                            'id' => 'editDesignation',
                         ],
                     ) !!}
                 </div>
