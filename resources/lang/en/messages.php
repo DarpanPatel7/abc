@@ -17,6 +17,7 @@ return [
     'success_delete' => ':attribute deleted successfully!',
     'success_execute' => ':attribute executed successfully!',
     'success_save' => ':attribute saved successfully!',
+    'success_change' => ':attribute changed successfully!',
     'success' => ':attribute successfully!',
     'cnt_del_sup_usr' => 'You cannot delete super admin role!',
     'cnt_upd_sup_usr' => 'You cannot update super admin role!',

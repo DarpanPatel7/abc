@@ -19,7 +19,6 @@ $(function () {
     }
     // save Account Setting
     $(document).on("click", "#save"+main, function () {
-        var url = $('#save'+main+'Form').attr('action');
         $.easyAjax({
             container: "#save"+main+"Form",
             type: "POST",

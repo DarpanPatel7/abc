@@ -6,7 +6,7 @@
         'id' => 'assignRoleForm',
         'class' => 'restrict-enter row g-3 fv-plugins-bootstrap5 fv-plugins-framework w-100',
     ]) !!}
-        <div class="modal-content p-3 p-md-5 mt-0">
+        <div class="modal-content dropdownParent p-3 p-md-5 mt-0">
             <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-body">
                 <div class="text-center mb-4">

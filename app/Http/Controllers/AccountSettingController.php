@@ -14,9 +14,11 @@ use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use App\Http\Traits\ImageTrait;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AccountSetting\AccountRequest;
+use App\Http\Requests\Employee\ChangePasswordRequest;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Requests\AccountSetting\DeactivateAccountRequest;
 
@@ -177,6 +179,40 @@ class AccountSettingController extends Controller
             Session::put('success', trans('messages.success', ['attribute' => 'Deactivated']));
             return Response::json(['success' => trans('messages.success', ['attribute' => 'Deactivated']), 'redirect_url' => route('login')], 202);
 
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * change password
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        try {
+            $auth = Auth::user();
+
+            // The passwords matches
+            if (!Hash::check($request->get('current_password'), $auth->password))
+            {
+                return Response::json(['error' => 'Current Password is Invalid!'], 202);
+            }
+
+            // Current password and new password same
+            if (strcmp($request->get('current_password'), $request->new_password) == 0)
+            {
+                return Response::json(['error' => 'New Password cannot be same as your current password!'], 202);
+            }
+
+            $user =  User::find($auth->id);
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            Session::put('success', trans('messages.success_change', ['attribute' => 'Password']));
+            return Response::json(['success' => trans('messages.success_change', ['attribute' => 'Password'])], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

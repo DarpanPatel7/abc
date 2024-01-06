@@ -317,7 +317,7 @@ class EmployeeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * return state dropdown data
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

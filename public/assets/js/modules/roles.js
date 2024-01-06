@@ -125,6 +125,7 @@ $(function () {
             showModal: "#assign"+main+"Modal",
             blockUI: true,
             disableButton: true,
+            initSelect2: "#assign"+main+"Modal",
         });
     });
 

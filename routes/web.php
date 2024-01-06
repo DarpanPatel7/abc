@@ -39,10 +39,6 @@ require __DIR__.'/auth.php';
     //Dashboard
     Route::resource('dashboard', DashboardController::class);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     //Employees
     Route::resource('employees', EmployeeController::class);
     Route::post('employees.getStateByCountry', [EmployeeController::class, 'getStateByCountry'])->name('employees.getStateByCountry');
@@ -85,6 +81,7 @@ require __DIR__.'/auth.php';
     Route::get('account-settings/security', [AccountSettingController::class, 'security'])->name('account-settings.security');
     Route::post('account-settings.getStateByCountry', [AccountSettingController::class, 'getStateByCountry'])->name('account-settings.getStateByCountry');
     Route::post('account-settings.deactivateAccount', [AccountSettingController::class, 'deactivateAccount'])->name('account-settings.deactivateAccount');
+    Route::post('account-settings.changePassword', [AccountSettingController::class, 'changePassword'])->name('account-settings.changePassword');
 // });
 
 
