@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css">
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}">
     <style>
         #upload-demo {
             width: 250px;
@@ -35,6 +36,7 @@
         var getStateByCountry_url = '{{ url("employees.getStateByCountry") }}';
     </script>
     <script src="{{ asset('assets/js/modules/employee.js') }}"></script>
+    <script src="{{ asset('assets/js/modules/export.js') }}"></script>
 @endsection
 
 @section('content')

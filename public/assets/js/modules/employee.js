@@ -27,20 +27,48 @@ $(function () {
         var datatable = dt_selector.DataTable({
             processing: true,
             serverSide: true,
-            dom:
-                '<"row mx-2"' +
-                '<"col-md-2"<"me-3"l>>' +
-                '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>' +
-                ">t" +
-                '<"row mx-2"' +
-                '<"col-sm-12 col-md-6"i>' +
-                '<"col-sm-12 col-md-6"p>' +
-                ">",
+            // dom:
+            //     '<"row mx-2"' +
+            //     '<"col-md-2"<"me-3"l>>' +
+            //     '<"col-md-10"<"dt-action-buttons text-xl-end text-lg-start text-md-end text-start d-flex align-items-center justify-content-end flex-md-row flex-column mb-3 mb-md-0"fB>>' +
+            //     ">t" +
+            //     '<"row mx-2"' +
+            //     '<"col-sm-12 col-md-6"i>' +
+            //     '<"col-sm-12 col-md-6"p>' +
+            //     ">",
+            dom: '<"card-header flex-column flex-md-row pb-0"<"head-label text-center"><"dt-action-buttons text-end pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             // Buttons with Dropdown
             buttons: [
                 {
+                    extend: 'collection',
+                    className: 'btn btn-label-primary dropdown-toggle me-2',
+                    text: '<i class="bx bx-export me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
+                    buttons: [
+                        configureExport({
+                            extend: 'print',
+                            text: '<i class="bx bx-printer me-1"></i>Print'
+                        }, [1, 2, 3, 4, 5]),
+                        configureExport({
+                            extend: 'csv',
+                            text: '<i class="bx bx-file me-1"></i>Csv'
+                        }, [1, 2, 3, 4, 5]),
+                        configureExport({
+                            extend: 'excel',
+                            text: '<i class="bx bxs-file-export me-1"></i>Excel'
+                        }, [1, 2, 3, 4, 5]),
+                        configureExport({
+                            extend: 'pdf',
+                            text: '<i class="bx bxs-file-pdf me-1"></i>Pdf'
+                        }, [1, 2, 3, 4, 5]),
+                        configureExport({
+                            extend: 'copy',
+                            text: '<i class="bx bx-copy me-1"></i>Copy'
+                        }, [1, 2, 3, 4, 5])
+                    ]
+                },
+                {
                     text: '<i class="bx bx-plus me-0 me-lg-2"></i><span class="d-none d-lg-inline-block">Add ' + main + '</span>',
-                    className: "add-new btn btn-primary mx-3",
+                    className: "add-new btn btn-primary",
                     attr: {
                         "data-bs-toggle": "modal",
                         "data-bs-target": "#add" + main + "Modal",
