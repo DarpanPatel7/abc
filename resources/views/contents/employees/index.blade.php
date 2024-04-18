@@ -48,6 +48,7 @@
             <table class="datatableEmployee table border-top" data-url="{{ route('employees.index') }}">
                 <thead>
                     <tr>
+                        <th class="sorting_disabled"></th>
                         <th>No</th>
                         <th>User</th>
                         <td>Employee No</td>

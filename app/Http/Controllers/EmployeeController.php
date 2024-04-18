@@ -60,6 +60,10 @@ class EmployeeController extends Controller
 
                 return DataTables::of($records)
                     ->addIndexColumn()
+                    ->addColumn('check', function ($check) {
+                        $checkHtml = '<td class="  dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>';
+                        return $checkHtml;
+                    })
                     ->addColumn('user', function ($user) {
                         $ProfilePhotoPath = $user->ProfilePhotoPath ?? '';
                         $name = $user->name ?? '';
@@ -95,7 +99,7 @@ class EmployeeController extends Controller
                         $actionHtml = '<div class="d-inline-block text-nowrap"><button class="btn btn-sm btn-icon edit' . $this->Slug . '" data-url="' . $editUrl . '"><i class="bx bx-edit"></i></button><button class="btn btn-sm btn-icon delete' . $this->Slug . '" data-url="' . $deleteUrl . '"><i class="bx bx-trash"></i></button> </div>';
                         return $actionHtml;
                     })
-                    ->rawColumns(['user', 'designation', 'date_of_birth', 'status', 'action'])
+                    ->rawColumns(['check', 'user', 'designation', 'date_of_birth', 'status', 'action'])
                     ->make(true);
             }
             //get active designations by id desc

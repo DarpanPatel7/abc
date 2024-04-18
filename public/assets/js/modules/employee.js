@@ -76,7 +76,29 @@ $(function () {
                 },
             ],
             ajax: dt_selector.data('url'),
+            columnDefs: [
+                {
+                    // For Checkboxes
+                    targets: 0,
+                    orderable: false,
+                    searchable: false,
+                    responsivePriority: 3,
+                    checkboxes: true,
+                    render: function () {
+                      return '<input type="checkbox" class="dt-checkboxes form-check-input">';
+                    },
+                    checkboxes: {
+                      selectAllRender: '<input type="checkbox" class="form-check-input">'
+                    }
+                },
+            ],
             columns: [
+                {
+                    data: 'check',
+                    name: 'check',
+                    orderable: false,
+                    searchable: false,
+                },
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'user', name: 'user' },
                 { data: 'employee_no', name: 'employee_no' },
@@ -172,6 +194,19 @@ $(function () {
     });
 
     $('body').on('change', '#editCountry', function (event) {
+        var id = $(this).val();
+        $.easyAjax({
+            url: getStateByCountry_url,
+            container: '#edit' + main + 'Modal',
+            data: { 'id': id, 'slug': 'edit' },
+            type: "POST",
+            appendHtml: "#editStateContent",
+            initSelect2: '#edit' + main + 'Modal',
+        });
+    });
+
+    $('body').on('change', '.dt-checkboxes-select-all', function (event) {
+        alert('dfgdfg');
         var id = $(this).val();
         $.easyAjax({
             url: getStateByCountry_url,
