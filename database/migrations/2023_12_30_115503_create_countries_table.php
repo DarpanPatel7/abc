@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('iso_code_3',3);
             $table->text('address_format');
             $table->boolean('postcode_required');
-            $table->boolean('status')->default(1);
-            $table->softDeletesTz();
+            $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
             $table->timestamps();
+            $table->softDeletesTz();
         });
     }
 

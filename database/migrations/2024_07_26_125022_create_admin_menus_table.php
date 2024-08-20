@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('admin_menus', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('country_id');
-            $table->string('name');
-            $table->string('code',32);
+            $table->string('name')->nullable();
+            $table->string('url')->nullable();
+            $table->string('menu_type')->nullable();
+            $table->string('parent_id')->nullable();
+            $table->string('menu_rank')->nullable();
             $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
             $table->timestamps();
             $table->softDeletesTz();
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('admin_menus');
     }
 };

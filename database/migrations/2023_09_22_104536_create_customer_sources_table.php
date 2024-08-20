@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('customer_sources', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->boolean('status')->comment('0=Inactive, 1=Active, 2=Deleted')->default(0);
-            $table->softDeletesTz();
+            $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
             $table->timestamps();
+            $table->softDeletesTz();
         });
     }
 
