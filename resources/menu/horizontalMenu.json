@@ -1,10 +1,150 @@
 {
     "menu": [
         {
-            "name": "Dashboards",
-            "icon": "menu-icon tf-icons bx bx-home-circle",
-            "slug": "dashboard.index",
-            "url": "dashboard"
+            "menuHeader": "Apps & Pages",
+            "headerpermission": [
+                "employee-list",
+                "role-list",
+                "account-setting-account",
+                "account-setting-security"
+            ]
+        },
+        {
+            "name": "Employees",
+            "icon": "menu-icon tf-icons bx bx-user",
+            "slug": "employee",
+            "permission": [
+                "employee-list"
+            ],
+            "submenu": [
+                {
+                    "url": "employees",
+                    "name": "List",
+                    "slug": "employees.index",
+                    "permission": [
+                        "employee-list"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Roles & Permissions",
+            "icon": "menu-icon tf-icons bx bx-check-shield",
+            "slug": "roles",
+            "permission": [
+                "role-list"
+            ],
+            "submenu": [
+                {
+                    "url": "roles",
+                    "name": "Roles",
+                    "slug": "roles.index",
+                    "permission": [
+                        "role-list"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Account Settings",
+            "slug": "account-settings",
+            "icon": "menu-icon tf-icons bx bx-cube",
+            "permission": [
+                "account-setting-account",
+                "account-setting-security"
+            ],
+            "submenu": [
+                {
+                "url": "account-settings/account",
+                "name": "Account",
+                "slug": "account-settings.account",
+                "permission": [
+                    "account-setting-account"
+                ]
+                },
+                {
+                "url": "account-settings/security",
+                "name": "Security",
+                "slug": "account-settings.security",
+                "permission": [
+                    "account-setting-security"
+                ]
+                }
+            ]
+        },
+        {
+            "url": "admin-settings",
+            "name": "Admin Settings",
+            "icon": "menu-icon tf-icons bx bx-loader bx-spin-hover",
+            "slug": "admin-settings",
+            "permission": [
+                "admin-setting"
+            ]
+        },
+        {
+            "menuHeader": "Masters",
+            "headerpermission": [
+                "designation-list",
+                "customer-source-list",
+                "customer-business-list",
+                "currency-list",
+                "language-list",
+                "timezone-list"
+            ]
+        },
+        {
+            "url": "designations",
+            "name": "Designations",
+            "icon": "menu-icon tf-icons bx bxs-user-badge",
+            "slug": "designations.index",
+            "permission": [
+                "designation-list"
+            ]
+        },
+        {
+            "url": "customer-sources",
+            "name": "Customer Sources",
+            "icon": "menu-icon tf-icons bx bx-data",
+            "slug": "customer-sources.index",
+            "permission": [
+                "customer-source-list"
+            ]
+        },
+        {
+            "url": "customer-businesses",
+            "name": "Customer Business",
+            "icon": "menu-icon tf-icons bx bxs-business",
+            "slug": "customer-businesses.index",
+            "permission": [
+                "customer-business-list"
+            ]
+        },
+        {
+            "url": "currencies",
+            "name": "Currencies",
+            "icon": "menu-icon tf-icons bx bx-money",
+            "slug": "currencies.index",
+            "permission": [
+                "currency-list"
+            ]
+        },
+        {
+            "url": "languages",
+            "name": "Languages",
+            "icon": "menu-icon tf-icons bx bx-flag",
+            "slug": "languages.index",
+            "permission": [
+                "language-list"
+            ]
+        },
+        {
+            "url": "timezones",
+            "name": "Timezones",
+            "icon": "menu-icon tf-icons bx bxs-timer",
+            "slug": "timezones.index",
+            "permission": [
+                "timezone-list"
+            ]
         }
     ]
 }

@@ -36,7 +36,7 @@
                     ]) !!}
                         <div class="mb-3 inp-group">
                             <label class="form-label" for="vertical_value">Vertical Menu Json</label>
-                            <textarea class="form-control" id="vertical_value" name="vertical_value" rows="20">{{ $vertical_menus->value ?? '' }}</textarea>
+                            <textarea class="form-control" id="vertical_value" name="vertical_value" rows="20">{{ json_encode($menu_data, JSON_PRETTY_PRINT) }}</textarea>
                         </div>
                         <button type="button" class="btn btn-primary" id="saveVerticalMenu">Save</button>
                     {!! Form::close() !!}

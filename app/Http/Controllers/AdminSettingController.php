@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AdminSetting\VerticalMenuRequest;
@@ -24,6 +25,7 @@ class AdminSettingController extends Controller
         // $this->middleware('permission:'.$this->PermissionSlug.'-edit', ['only' => ['edit','update']]);
         // $this->middleware('permission:'.$this->PermissionSlug.'-delete', ['only' => ['destroy']]);
         $this->Model = new AdminSetting;
+        $this->verticalMenuJsonPath = resource_path('menu/verticalMenu.json');
     }
 
     /**
@@ -34,12 +36,13 @@ class AdminSettingController extends Controller
     public function index()
     {
         //get all designation by id desc
-        $admin_setting = $this->Model;
+        //$admin_setting = $this->Model;
 
-        $vertical_menus = $admin_setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
-        $horizontal_menus = $admin_setting->where('code', 'menu')->where('key', 'horizontal_menu')->first();
-
-        return view('contents.'.$this->Folder.'.index', compact('vertical_menus', 'horizontal_menus'));
+        /* $vertical_menus = $admin_setting->where('code', 'menu')->where('key', 'vertical_menu')->first();
+        $horizontal_menus = $admin_setting->where('code', 'menu')->where('key', 'horizontal_menu')->first(); */
+        $json_data = File::get($this->verticalMenuJsonPath);
+        $vertical_menu_data = json_decode($json_data, true);
+        return view('contents.'.$this->Folder.'.index', compact('vertical_menu_data'));
     }
 
     /**

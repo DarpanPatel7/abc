@@ -1,0 +1,10 @@
+{
+    "menu": [
+        {
+            "icon": "menu-icon tf-icons bx bx-grid-alt",
+            "url": "dashboard",
+            "name": "Dashboard",
+            "slug": "dashboard.index"
+        }
+    ]
+}
