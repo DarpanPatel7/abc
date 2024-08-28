@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
-            $table->timestamps();
             $table->softDeletesTz();
+            $table->timestamps();
         });
     }
 

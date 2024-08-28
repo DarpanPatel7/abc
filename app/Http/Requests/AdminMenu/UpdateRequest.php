@@ -27,7 +27,9 @@ class UpdateRequest extends FormRequest
         $id = Crypt::decrypt($this->admin_menu);
 
         return [
-            'menu_name' => ['required', 'max:255', 'not_regex:/<\/?[^>]*>/', 'unique:admin_menus,name,' . $id],
+            'menu_name' => ['required', 'max:255', 'not_regex:/<\/?[^>]*>/'],
+            'menu_url' => ['required', 'max:255', 'unique:admin_menus,menu_url,' . $id, 'regex:/^(\/[A-Za-z0-9\/]*)|(#)$/'],
+            'menu_type' => ['required', 'numeric'],
         ];
     }
 }

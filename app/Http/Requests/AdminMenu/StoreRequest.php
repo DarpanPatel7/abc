@@ -24,7 +24,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'menu_name' => ['required', 'max:255', 'unique:admin_menus,name' ,'not_regex:/<\/?[^>]*>/'],
+            'menu_name' => ['required', 'max:255', 'not_regex:/<\/?[^>]*>/'],
+            'menu_url' => ['required', 'max:255', 'unique:admin_menus,menu_url', 'regex:/^(\/[A-Za-z0-9\/]*)|(#)$/'],
+            'menu_type' => ['required', 'numeric'],
         ];
     }
 }

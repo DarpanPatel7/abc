@@ -8,10 +8,12 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\AdminMenu\StoreRequest;
+use App\Http\Requests\AdminMenu\UpdateRequest;
 
 class AdminMenuController extends Controller
 {
-    private $Model, $Table = 'admin_menus', $Folder = 'admin-menu', $Slug = 'AdminMenu', $UrlSlug = 'admin-menus', $PermissionSlug = 'admin-menu';
+    private $Model, $Table = 'admin_menus', $Folder = 'admin-menus', $Slug = 'AdminMenu', $MsgSlug = 'Admin Menu', $UrlSlug = 'admin-menus', $PermissionSlug = 'admin-menu';
 
     /**
      *
@@ -35,7 +37,7 @@ class AdminMenuController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $records = $this->Model->select('id', 'name', 'code', 'rate', 'status')->orderBy("id", "desc")->get();
+                $records = $this->Model->select('id', 'menu_name', 'status')->orderBy("id", "desc")->get();
 
                 return DataTables::of($records)
                     ->addIndexColumn()
@@ -54,7 +56,10 @@ class AdminMenuController extends Controller
                     ->rawColumns(['status', 'action'])
                     ->make(true);
             }
-            return view('contents.' . $this->Folder . '.index');
+            //get menu type constants
+            $menu_types = $this->Model->getMenuType();
+
+            return view('contents.' . $this->Folder . '.index', compact('menu_types'));
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }
@@ -79,7 +84,9 @@ class AdminMenuController extends Controller
     public function store(StoreRequest $request)
     {
         try {
-            $this->Model->name = $request['customer_source_name'] ?? '';
+            $this->Model->menu_name = $request['menu_name'] ?? '';
+            $this->Model->menu_url = $request['menu_url'] ?? '';
+            $this->Model->menu_type = $request['menu_type'] ?? '';
             $this->Model->status = !empty($request['status']) ? 1 : 0;
             $this->Model->save();
 
@@ -120,7 +127,9 @@ class AdminMenuController extends Controller
             }
 
             $data = $this->Model->where('id', $id)->first();
-            $returnHTML = view('contents.' . $this->Folder . '.modal-edit')->with(compact('data'))->render();
+            //get menu type constants
+            $menu_types = $this->Model->getMenuType();
+            $returnHTML = view('contents.' . $this->Folder . '.modal-edit')->with(compact('data', 'menu_types'))->render();
             return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
@@ -148,7 +157,9 @@ class AdminMenuController extends Controller
             }
 
             $update = $this->Model->where('id', $id)->first();
-            $update->name = $request['customer_source_name'] ?? '';
+            $update->menu_name = $request['menu_name'] ?? '';
+            $update->menu_url = $request['menu_url'] ?? '';
+            $update->menu_type = $request['menu_type'] ?? '';
             $update->status = !empty($request['status']) ? 1 : 0;
             $update->save();
 
@@ -180,6 +191,24 @@ class AdminMenuController extends Controller
             $this->Model->where('id', $id)->delete();
 
             return Response::json(['success' => trans('messages.success_delete', ['attribute' => $this->MsgSlug])], 202);
+        } catch (\Throwable $th) {
+            return Response::json(['error' => $th->getMessage()], 202);
+        }
+    }
+
+    /**
+     * return state dropdown data
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getParentMenuByChild(Request $request)
+    {
+        try {
+            $parent_menus = $this->Model->where('parent_id', '0')->get()->pluck('menu_name', 'id');
+            $slug = $request->slug ?? '';
+            $returnHTML = view('contents.' . $this->Folder . '.parent-dropdown')->with(compact('parent_menus', 'slug'))->render();
+            return Response::json(['success' => 'success.', 'data' => $returnHTML], 202);
         } catch (\Throwable $th) {
             return Response::json(['error' => $th->getMessage()], 202);
         }

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('address_format');
             $table->boolean('postcode_required');
             $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
-            $table->timestamps();
             $table->softDeletesTz();
+            $table->timestamps();
         });
     }
 

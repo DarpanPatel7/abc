@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('key');
             $table->longText('value')->nullable();
-            $table->timestamps();
             $table->softDeletesTz();
+            $table->timestamps();
         });
     }
 

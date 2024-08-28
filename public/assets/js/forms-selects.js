@@ -56,6 +56,7 @@ $(function () {
 function initSelect2(id) {
     if ($(id + ' select.select2').length) {
         $(id + ' select.select2').each(function () {
+            console.log($(this));
             var $this = $(this),
                 r = {
                     dropdownParent: $(id + " .dropdownParent"),

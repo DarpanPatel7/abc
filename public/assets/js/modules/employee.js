@@ -206,7 +206,6 @@ $(function () {
     });
 
     $('body').on('change', '.dt-checkboxes-select-all', function (event) {
-        alert('dfgdfg');
         var id = $(this).val();
         $.easyAjax({
             url: getStateByCountry_url,

@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('admin_menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('url')->nullable();
+            $table->string('menu_name')->nullable();
+            $table->string('menu_url')->nullable();
             $table->string('menu_type')->nullable();
-            $table->string('parent_id')->nullable();
-            $table->string('menu_rank')->nullable();
+            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->unsignedBigInteger('menu_rank')->nullable();
             $table->boolean('status')->comment('0=Inactive, 1=Active')->default(0);
-            $table->timestamps();
             $table->softDeletesTz();
+            $table->timestamps();
         });
     }
 

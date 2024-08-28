@@ -10,16 +10,14 @@ class AdminMenu extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    // Status Constants
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
 
-    const STATUS_INACTIVE_TEXT = 'Inactive';
-    const STATUS_ACTIVE_TEXT = 'Active';
-
-    const CORE_STATUS_ARRAY = [
-        self::STATUS_INACTIVE => self::STATUS_INACTIVE_TEXT,
-        self::STATUS_ACTIVE => self::STATUS_ACTIVE_TEXT,
-    ];
+    // Menu Type Constants
+    public const MENU_TYPE_PARENT_MENU = 0;
+    public const MENU_TYPE_CHILD_MENU = 1;
+    public const MENU_TYPE_INTERNAL_LINK = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -27,7 +25,7 @@ class AdminMenu extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'menu_name',
         'url',
         'menu_type',
         'parent_id',
@@ -36,40 +34,64 @@ class AdminMenu extends Model
     ];
 
     /**
-     * Scope a query to only include customer sources.
+     * Get status text mapping.
+     *
+     * @return array
+     */
+    public static function getStatus(): array
+    {
+        return [
+            self::STATUS_INACTIVE => 'Inactive',
+            self::STATUS_ACTIVE => 'Active',
+        ];
+    }
+
+    /**
+     * Get menu type text mapping.
+     *
+     * @return array
+     */
+    public static function getmenuType(): array
+    {
+        return [
+            self::MENU_TYPE_PARENT_MENU => 'Parent Menu',
+            self::MENU_TYPE_CHILD_MENU => 'Child Menu',
+            self::MENU_TYPE_INTERNAL_LINK => 'Internal Link',
+        ];
+    }
+
+    /**
+     * Scope a query to only include active menus.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return void
      */
     public function scopeActive($query)
     {
-        $query->where('status', 1);
+        $query->where('status', self::STATUS_ACTIVE);
     }
 
     /**
-     * get status string
+     * Get the status text attribute.
      *
-     * @var array<string, string>
+     * @return string
      */
-    public function getstringStatusAttribute()
+    public function getstringStatusAttribute(): string
     {
-        return self::CORE_STATUS_ARRAY[$this->status] ?? '';
+        return self::getStatus()[$this->status] ?? 'Unknown';
     }
 
     /**
-     * get status class
+     * Get the status badge class attribute.
      *
-     * @var array<string, string>
+     * @return string
      */
-    public function getbadgeStatusAttribute()
+    public function getbadgeStatusAttribute(): string
     {
-        switch ($this->status) {
-            case self::STATUS_INACTIVE:
-                return 'badge bg-label-danger';
-            case self::STATUS_ACTIVE:
-                return 'badge bg-label-success';
-            default:
-                return '';
-        }
+        return match ($this->status) {
+            self::STATUS_INACTIVE => 'badge bg-label-danger',
+            self::STATUS_ACTIVE => 'badge bg-label-success',
+            default => 'badge bg-label-default',
+        };
     }
 }

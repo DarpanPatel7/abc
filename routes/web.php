@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\AccountSettingController;
+use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\CustomerSourceController;
 use App\Http\Controllers\CustomerBusinessController;
 
@@ -35,7 +36,7 @@ require __DIR__.'/auth.php';
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard'); */
 
-// Route::middleware('auth')->group(function () {
+Route::/* middleware('auth')-> */group(['prefix' => ''], function () {
     //Dashboard
     Route::resource('dashboard', DashboardController::class);
 
@@ -82,7 +83,11 @@ require __DIR__.'/auth.php';
     Route::post('account-settings.getStateByCountry', [AccountSettingController::class, 'getStateByCountry'])->name('account-settings.getStateByCountry');
     Route::post('account-settings.deactivateAccount', [AccountSettingController::class, 'deactivateAccount'])->name('account-settings.deactivateAccount');
     Route::post('account-settings.changePassword', [AccountSettingController::class, 'changePassword'])->name('account-settings.changePassword');
-// });
+
+    Route::resource('admin-menus', AdminMenuController::class);
+    Route::post('admin-menus.getParentMenuByChild', [AdminMenuController::class, 'getParentMenuByChild'])->name('admin-menus.getParentMenuByChild');
+
+});
 
 
 
