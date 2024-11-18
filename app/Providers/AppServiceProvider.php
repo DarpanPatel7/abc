@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,14 @@ class AppServiceProvider extends ServiceProvider
                     'time' => $query->time
                 ]
             );
+        });
+
+        Blade::directive('formOpen', function ($expression) {
+            return "<?php echo '<form ' . $expression . '>'; ?>";
+        });
+
+        Blade::directive('formClose', function () {
+            return '<?php echo "</form>"; ?>';
         });
     }
 }

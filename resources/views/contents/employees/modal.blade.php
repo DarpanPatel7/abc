@@ -3,7 +3,7 @@
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content dropdownParent">
-                {!! Form::open([
+                {!! @formOpen([
                     'route' => 'employees.store',
                     'method' => 'POST',
                     'id' => 'addEmployeeForm',
@@ -198,7 +198,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addEmployeeSubmit">Save changes</button>
                 </div>
-                {!! Form::close() !!}
+                {!! @formClose() !!}
             </div>
         </div>
     </div>
