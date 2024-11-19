@@ -36,12 +36,7 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Welcome to Site! 👋</h4>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
-                        {!! Form::open([
-                            'route' => 'login',
-                            'method' => 'POST',
-                            'id' => 'login-form',
-                            'class' => 'restrict-enter mb-3',
-                        ]) !!}
+                        {!! html()->form('POST')->route('login')->id('login-form')->class('restrict-enter mb-3')->open() !!}
                             <div class="mb-3 inp-group">
                                 <label for="email" class="form-label">Email or Username</label>
                                 <input type="text" class="form-control" id="email" name="email"
@@ -72,7 +67,7 @@
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="button" id="login">Sign in</button>
                             </div>
-                        {!! Form::close() !!}
+                        {!! html()->form()->close() !!}
 
                         <p class="text-center">
                             <span>New on our platform?</span>
