@@ -93,7 +93,6 @@ $(function () {
             container: "#add" + main + "Form",
             type: "POST",
             buttonSelector: "#add" + main + "Submit",
-            file: true,
             blockUI: true,
             disableButton: true,
             formReset: true,
