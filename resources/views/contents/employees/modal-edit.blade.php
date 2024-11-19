@@ -1,5 +1,5 @@
 @if (!empty($data))
-    {!! Form::model($data, ['method' => 'PATCH','route' => ['employees.update', Crypt::Encrypt($data->id)], 'id'=>'editEmployeeForm', 'class' => 'restrict-enter']) !!}
+    {!! html()->modelForm($data)->method('PATCH')->route('employees.update', Crypt::Encrypt($data->id))->id('editEmployeeForm')->class('restrict-enter')->open() !!}
         <div class="modal-header">
             <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -59,32 +59,28 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label class="form-label" for="editCountry">Country</label>
-                    {!! Form::select(
-                        'country',
-                        $countries,
-                        $data->country_id ?? [],
-                        [
-                            'class' => 'select2 form-select form-select-lg',
-                            'id' => 'editCountry',
-                            'placeholder' => 'Select Country',
-                            'data-allow-clear' => 'true',
-                        ],
-                    ) !!}
+                    {{
+                        html()->select('country', $countries, $data->country_id ?? [])
+                        ->id('editCountry')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Country')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label for="editState" class="form-label">State</label>
                     <div id="editStateContent">
-                        {!! Form::select(
-                            'state',
-                            $statesbycountry,
-                            $data->state_id ?? [],
-                            [
-                                'class' => 'select2 form-select form-select-lg',
-                                'id' => 'editState',
-                                'placeholder' => 'Select State',
-                                'data-allow-clear' => 'true',
-                            ],
-                        ) !!}
+                        {{
+                            html()->select('state', $statesbycountry, $data->state_id ?? [])
+                            ->id('editState')
+                            ->class('select2 form-select form-select-lg')
+                            ->placeholder('Select State')
+                            ->attributes([
+                                'data-allow-clear' => 'true'  // Add more attributes here as needed
+                            ])
+                        }}
                     </div>
                 </div>
             </div>
@@ -103,51 +99,53 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label for="editLanguage" class="form-label">Language</label>
-                    {!! Form::select('language', $languages, $data->langauge_id ?? [], [
-                        'class' => 'select2 form-select form-select-lg',
-                        'id' => 'editLanguage',
-                        'placeholder' => 'Select Language',
-                        'data-allow-clear' => 'true',
-                    ]) !!}
+                    {{
+                        html()->select('language', $languages, $data->langauge_id ?? [])
+                        ->id('editLanguage')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Language')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label for="editTimezone" class="form-label">Timezone</label>
-                    {!! Form::select('timezone', $timezones, $data->timezone_id ?? [], [
-                        'class' => 'select2 form-select form-select-lg',
-                        'id' => 'editTimezone',
-                        'placeholder' => 'Select Timezone',
-                        'data-allow-clear' => 'true',
-                    ]) !!}
+                    {{
+                        html()->select('timezone', $timezones, $data->timezone_id ?? [])
+                        ->id('editTimezone')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Timezone')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label for="editCurrency" class="form-label">Currency</label>
-                    {!! Form::select(
-                        'currency',
-                        $currencies,
-                        $data->currency_id ?? [],
-                        [
-                            'class' => 'select2 form-select form-select-lg',
-                            'id' => 'editCurrency',
-                            'placeholder' => 'Select Currency',
-                            'data-allow-clear' => 'true',
-                        ],
-                    ) !!}
+                    {{
+                        html()->select('currency', $currencies, $data->currency_id ?? [])
+                        ->id('editCurrency')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Currency')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3 inp-group">
                     <label for="editDesignation" class="form-label">Designation</label>
-                    {!! Form::select(
-                        'designation',
-                        $designations,
-                        $data->designation_id ?? [],
-                        [
-                            'class' => 'select2 form-select form-select-lg',
-                            'placeholder' => 'Select Designation',
-                            'data-allow-clear' => 'true',
-                            'id' => 'editDesignation',
-                        ],
-                    ) !!}
+                    {{
+                        html()->select('designation', $designations, $data->designation_id ?? [])
+                        ->id('editDesignation')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Designation')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
             </div>
             <div class="row">
@@ -174,7 +172,7 @@
                     <label class="form-label" for="editstatus">Status</label>
                     <div>
                         <label class="switch switch-primary">
-                            {{ Form::checkbox('status', 1, ($data->status == 1) ? true : false, array('class' => 'switch-input','id' => 'editstatus')) }}
+                            {{ html()->checkbox('status', ($data->status == 1) ? true : false, 1)->id('editstatus')->class('switch-input') }}
                             <span class="switch-toggle-slider">
                                 <span class="switch-on"></span>
                                 <span class="switch-off"></span>
@@ -188,5 +186,5 @@
             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="editEmployeeSubmit">Save changes</button>
         </div>
-    {!! Form::close() !!}
+    {!! html()->closeModelForm() !!}
 @endif

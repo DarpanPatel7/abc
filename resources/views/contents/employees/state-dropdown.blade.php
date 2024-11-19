@@ -1,15 +1,19 @@
 @if (!empty($states))
-    {!! Form::select('state', $states, auth()->User()->state_id ?? '', [
-        'class' => 'select2 form-select form-select-lg',
-        'id' => $slug.'State',
-        'placeholder' => 'Select State',
-        'data-allow-clear' => 'true',
-    ]) !!}
+    {{ html()->select('state', $states, auth()->User()->state_id ?? '')
+        ->id($slug.'State')
+        ->class('select2 form-select form-select-lg')
+        ->placeholder('Select State')
+        ->attributes([
+            'data-allow-clear' => 'true'  // Add more attributes here as needed
+        ])
+    }}
 @else
-    {!! Form::select('state', [], false, [
-        'class' => 'select2 form-select form-select-lg',
-        'id' => $slug.'State',
-        'placeholder' => 'Select State',
-        'data-allow-clear' => 'true',
-    ]) !!}
+    {{ html()->select('state', [], [])
+        ->id($slug.'State')
+        ->class('select2 form-select form-select-lg')
+        ->placeholder('Select State')
+        ->attributes([
+            'data-allow-clear' => 'true'  // Add more attributes here as needed
+        ])
+    }}
 @endif

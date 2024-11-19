@@ -3,12 +3,7 @@
     <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content dropdownParent">
-                {!! @formOpen([
-                    'route' => 'employees.store',
-                    'method' => 'POST',
-                    'id' => 'addEmployeeForm',
-                    'class' => 'restrict-enter drop-parent',
-                ]) !!}
+                {!! html()->form('POST')->route('employees.store')->id('addEmployeeForm')->class('restrict-enter drop-parent')->open() !!}
                 <div class="modal-header">
                     <h5 class="modal-title">Add Employee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -76,32 +71,28 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label" for="addCountry">Country</label>
-                            {!! Form::select(
-                                'country',
-                                $countries,
-                                [],
-                                [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'addCountry',
-                                    'placeholder' => 'Select Country',
-                                    'data-allow-clear' => 'true',
-                                ],
-                            ) !!}
+                            {{
+                                html()->select('country', $countries, [])
+                                ->id('addCountry')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Country')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label class="form-label" for="addState">State</label>
                             <div id="addStateContent">
-                                {!! Form::select(
-                                    'state',
-                                    [],
-                                    [],
-                                    [
-                                        'class' => 'select2 form-select form-select-lg',
-                                        'id' => 'addState',
-                                        'placeholder' => 'Select State',
-                                        'data-allow-clear' => 'true',
-                                    ],
-                                ) !!}
+                                {{
+                                    html()->select('state', [], [])
+                                    ->id('addState')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select State')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                         </div>
                     </div>
@@ -120,51 +111,53 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="addLanguage" class="form-label">Language</label>
-                            {!! Form::select('language', $languages, [], [
-                                'class' => 'select2 form-select form-select-lg',
-                                'id' => 'addLanguage',
-                                'placeholder' => 'Select Language',
-                                'data-allow-clear' => 'true',
-                            ]) !!}
+                            {{
+                                html()->select('language', $languages, [])
+                                ->id('addLanguage')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Language')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="addTimezone" class="form-label">Timezone</label>
-                            {!! Form::select('timezone', $timezones, [], [
-                                'class' => 'select2 form-select form-select-lg',
-                                'id' => 'addTimezone',
-                                'placeholder' => 'Select Timezone',
-                                'data-allow-clear' => 'true',
-                            ]) !!}
+                            {{
+                                html()->select('timezone', $timezones, [])
+                                ->id('addTimezone')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Timezone')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="addCurrency" class="form-label">Currency</label>
-                            {!! Form::select(
-                                'currency',
-                                $currencies,
-                                [],
-                                [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'addCurrency',
-                                    'placeholder' => 'Select Currency',
-                                    'data-allow-clear' => 'true',
-                                ],
-                            ) !!}
+                            {{
+                                html()->select('currency', $currencies, [])
+                                ->id('addCurrency')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Currency')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                         <div class="col-md-6 col-sm-12 mb-3 inp-group">
                             <label for="addDesignation" class="form-label">Designation</label>
-                            {!! Form::select(
-                                'designation',
-                                $designations,
-                                [],
-                                [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'placeholder' => 'Select Designation',
-                                    'data-allow-clear' => 'true',
-                                    'id' => 'addDesignation',
-                                ],
-                            ) !!}
+                            {{
+                                html()->select('designation', $designations, [])
+                                ->id('addDesignation')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Designation')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                     </div>
                     <div class="row">
@@ -184,7 +177,7 @@
                             <label class="form-label" for="addStatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addStatus']) }}
+                                    {{ html()->checkbox('status', true, 1)->id('addStatus')->class('switch-input') }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -198,7 +191,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addEmployeeSubmit">Save changes</button>
                 </div>
-                {!! @formClose() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>
