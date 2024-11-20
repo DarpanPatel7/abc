@@ -1,11 +1,6 @@
 @if (!empty($role))
     <!-- Edit role form -->
-    {!! Form::model($role, [
-        'method' => 'PATCH',
-        'route' => ['roles.update', Crypt::Encrypt($role->id)],
-        'id' => 'editRoleForm',
-        'class' => 'restrict-enter row g-3 fv-plugins-bootstrap5 fv-plugins-framework w-100',
-    ]) !!}
+    {!! html()->modelForm($role)->method('PATCH')->route('roles.update', Crypt::Encrypt($role->id))->id('editRoleForm')->class('restrict-enter row g-3 fv-plugins-bootstrap5 fv-plugins-framework w-100')->open() !!}
         <div class="modal-content p-3 p-md-5 mt-0">
             <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="modal-body">
@@ -30,7 +25,11 @@
                                             title="Allows a full access to the system"></i></td>
                                     <td>
                                         <div class="form-check">
-                                            {{ Form::checkbox('all_permissions', null, false, ['class' => 'form-check-input', 'id' => 'editall_permissions']) }}
+                                            {{
+                                                html()->checkbox('all_permissions', false, null)
+                                                ->id('editall_permissions')
+                                                ->class('form-check-input')
+                                            }}
                                             <label class="form-check-label" for="editall_permissions">
                                                 Select All
                                             </label>
@@ -47,7 +46,12 @@
                                             <td>
                                                 <div class="d-flex flex-wrap">
                                                     <div class="form-check me-3 me-lg-5">
-                                                        {{ Form::checkbox('module_all_permissions', null, false, ['class' => 'form-check-input editmodule_all_permissions', 'data-key' => $sr_pkey, 'id' => 'editmodule_all_permissions' . $sr_pkey]) }}
+                                                        {{
+                                                            html()->checkbox('module_all_permissions', false, null)
+                                                            ->id('editmodule_all_permissions' . $sr_pkey)
+                                                            ->class('form-check-input editmodule_all_permissions')
+                                                            ->attribute('data-key', $sr_pkey)
+                                                        }}
                                                         <label class="form-check-label" for="editmodule_all_permissions{{ $sr_pkey }}">
                                                             {{ $pkey }}
                                                         </label>
@@ -58,7 +62,15 @@
                                                 <div class="d-flex flex-wrap">
                                                     @foreach ($pval as $key => $val)
                                                         <div class="form-check me-3 me-lg-5">
-                                                            {{ Form::checkbox('permission[]', $val->id, in_array($val->id, $rolePermissions) ? true : false, ['class' => 'form-check-input editpermission ' . $sr_pkey, 'data-val' => $sr_pkey, 'data-type' => $val->name, 'id' => 'editpermission' . $val->id]) }}
+                                                            {{
+                                                                html()->checkbox('permission[]', in_array($val->id, $rolePermissions) ? true : false, $val->id)
+                                                                ->id('editpermission' . $val->id)
+                                                                ->class('form-check-input editpermission ' . $sr_pkey)
+                                                                ->attributes([
+                                                                    'data-val' => $sr_pkey,
+                                                                    'data-type' => $val->name
+                                                                ])
+                                                            }}
                                                             <label class="form-check-label" for="editpermission{{ $val->id }}">
                                                                 {{ ucwords(str_replace('-', ' ', $val->name)) }}
                                                             </label>
@@ -81,6 +93,6 @@
                 </div>
             </div>
         </div>
-    {!! Form::close() !!}
+    {!! html()->closeModelForm() !!}
     <!--/ Edit role form -->
 @endif

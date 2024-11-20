@@ -3,12 +3,7 @@
     <div class="modal fade" id="addRoleModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-add-new-role">
             <!-- Add role form -->
-            {!! Form::open([
-                'route' => 'roles.store',
-                'method' => 'POST',
-                'id' => 'addRoleForm',
-                'class' => 'restrict-enter row g-3 fv-plugins-bootstrap5 fv-plugins-framework w-100',
-            ]) !!}
+            {!! html()->form('POST')->route('roles.store')->id('addRoleForm')->class('restrict-enter row g-3 fv-plugins-bootstrap5 fv-plugins-framework w-100')->open() !!}
                 <div class="modal-content p-3 p-md-5 mt-0">
                     <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
                     <div class="modal-body">
@@ -33,7 +28,11 @@
                                                     title="Allows a full access to the system"></i></td>
                                             <td>
                                                 <div class="form-check">
-                                                    {{ Form::checkbox('all_permissions', null, false, ['class' => 'form-check-input', 'id' => 'addall_permissions']) }}
+                                                    {{
+                                                        html()->checkbox('all_permissions', false, null)
+                                                        ->id('addall_permissions')
+                                                        ->class('form-check-input')
+                                                    }}
                                                     <label class="form-check-label" for="addall_permissions">
                                                         Select All
                                                     </label>
@@ -49,7 +48,12 @@
                                                     <td>
                                                         <div class="d-flex flex-wrap">
                                                             <div class="form-check me-3 me-lg-5">
-                                                                {{ Form::checkbox('module_all_permissions', null, false, ['class' => 'form-check-input addmodule_all_permissions', 'data-key' => $sr_pkey, 'id' => 'addmodule_all_permissions' . $sr_pkey]) }}
+                                                                {{
+                                                                    html()->checkbox('module_all_permissions', false, null)
+                                                                    ->id('addmodule_all_permissions' . $sr_pkey)
+                                                                    ->class('form-check-input addmodule_all_permissions')
+                                                                    ->attribute('data-key', $sr_pkey)
+                                                                }}
                                                                 <label class="form-check-label"
                                                                     for="addmodule_all_permissions{{ $sr_pkey }}">
                                                                     {{ $pkey }}
@@ -61,7 +65,15 @@
                                                         <div class="d-flex flex-wrap">
                                                             @foreach ($pval as $key => $val)
                                                                 <div class="form-check me-3 me-lg-5">
-                                                                    {{ Form::checkbox('permission[]', $val->id, false, ['class' => 'form-check-input addpermission ' . $sr_pkey, 'data-val' => $sr_pkey, 'data-type' => $val->name, 'id' => 'addpermission' . $val->id]) }}
+                                                                    {{
+                                                                        html()->checkbox('permission[]', false, $val->id)
+                                                                        ->id('addpermission' . $val->id)
+                                                                        ->class('form-check-input addpermission ' . $sr_pkey)
+                                                                        ->attributes([
+                                                                            'data-val' => $sr_pkey,
+                                                                            'data-type' => $val->name
+                                                                        ])
+                                                                    }}
                                                                     <label class="form-check-label"
                                                                         for="addpermission{{ $val->id }}">
                                                                         {{ ucwords(str_replace('-', ' ', $val->name)) }}
@@ -85,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-            {!! Form::close() !!}
+            {!! html()->form()->close() !!}
             <!--/ Add role form -->
         </div>
     </div>
