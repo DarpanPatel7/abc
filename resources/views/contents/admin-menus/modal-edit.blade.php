@@ -1,5 +1,5 @@
 @if (!empty($data))
-    {!! Form::model($data, ['method' => 'PATCH','route' => ['admin-menus.update', Crypt::Encrypt($data->id)], 'id'=>'editAdminMenuForm']) !!}
+    {!! html()->modelForm($data)->method('PATCH')->route('admin-menus.update', Crypt::Encrypt($data->id))->id('editAdminMenuForm')->class('restrict-enter')->open() !!}
         <div class="modal-header">
             <h5 class="modal-title" id="editAdminMenuModalLabel">Edit Admin Menu</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -20,17 +20,15 @@
             <div class="row">
                 <div class="col mb-3 inp-group">
                     <label class="form-label" for="editMenuType">Menu Type</label>
-                    {!! Form::select(
-                        'menu_type',
-                        $menu_types,
-                        $data->menu_type ?? [],
-                        [
-                            'class' => 'select2 form-select form-select-lg',
-                            'id' => 'editMenuType',
-                            'placeholder' => 'Select Menu Type',
-                            'data-allow-clear' => 'true',
-                        ],
-                    ) !!}
+                    {{
+                        html()->select('menu_type', $menu_types, $data->menu_type ?? [])
+                        ->id('editMenuType')
+                        ->class('select2 form-select form-select-lg')
+                        ->placeholder('Select Menu Type')
+                        ->attributes([
+                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                        ])
+                    }}
                 </div>
             </div>
             <div class="row">
@@ -38,7 +36,7 @@
                     <label class="form-label" for="editstatus">Status</label>
                     <div>
                         <label class="switch switch-primary">
-                            {{ Form::checkbox('status', 1, ($data->status == 1) ? true : false, array('class' => 'switch-input','id' => 'editstatus')) }}
+                            {{ html()->checkbox('status', ($data->status == 1) ? true : false, 1)->id('editstatus')->class('switch-input') }}
                             <span class="switch-toggle-slider">
                                 <span class="switch-on"></span>
                                 <span class="switch-off"></span>
@@ -52,5 +50,5 @@
             <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="editAdminMenuSubmit">Save changes</button>
         </div>
-    {!! Form::close() !!}
+    {!! html()->closeModelForm() !!}
 @endif

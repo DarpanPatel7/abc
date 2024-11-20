@@ -1,15 +1,21 @@
 @if (!empty($parent_menus))
-    {!! Form::select('parent_menu', $parent_menus, auth()->User()->state_id ?? '', [
-        'class' => 'select2 form-select form-select-lg',
-        'id' => $slug.'ParentMenu',
-        'placeholder' => 'Select Parent Menu',
-        'data-allow-clear' => 'true',
-    ]) !!}
+    {{
+        html()->select('parent_menu', $parent_menus, auth()->User()->state_id ?? '')
+        ->id($slug.'ParentMenu')
+        ->class('select2 form-select form-select-lg')
+        ->placeholder('Select Parent Menu')
+        ->attributes([
+            'data-allow-clear' => 'true'  // Add more attributes here as needed
+        ])
+    }}
 @else
-    {!! Form::select('parent_menu', [], false, [
-        'class' => 'select2 form-select form-select-lg',
-        'id' => $slug.'ParentMenu',
-        'placeholder' => 'Select Parent Menu',
-        'data-allow-clear' => 'true',
-    ]) !!}
+    {{
+        html()->select('parent_menu', [], [])
+        ->id($slug.'ParentMenu')
+        ->class('select2 form-select form-select-lg')
+        ->placeholder('Select Parent Menu')
+        ->attributes([
+            'data-allow-clear' => 'true'  // Add more attributes here as needed
+        ])
+    }}
 @endif

@@ -35,18 +35,13 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Forgot Password? 🔒</h4>
                         <p class="mb-4">Enter your email and we will send you instructions to reset your password</p>
-                        {!! Form::open([
-                            'route' => 'password.email',
-                            'method' => 'POST',
-                            'id' => 'forgot-password-form',
-                            'class' => 'restrict-enter mb-3',
-                        ]) !!}
+                        {!! html()->form('POST')->route('password.email')->id('forgot-password-form')->class('restrict-enter mb-3')->open() !!}
                             <div class="mb-3 inp-group">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" autofocus>
                             </div>
                             <button class="btn btn-primary w-100" type="button" id="forgot-password">Send reset link</button>
-                        {!! Form::close() !!}
+                        {!! html()->form()->close() !!}
                         <div class="text-center">
                             <a href="{{ url('login') }}" class="d-flex align-items-center justify-content-center">
                                 <i class="bx bx-chevron-left scaleX-n1-rtl"></i>

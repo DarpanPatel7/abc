@@ -36,12 +36,7 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Adventure starts here 🚀</h4>
                         <p class="mb-4">Make your app management easy and fun!</p>
-                        {!! Form::open([
-                            'route' => 'register',
-                            'method' => 'POST',
-                            'id' => 'register-form',
-                            'class' => 'restrict-enter mb-3',
-                        ]) !!}
+                        {!! html()->form('POST')->route('register')->id('register-form')->class('restrict-enter mb-3')->open() !!}
                             <div class="mb-3 inp-group">
                                 <label for="fullname" class="form-label">Full Name</label>
                                 <input type="text" class="form-control" id="fullname" name="fullname"
@@ -78,7 +73,7 @@
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="button" id="register">Sign up</button>
                             </div>
-                        {!! Form::close() !!}
+                        {!! html()->form()->close() !!}
 
                         <p class="text-center">
                             <span>Already have an account?</span>

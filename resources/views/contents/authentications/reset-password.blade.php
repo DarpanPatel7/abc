@@ -38,12 +38,7 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Reset Password 🔒</h4>
                         <p class="mb-4">for <span class="fw-bold">{{ old('email', $request->email) }}</span></p>
-                        {!! Form::open([
-                            'route' => 'password.store',
-                            'method' => 'POST',
-                            'id' => 'reset-password-form',
-                            'class' => 'restrict-enter mb-3',
-                        ]) !!}
+                        {!! html()->form('POST')->route('password.store')->id('reset-password-form')->class('restrict-enter mb-3')->open() !!}
                             <!-- Password Reset Token -->
                             <input type="hidden" name="token" value="{{ $request->route('token') }}">
                             <input type="hidden" id="email" name="email" value="{{ old('email', $request->email) }}">
@@ -67,7 +62,7 @@
                                 </div>
                             </div>
                             <button class="btn btn-primary w-100" type="button" id="reset-password">Set new password</button>
-                        {!! Form::close() !!}
+                        {!! html()->form()->close() !!}
                         <div class="text-center">
                             <a href="{{ url('login') }}" class="d-flex align-items-center justify-content-center">
                                 <i class="bx bx-chevron-left scaleX-n1-rtl"></i>

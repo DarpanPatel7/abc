@@ -3,7 +3,7 @@
 <div class="modal fade" id="addAdminMenuModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content dropdownParent">
-            {!! Form::open(array('route' => 'admin-menus.store','method'=>'POST','id'=>'addAdminMenuForm','class'=>'restrict-enter')) !!}
+            {!! html()->form('POST')->route('admin-menus.store')->id('addAdminMenuForm')->class('restrict-enter')->open() !!}
                 <div class="modal-header">
                     <h5 class="modal-title" id="addAdminMenuModalLabel">Add Admin Menu</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -24,34 +24,30 @@
                     <div class="row">
                         <div class="col mb-3 inp-group">
                             <label class="form-label" for="addMenuType">Menu Type</label>
-                            {!! Form::select(
-                                'menu_type',
-                                $menu_types,
-                                [],
-                                [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'addMenuType',
-                                    'placeholder' => 'Select Menu Type',
-                                    'data-allow-clear' => 'true',
-                                ],
-                            ) !!}
+                            {{
+                                html()->select('menu_type', $menu_types, [])
+                                ->id('addMenuType')
+                                ->class('select2 form-select form-select-lg')
+                                ->placeholder('Select Menu Type')
+                                ->attributes([
+                                    'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                ])
+                            }}
                         </div>
                     </div>
                     <div class="row" id="blkParentMenu">
                         <div class="col mb-3 inp-group">
                             <label class="form-label" for="addParentMenu">Parent Menu</label>
                             <div id="addParentMenuContent">
-                                {!! Form::select(
-                                    'parent_menu',
-                                    [],
-                                    [],
-                                    [
-                                        'class' => 'select2 form-select form-select-lg',
-                                        'id' => 'addParentMenu',
-                                        'placeholder' => 'Select Parent Menu',
-                                        'data-allow-clear' => 'true',
-                                    ],
-                                ) !!}
+                                {{
+                                    html()->select('parent_menu', [], [])
+                                    ->id('addParentMenu')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Parent Menu')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                         </div>
                     </div>
@@ -60,7 +56,7 @@
                             <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, array('class' => 'switch-input', 'id' => 'addstatus')) }}
+                                    {{ html()->checkbox('status', true, 1)->id('addstatus')->class('switch-input') }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -74,7 +70,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addAdminMenuSubmit">Save changes</button>
                 </div>
-            {!! Form::close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </div>
