@@ -34,12 +34,7 @@
             <!-- Change Password -->
             <div class="card mb-4">
                 <h5 class="card-header">Change Password</h5>
-                {!! Form::open([
-                    'route' => 'account-settings.changePassword',
-                    'method' => 'POST',
-                    'id' => 'changePasswordForm',
-                    'class' => 'restrict-enter',
-                ]) !!}
+                {!! html()->form('POST')->route('account-settings.changePassword')->id('changePasswordForm')->class('restrict-enter')->open() !!}
                     <div class="card-body">
                         <div class="row">
                             <div class="mb-3 col-md-6 form-password-toggle">
@@ -81,7 +76,7 @@
                             </div>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
             </div>
             <!--/ Change Password -->
 

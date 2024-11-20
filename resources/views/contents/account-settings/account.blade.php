@@ -46,12 +46,7 @@
             <div class="card mb-4">
                 <h5 class="card-header">Profile Details</h5>
                 <!-- Account -->
-                {!! Form::open([
-                    'route' => 'account-settings.saveAccount',
-                    'method' => 'POST',
-                    'id' => 'saveAccountForm',
-                    'class' => 'restrict-enter',
-                ]) !!}
+                {!! html()->form('POST')->route('account-settings.saveAccount')->id('saveAccountForm')->class('restrict-enter')->open() !!}
                     <div class="card-body">
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
                             <div class="profile-img profile-avatar-xxl">
@@ -117,22 +112,27 @@
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label class="form-label" for="country">Country</label>
-                                {!! Form::select('country', $countries, $user->country_id ?? [], [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'country',
-                                    'placeholder' => 'Select Country',
-                                    'data-allow-clear' => 'true',
-                                ]) !!}
+                                {{
+                                    html()->select('country', $countries, $user->country_id ?? [])
+                                    ->id('country')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Country')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label for="state" class="form-label">State</label>
-                                <div id="stateContent">
-                                    {!! Form::select('state', $statesbycountry, $user->state_id ?? [], [
-                                        'class' => 'select2 form-select form-select-lg',
-                                        'id' => 'state',
-                                        'placeholder' => 'Select State',
-                                        'data-allow-clear' => 'true',
-                                    ]) !!}
+                                <div id="stateContent">{{
+                                        html()->select('state', $statesbycountry, $user->state_id ?? [])
+                                        ->id('state')
+                                        ->class('select2 form-select form-select-lg')
+                                        ->placeholder('Select State')
+                                        ->attributes([
+                                            'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                        ])
+                                    }}
                                 </div>
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
@@ -147,39 +147,51 @@
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label for="language" class="form-label">Language</label>
-                                {!! Form::select('language', $languages, $user->langauge_id ?? [], [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'language',
-                                    'placeholder' => 'Select Language',
-                                    'data-allow-clear' => 'true',
-                                ]) !!}
+                                {{
+                                    html()->select('language', $languages, $user->langauge_id ?? [])
+                                    ->id('language')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Language')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label for="timezone" class="form-label">Timezone</label>
-                                {!! Form::select('timezone', $timezones, $user->timezone_id ?? [], [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'timezone',
-                                    'placeholder' => 'Select Timezone',
-                                    'data-allow-clear' => 'true',
-                                ]) !!}
+                                {{
+                                    html()->select('timezone', $timezones, $user->timezone_id ?? [])
+                                    ->id('timezone')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Timezone')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label for="currency" class="form-label">Currency</label>
-                                {!! Form::select('currency', $currencies, $user->currency_id ?? [], [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'id' => 'currency',
-                                    'placeholder' => 'Select Currency',
-                                    'data-allow-clear' => 'true',
-                                ]) !!}
+                                {{
+                                    html()->select('currency', $currencies, $user->currency_id ?? [])
+                                    ->id('currency')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Currency')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                             <div class="mb-3 col-md-6 inp-group">
                                 <label for="designation" class="form-label">Designation</label>
-                                {!! Form::select('designation', $designations, $user->designation_id ?? [], [
-                                    'class' => 'select2 form-select form-select-lg',
-                                    'placeholder' => 'Select Designation',
-                                    'data-allow-clear' => 'true',
-                                    'id' => 'designation',
-                                ]) !!}
+                                {{
+                                    html()->select('designation', $designations, $user->designation_id ?? [])
+                                    ->id('designation')
+                                    ->class('select2 form-select form-select-lg')
+                                    ->placeholder('Select Designation')
+                                    ->attributes([
+                                        'data-allow-clear' => 'true'  // Add more attributes here as needed
+                                    ])
+                                }}
                             </div>
                             <div class="col-md-6 col-sm-12 mb-3 inp-group">
                                 <label for="organization" class="form-label">Organization</label>
@@ -206,7 +218,7 @@
                             <button type="button" class="btn btn-primary me-2" id="saveAccount">Save changes</button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
                 <!-- /Account -->
             </div>
             <div class="card">
@@ -218,12 +230,7 @@
                             <p class="mb-0">Once you delete your account, there is no going back. Please be certain.</p>
                         </div>
                     </div>
-                    {!! Form::open([
-                        'route' => 'account-settings.deactivateAccount',
-                        'method' => 'POST',
-                        'id' => 'deactivateAccountForm',
-                        'class' => 'restrict-enter',
-                    ]) !!}
+                    {!! html()->form('POST')->route('account-settings.deactivateAccount')->id('deactivateAccountForm')->class('restrict-enter')->open() !!}
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" name="accountDeactivation"
                             id="accountDeactivation" />
@@ -231,7 +238,7 @@
                             deactivation</label>
                     </div>
                     <button type="button" class="btn btn-danger" id="deactivateAccount">Deactivate Account</button>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>
