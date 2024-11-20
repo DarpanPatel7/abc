@@ -3,12 +3,7 @@
     <div class="modal fade" id="addTimezoneModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {!! Form::open([
-                    'route' => 'timezones.store',
-                    'method' => 'POST',
-                    'id' => 'addTimezoneForm',
-                    'class' => 'restrict-enter',
-                ]) !!}
+                {!! html()->form('POST')->route('timezones.store')->id('addTimezoneForm')->class('restrict-enter')->open() !!}
                 <div class="modal-header">
                     <h5 class="modal-title" id="addTimezoneModalLabel">Add Timezone</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -33,7 +28,7 @@
                             <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addstatus']) }}
+                                    {{ html()->checkbox('status', true, 1)->id('addstatus')->class('switch-input') }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -47,7 +42,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addTimezoneSubmit">Save changes</button>
                 </div>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>
