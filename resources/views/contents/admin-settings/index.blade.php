@@ -28,18 +28,13 @@
                     <h5 class="mb-0">Vertical Menu</h5>
                 </div>
                 <div class="card-body">
-                    {!! Form::open([
-                        'route' => 'admin-settings.saveVerticalMenu',
-                        'method' => 'POST',
-                        'id' => 'saveVerticalMenuForm',
-                        'class' => 'restrict-enter',
-                    ]) !!}
+                    {!! html()->form('POST')->route('admin-settings.saveVerticalMenu')->id('saveVerticalMenuForm')->class('restrict-enter')->open() !!}
                         <div class="mb-3 inp-group">
                             <label class="form-label" for="vertical_value">Vertical Menu Json</label>
                             <textarea class="form-control" id="vertical_value" name="vertical_value" rows="20">{{ json_encode($menu_data, JSON_PRETTY_PRINT) }}</textarea>
                         </div>
                         <button type="button" class="btn btn-primary" id="saveVerticalMenu">Save</button>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>
@@ -49,18 +44,13 @@
                     <h5 class="mb-0">Horizontal Menu</h5>
                 </div>
                 <div class="card-body">
-                    {!! Form::open([
-                        'route' => 'admin-settings.saveHorizontalMenu',
-                        'method' => 'POST',
-                        'id' => 'saveHorizontalMenuForm',
-                        'class' => 'restrict-enter',
-                    ]) !!}
+                    {!! html()->form('POST')->route('admin-settings.saveHorizontalMenu')->id('saveHorizontalMenuForm')->class('restrict-enter')->open() !!}
                         <div class="mb-3 inp-group">
                             <label class="form-label" for="horizontal_value">Horizontal Menu Json</label>
                             <textarea class="form-control" id="horizontal_value" name="horizontal_value" rows="20">{{ $horizontal_menus->value ?? '' }}</textarea>
                         </div>
                         <button type="button" class="btn btn-primary" id="saveHorizontalMenu">Save</button>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>

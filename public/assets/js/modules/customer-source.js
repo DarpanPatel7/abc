@@ -93,7 +93,6 @@ $(function () {
             container: "#add"+main+"Form",
             type: "POST",
             buttonSelector: "#add"+main+"Submit",
-            file: true,
             blockUI: true,
             disableButton: true,
             formReset:true,
@@ -118,9 +117,8 @@ $(function () {
     $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
             container: "#edit"+main+"Form",
-            type: "POST",
+            type: "PATCH",
             buttonSelector: "#edit"+main+"Submit",
-            file: true,
             blockUI: true,
             disableButton: true,
             formReset:true,

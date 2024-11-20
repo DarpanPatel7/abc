@@ -3,7 +3,7 @@
 <div class="modal fade" id="addCustomerSourceModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            {!! Form::open(array('route' => 'customer-sources.store','method'=>'POST','id'=>'addCustomerSourceForm','class'=>'restrict-enter')) !!}
+            {!! html()->form('POST')->route('customer-sources.store')->id('addCustomerSourceForm')->class('restrict-enter')->open() !!}
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCustomerSourceModalLabel">Add Customer Source</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -20,7 +20,7 @@
                             <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, array('class' => 'switch-input', 'id' => 'addstatus')) }}
+                                    {{ html()->checkbox('status', true, 1)->id('addstatus')->class('switch-input') }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -34,7 +34,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addCustomerSourceSubmit">Save changes</button>
                 </div>
-            {!! Form::close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </div>
