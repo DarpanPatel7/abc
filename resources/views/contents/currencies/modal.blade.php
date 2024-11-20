@@ -3,12 +3,7 @@
     <div class="modal fade" id="addCurrencyModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                {!! Form::open([
-                    'route' => 'currencies.store',
-                    'method' => 'POST',
-                    'id' => 'addCurrencyForm',
-                    'class' => 'restrict-enter',
-                ]) !!}
+                {!! html()->form('POST')->route('currencies.store')->id('addCurrencyForm')->class('restrict-enter')->open() !!}
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCurrencyModalLabel">Add Currency</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -40,7 +35,7 @@
                             <label class="form-label" for="addstatus">Status</label>
                             <div>
                                 <label class="switch switch-primary">
-                                    {{ Form::checkbox('status', 1, true, ['class' => 'switch-input', 'id' => 'addstatus']) }}
+                                    {{ html()->checkbox('status', true, 1)->id('addstatus')->class('switch-input') }}
                                     <span class="switch-toggle-slider">
                                         <span class="switch-on"></span>
                                         <span class="switch-off"></span>
@@ -54,7 +49,7 @@
                     <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addCurrencySubmit">Save changes</button>
                 </div>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

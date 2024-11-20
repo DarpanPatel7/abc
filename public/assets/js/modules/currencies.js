@@ -119,7 +119,7 @@ $(function () {
     $("body").on("click", "#edit"+main+"Submit", function (event) {
         $.easyAjax({
             container: "#edit"+main+"Form",
-            type: "POST",
+            type: "PATCH",
             buttonSelector: "#edit"+main+"Submit",
             blockUI: true,
             disableButton: true,
